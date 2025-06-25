@@ -1,10 +1,22 @@
+import clsx from 'clsx'
 import React from 'react'
 
-export const Logo: React.FC = () => {
+interface Props {
+  className?: string
+  loading?: 'lazy' | 'eager'
+  priority?: 'auto' | 'high' | 'low'
+}
+
+export const Logo = (props: Props) => {
+  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
+
+  const loading = loadingFromProps || 'lazy'
+  const priority = priorityFromProps || 'low'
+
   return (
-    <div className="intellitrade-logo">
-      <h1>IntelliTrade</h1>
-      <span className="subtitle">Trade Finance Platform</span>
+    <div className={clsx('intellitrade-logo', className)}>
+      <h1 className="text-2xl font-bold">IntelliTrade</h1>
+      <span className="subtitle text-sm">Trade Finance Platform</span>
     </div>
   )
 }

@@ -1,80 +1,44 @@
-/* IntelliTrade Admin Theme Overrides */
+// Custom styles for IntelliTrade branding
 
-/* Custom logo/branding for login page */
-.intellitrade-login {
-  margin-bottom: 2rem;
+// Logo styling
+.intellitrade-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  color: white;
+  padding: 10px 0;
   
-  .intellitrade-branding {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-    
-    h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #0066cc;
-      margin: 0;
-      line-height: 1;
-    }
-    
-    p {
-      margin-top: 0.25rem;
-      font-size: 0.875rem;
-      color: #666;
-    }
-  }
-}
-
-/* Override Payload branding elements */
-[class*="icon-payload"] {
-  display: none !important;
-}
-
-[class*="brand-logo"] {
-  display: none !important;
-}
-
-[class*="brand-name"] {
-  display: none !important;
-}
-
-/* Hide "powered by Payload" text */
-[class*="powered-by"] {
-  display: none !important;
-}
-
-/* Override primary button colors */
-button[class*="btn-primary"] {
-  background-color: #0066cc !important;
-  
-  &:hover {
-    background-color: #0055aa !important;
-  }
-}
-
-/* Custom header accent */
-header[class*="header"] {
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(to right, #0066cc, #00aaff);
-  }
-}
-
-/* Custom app title in navbar */
-[class*="app-title"] {
-  &::before {
-    content: 'IntelliTrade Admin';
-    font-weight: 600;
-    color: #0066cc;
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+    letter-spacing: -0.5px;
   }
   
-  span {
-    display: none;
+  .subtitle {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    font-weight: 400;
   }
+}
+
+// Override Payload admin theme colors
+:root {
+  --theme-elevation-100: #0a365f;
+  --theme-elevation-150: #104b85;
+  --theme-elevation-200: #155ca3;
+  --theme-elevation-300: #1a70cc;
+  --theme-elevation-400: #2684e8;
+  --theme-elevation-500: #3b97f9;
+  
+  --theme-success-500: #2baa6d;
+  --theme-warning-500: #ffb40a;
+  --theme-error-500: #e53935;
+}
+
+// Dashboard styling
+.before-dashboard {
+  margin-top: 1rem;
 }

@@ -1,17 +1,8 @@
 import canUseDOM from './canUseDOM'
+import { SERVER_URL, getServerURL } from './serverConfig'
 
 export const getServerSideURL = () => {
-  let url = process.env.NEXT_PUBLIC_SERVER_URL
-
-  if (!url && process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  }
-
-  if (!url) {
-    url = 'http://localhost:3000'
-  }
-
-  return url
+  return getServerURL()
 }
 
 export const getClientSideURL = () => {
@@ -23,9 +14,6 @@ export const getClientSideURL = () => {
     return `${protocol}//${domain}${port ? `:${port}` : ''}`
   }
 
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  }
-
-  return process.env.NEXT_PUBLIC_SERVER_URL || ''
+  // For server-side execution, use the same centralized config
+  return getServerURL()
 }
