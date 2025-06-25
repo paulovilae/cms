@@ -31,8 +31,11 @@ export const BeforeDashboard: React.FC = () => {
   }
 
   return (
-    <div className="p-4 mb-4 bg-white rounded shadow-md dark:bg-gray-800">
-      <h2 className="mb-2 text-xl font-semibold">IntelliTrade Admin Tools</h2>
+    <div className="p-4 mb-4 bg-white rounded shadow-md dark:bg-gray-800 border-l-4 border-blue-600">
+      <div className="intellitrade-dashboard-header mb-4">
+        <h2 className="text-2xl font-bold text-blue-600">IntelliTrade Admin</h2>
+        <p className="text-sm text-gray-500">Trade Finance Platform Management</p>
+      </div>
 
       <div className="flex flex-wrap items-center gap-4">
         <button
