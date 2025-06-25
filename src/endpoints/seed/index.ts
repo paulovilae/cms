@@ -2,22 +2,32 @@ import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from '
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
+import { features } from './features'
 import { home } from './home'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
 import { imageHero1 } from './image-hero-1'
+import { intellitradeShowcase } from './intellitrade-showcase'
+import { pricingPlans } from './pricing-plans'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { teamMembers } from './team-members'
+import { testimonials } from './testimonials'
 
 const collections: CollectionSlug[] = [
-  'categories',
-  'media',
+  // Order matters for foreign key constraints - collections with dependencies should come first
+  'team-members',
+  'testimonials',
+  'features',
+  'pricing-plans',
   'pages',
   'posts',
+  'categories',
   'forms',
   'form-submissions',
   'search',
+  'media', // Media should come last as other collections reference it
 ]
 const globals: GlobalSlug[] = ['header', 'footer']
 
@@ -265,9 +275,115 @@ export const seed = async ({
     data: contactFormData,
   })
 
+  payload.logger.info(`— Seeding custom collections...`)
+
+  // Seed team members
+  await Promise.all(
+    teamMembers.map((member) =>
+      payload.create({
+        collection: 'team-members',
+        data: {
+          ...member,
+          // For now, use a placeholder media ID that will be replaced later
+          photo: image1Doc.id,
+          // Add rich text bio
+          bio: {
+            root: {
+              children: [
+                {
+                  children: [
+                    {
+                      text: `Bio for ${member.name} - ${member.position}. This is a placeholder biography that will be replaced with real content.`,
+                      type: 'text',
+                    },
+                  ],
+                  type: 'paragraph',
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              type: 'root',
+              version: 1,
+            },
+          },
+        },
+      }),
+    ),
+  )
+
+  // Seed features
+  await Promise.all(
+    features.map((feature) =>
+      payload.create({
+        collection: 'features',
+        data: {
+          ...feature,
+          // Convert string to proper enum value for category
+          category: feature.category as any,
+          // Assign icon ID for all features
+          icon: image1Doc.id,
+          // Add rich text longDescription
+          longDescription: {
+            root: {
+              children: [
+                {
+                  children: [
+                    {
+                      text: `Extended description for ${feature.title}. This is a placeholder that will be replaced with real content.`,
+                      type: 'text',
+                    },
+                  ],
+                  type: 'paragraph',
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              type: 'root',
+              version: 1,
+            },
+          },
+        },
+      }),
+    ),
+  )
+
+  // Seed testimonials
+  await Promise.all(
+    testimonials.map((testimonial) =>
+      payload.create({
+        collection: 'testimonials',
+        data: {
+          ...testimonial,
+          // TypeScript needs help with these enum values
+          rating: testimonial.rating as '3' | '4' | '5',
+          // Optional photo field can use the same placeholder
+          photo: image1Doc.id,
+        },
+      }),
+    ),
+  )
+
+  // Seed pricing plans
+  await Promise.all(
+    pricingPlans.map((plan) =>
+      payload.create({
+        collection: 'pricing-plans',
+        data: {
+          ...plan,
+          // Ensure planType is properly typed
+          planType: plan.planType as 'starter' | 'professional' | 'enterprise',
+        },
+      }),
+    ),
+  )
+
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
+  const [homePage, contactPage, intellitradePage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
@@ -278,6 +394,206 @@ export const seed = async ({
       depth: 0,
       data: contactPageData({ contactForm: contactForm }),
     }),
+    payload.create({
+      collection: 'pages',
+      depth: 0,
+      data: {
+        title: 'IntelliTrade Platform',
+        slug: 'intellitrade',
+        _status: 'published',
+        meta: {
+          title: 'IntelliTrade - Blockchain-Powered Trade Finance Platform',
+          description:
+            'Discover how IntelliTrade leverages blockchain technology and smart contracts to digitalize and streamline international trade finance for Latin American exporters and global buyers.',
+          image: image2Doc.id,
+        },
+        hero: {
+          type: 'highImpact',
+          media: imageHomeDoc.id, // Add the required media field
+          richText: {
+            root: {
+              type: 'root',
+              children: [
+                {
+                  type: 'heading',
+                  children: [
+                    {
+                      type: 'text',
+                      detail: 0,
+                      format: 0,
+                      mode: 'normal',
+                      style: '',
+                      text: 'Revolutionizing International Trade Finance',
+                      version: 1,
+                    },
+                  ],
+                  direction: 'ltr',
+                  format: '',
+                  indent: 0,
+                  tag: 'h1',
+                  version: 1,
+                },
+                {
+                  type: 'paragraph',
+                  children: [
+                    {
+                      type: 'text',
+                      detail: 0,
+                      format: 0,
+                      mode: 'normal',
+                      style: '',
+                      text: 'A blockchain-powered platform connecting Latin American exporters with global buyers through smart escrow and oracle verification.',
+                      version: 1,
+                    },
+                  ],
+                  direction: 'ltr',
+                  format: '',
+                  indent: 0,
+                  textFormat: 0,
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              version: 1,
+            },
+          },
+          links: [
+            {
+              link: {
+                type: 'custom',
+                label: 'Explore Features',
+                url: '#features',
+              },
+            },
+          ],
+        },
+        layout: [
+          {
+            blockName: 'About IntelliTrade',
+            blockType: 'content',
+            columns: [
+              {
+                size: 'full',
+                richText: {
+                  root: {
+                    type: 'root',
+                    children: [
+                      {
+                        type: 'heading',
+                        children: [
+                          {
+                            type: 'text',
+                            detail: 0,
+                            format: 0,
+                            mode: 'normal',
+                            style: '',
+                            text: 'About IntelliTrade',
+                            version: 1,
+                          },
+                        ],
+                        direction: 'ltr',
+                        format: '',
+                        indent: 0,
+                        tag: 'h2',
+                        version: 1,
+                      },
+                      {
+                        type: 'paragraph',
+                        children: [
+                          {
+                            type: 'text',
+                            detail: 0,
+                            format: 0,
+                            mode: 'normal',
+                            style: '',
+                            text: 'IntelliTrade is a fin-tech trade-finance platform that leverages blockchain technology and smart contracts to digitalize and streamline international trade finance, specifically focused on Latin American exporters and global buyers.',
+                            version: 1,
+                          },
+                        ],
+                        direction: 'ltr',
+                        format: '',
+                        indent: 0,
+                        textFormat: 0,
+                        version: 1,
+                      },
+                    ],
+                    direction: 'ltr',
+                    format: '',
+                    indent: 0,
+                    version: 1,
+                  },
+                },
+              },
+            ],
+          },
+          {
+            blockName: 'Call to Action',
+            blockType: 'cta',
+            richText: {
+              root: {
+                type: 'root',
+                children: [
+                  {
+                    type: 'heading',
+                    children: [
+                      {
+                        type: 'text',
+                        detail: 0,
+                        format: 0,
+                        mode: 'normal',
+                        style: '',
+                        text: 'Ready to transform your trade finance operations?',
+                        version: 1,
+                      },
+                    ],
+                    direction: 'ltr',
+                    format: '',
+                    indent: 0,
+                    tag: 'h3',
+                    version: 1,
+                  },
+                  {
+                    type: 'paragraph',
+                    children: [
+                      {
+                        type: 'text',
+                        detail: 0,
+                        format: 0,
+                        mode: 'normal',
+                        style: '',
+                        text: 'Contact us today to learn more about how IntelliTrade can streamline your international trade process.',
+                        version: 1,
+                      },
+                    ],
+                    direction: 'ltr',
+                    format: '',
+                    indent: 0,
+                    textFormat: 0,
+                    version: 1,
+                  },
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                version: 1,
+              },
+            },
+            links: [
+              {
+                link: {
+                  type: 'custom',
+                  appearance: 'outline',
+                  label: 'Request Demo',
+                  url: '/contact',
+                },
+              },
+            ],
+          },
+        ],
+      },
+    }),
   ])
 
   payload.logger.info(`— Seeding globals...`)
@@ -287,6 +603,16 @@ export const seed = async ({
       slug: 'header',
       data: {
         navItems: [
+          {
+            link: {
+              type: 'reference',
+              label: 'IntelliTrade',
+              reference: {
+                relationTo: 'pages',
+                value: intellitradePage.id,
+              },
+            },
+          },
           {
             link: {
               type: 'custom',

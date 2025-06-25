@@ -75,6 +75,47 @@ export const Posts: CollectionConfig<'posts'> = {
       required: true,
     },
     {
+      name: 'category',
+      type: 'select',
+      options: [
+        { label: 'Educational', value: 'educational' },
+        { label: 'Industry Insights', value: 'industry' },
+        { label: 'News', value: 'news' },
+        { label: 'Case Studies', value: 'case-studies' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'readingTime',
+      type: 'number',
+      admin: {
+        description: 'Estimated reading time in minutes',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'expertiseLevel',
+      type: 'select',
+      options: [
+        { label: 'Beginner', value: 'beginner' },
+        { label: 'Intermediate', value: 'intermediate' },
+        { label: 'Advanced', value: 'advanced' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'featuredPost',
+      type: 'checkbox',
+      admin: {
+        position: 'sidebar',
+        description: 'Display this post as featured on the blog index',
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {

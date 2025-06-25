@@ -1,72 +1,63 @@
-import { Banner } from '@payloadcms/ui/elements/Banner'
-import React from 'react'
+'use client'
 
-import { SeedButton } from './SeedButton'
-import './index.scss'
+import React, { useState } from 'react'
 
-const baseClass = 'before-dashboard'
+export const BeforeDashboard: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [result, setResult] = useState<{ success?: boolean; error?: string } | null>(null)
 
-const BeforeDashboard: React.FC = () => {
+  const handleSeed = async () => {
+    try {
+      setIsLoading(true)
+      setResult(null)
+
+      const res = await fetch('/next/seed', {
+        method: 'POST',
+        credentials: 'include',
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        setResult({ success: data.success })
+      } else {
+        const error = await res.text()
+        setResult({ error })
+      }
+    } catch (error) {
+      setResult({ error: 'Failed to seed data. Please try again.' })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
-    <div className={baseClass}>
-      <Banner className={`${baseClass}__banner`} type="success">
-        <h4>Welcome to your dashboard!</h4>
-      </Banner>
-      Here&apos;s what to do next:
-      <ul className={`${baseClass}__instructions`}>
-        <li>
-          <SeedButton />
-          {' with a few pages, posts, and projects to jump-start your new site, then '}
-          <a href="/" target="_blank">
-            visit your website
-          </a>
-          {' to see the results.'}
-        </li>
-        <li>
-          If you created this repo using Payload Cloud, head over to GitHub and clone it to your
-          local machine. It will be under the <i>GitHub Scope</i> that you selected when creating
-          this project.
-        </li>
-        <li>
-          {'Modify your '}
-          <a
-            href="https://payloadcms.com/docs/configuration/collections"
-            rel="noopener noreferrer"
-            target="_blank"
+    <div className="p-4 mb-4 bg-white rounded shadow-md dark:bg-gray-800">
+      <h2 className="mb-2 text-xl font-semibold">IntelliTrade Admin Tools</h2>
+
+      <div className="flex flex-wrap items-center gap-4">
+        <button
+          onClick={handleSeed}
+          disabled={isLoading}
+          className={`px-4 py-2 text-white rounded ${
+            isLoading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'
+          }`}
+        >
+          {isLoading ? 'Seeding...' : 'Seed Demo Data'}
+        </button>
+
+        {result && (
+          <div
+            className={`p-2 rounded ${result.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
           >
-            collections
-          </a>
-          {' and add more '}
-          <a
-            href="https://payloadcms.com/docs/fields/overview"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            fields
-          </a>
-          {' as needed. If you are new to Payload, we also recommend you check out the '}
-          <a
-            href="https://payloadcms.com/docs/getting-started/what-is-payload"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Getting Started
-          </a>
-          {' docs.'}
-        </li>
-        <li>
-          Commit and push your changes to the repository to trigger a redeployment of your project.
-        </li>
-      </ul>
-      {'Pro Tip: This block is a '}
-      <a
-        href="https://payloadcms.com/docs/admin/custom-components/overview#base-component-overrides"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        custom component
-      </a>
-      , you can remove it at any time by updating your <strong>payload.config</strong>.
+            {result.success ? 'Data seeded successfully!' : `Error: ${result.error}`}
+          </div>
+        )}
+      </div>
+
+      <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
+        Click the button above to populate the database with demo data for IntelliTrade, including
+        team members, features, testimonials, and pricing plans.
+      </p>
     </div>
   )
 }

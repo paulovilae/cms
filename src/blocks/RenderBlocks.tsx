@@ -8,12 +8,25 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 
+// Import new block components
+import { ParallaxHero } from '@/blocks/ParallaxHero/Component'
+import { AnimatedTimeline } from '@/blocks/AnimatedTimeline/Component'
+import { FeatureGrid } from '@/blocks/FeatureGrid/Component'
+import { StatCounter } from '@/blocks/StatCounter/Component'
+import { FloatingCTA } from '@/blocks/FloatingCTA/Component'
+
 const blockComponents = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  // Add new blocks
+  'parallax-hero': ParallaxHero,
+  'animated-timeline': AnimatedTimeline,
+  'feature-grid': FeatureGrid,
+  'stat-counter': StatCounter,
+  'floating-cta': FloatingCTA,
 }
 
 export const RenderBlocks: React.FC<{

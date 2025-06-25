@@ -13,6 +13,13 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
+// Import new blocks
+import { ParallaxHero } from '@/blocks/ParallaxHero/config'
+import { AnimatedTimeline } from '@/blocks/AnimatedTimeline/config'
+import { FeatureGrid } from '@/blocks/FeatureGrid/config'
+import { StatCounter } from '@/blocks/StatCounter/config'
+import { FloatingCTA } from '@/blocks/FloatingCTA/config'
+
 import {
   MetaDescriptionField,
   MetaImageField,
@@ -64,6 +71,19 @@ export const Pages: CollectionConfig<'pages'> = {
       required: true,
     },
     {
+      name: 'pageType',
+      type: 'select',
+      options: [
+        { label: 'Standard Page', value: 'standard' },
+        { label: 'Landing Page', value: 'landing' },
+        { label: 'Product Page', value: 'product' },
+        { label: 'Case Study', value: 'caseStudy' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {
@@ -75,7 +95,20 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              blocks: [
+                // Existing blocks
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                // New blocks for marketing site
+                ParallaxHero,
+                AnimatedTimeline,
+                FeatureGrid,
+                StatCounter,
+                FloatingCTA,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,
