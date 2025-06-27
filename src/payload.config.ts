@@ -5,6 +5,8 @@ import sharp from 'sharp' // sharp-import
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
+import { en } from '@payloadcms/translations/languages/en'
+import { es } from '@payloadcms/translations/languages/es'
 
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
@@ -22,6 +24,10 @@ import { TeamMembers } from './collections/TeamMembers'
 import { Testimonials } from './collections/Testimonials'
 import { Features } from './collections/Features'
 import { PricingPlans } from './collections/PricingPlans'
+import { ExportTransactions } from './collections/ExportTransactions'
+import { Companies } from './collections/Companies'
+import { Routes } from './collections/Routes'
+import { SmartContracts } from './collections/SmartContracts'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -35,6 +41,8 @@ export default buildConfig({
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
       beforeDashboard: ['@/components/BeforeDashboard'],
+      // Add language switcher to the navigation sidebar
+      afterNavLinks: ['@/components/LanguageSwitcher'],
       graphics: {
         Logo: '@/components/AdminLogo',
         Icon: '@/components/AdminLogo',
@@ -85,6 +93,10 @@ export default buildConfig({
     Testimonials,
     Features,
     PricingPlans,
+    ExportTransactions,
+    Companies,
+    Routes,
+    SmartContracts,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
@@ -96,6 +108,91 @@ export default buildConfig({
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
+  },
+  i18n: {
+    fallbackLanguage: 'en',
+    supportedLanguages: { en, es },
+    // Core translations for admin UI and system messages
+    translations: {
+      en: {
+        general: {
+          dashboard: 'Dashboard',
+          collections: 'Collections',
+          globals: 'Globals',
+          cancel: 'Cancel',
+          save: 'Save',
+          none: 'None',
+          create: 'Create',
+          logout: 'Logout',
+          new: 'New',
+          drafts: 'Drafts',
+          published: 'Published',
+          preview: 'Preview',
+          login: 'Login',
+          email: 'Email',
+          password: 'Password',
+          confirmPassword: 'Confirm Password',
+          createFirstUser: 'Create First User',
+          forgotPassword: 'Forgot Password',
+          resetPassword: 'Reset Password',
+          fields: 'Fields',
+          submit: 'Submit',
+          content: 'Content',
+          mediaLibrary: 'Media Library',
+          upload: 'Upload',
+          users: 'Users',
+          account: 'Account',
+          settings: 'Settings',
+          language: 'Language',
+        },
+        custom: {
+          welcome: 'Welcome to IntelliTrade CMS',
+          intellitrade: {
+            productName: 'IntelliTrade',
+            features: 'Key Features',
+          },
+        },
+      },
+      es: {
+        general: {
+          dashboard: 'Panel de Control',
+          collections: 'Colecciones',
+          globals: 'Globales',
+          cancel: 'Cancelar',
+          save: 'Guardar',
+          none: 'Ninguno',
+          create: 'Crear',
+          logout: 'Cerrar Sesión',
+          new: 'Nuevo',
+          drafts: 'Borradores',
+          published: 'Publicado',
+          preview: 'Vista Previa',
+          login: 'Iniciar Sesión',
+          email: 'Correo Electrónico',
+          password: 'Contraseña',
+          confirmPassword: 'Confirmar Contraseña',
+          createFirstUser: 'Crear Primer Usuario',
+          forgotPassword: 'Olvidé mi Contraseña',
+          resetPassword: 'Restablecer Contraseña',
+          fields: 'Campos',
+          submit: 'Enviar',
+          content: 'Contenido',
+          mediaLibrary: 'Biblioteca de Medios',
+          upload: 'Subir',
+          users: 'Usuarios',
+          account: 'Cuenta',
+          settings: 'Configuración',
+          language: 'Idioma',
+        },
+        custom: {
+          welcome: 'Bienvenido al CMS de IntelliTrade',
+          intellitrade: {
+            productName: 'IntelliTrade',
+            features: 'Características Principales',
+          },
+        },
+      },
+    },
   },
   jobs: {
     access: {

@@ -29,6 +29,16 @@ import { slugField } from '@/fields/slug'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
+  labels: {
+    singular: {
+      en: 'Post',
+      es: 'Artículo',
+    },
+    plural: {
+      en: 'Posts',
+      es: 'Artículos',
+    },
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -49,6 +59,10 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    group: {
+      en: 'Content',
+      es: 'Contenido',
+    },
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
@@ -73,15 +87,53 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+      label: {
+        en: 'Title',
+        es: 'Título',
+      },
+      admin: {
+        placeholder: {
+          en: 'Enter post title',
+          es: 'Ingrese título del artículo',
+        },
+      },
     },
     {
       name: 'category',
       type: 'select',
+      label: {
+        en: 'Category',
+        es: 'Categoría',
+      },
       options: [
-        { label: 'Educational', value: 'educational' },
-        { label: 'Industry Insights', value: 'industry' },
-        { label: 'News', value: 'news' },
-        { label: 'Case Studies', value: 'case-studies' },
+        {
+          label: {
+            en: 'Educational',
+            es: 'Educativo',
+          },
+          value: 'educational',
+        },
+        {
+          label: {
+            en: 'Industry Insights',
+            es: 'Perspectivas de la Industria',
+          },
+          value: 'industry',
+        },
+        {
+          label: {
+            en: 'News',
+            es: 'Noticias',
+          },
+          value: 'news',
+        },
+        {
+          label: {
+            en: 'Case Studies',
+            es: 'Casos de Estudio',
+          },
+          value: 'case-studies',
+        },
       ],
       admin: {
         position: 'sidebar',
@@ -90,18 +142,47 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'readingTime',
       type: 'number',
+      label: {
+        en: 'Reading Time',
+        es: 'Tiempo de Lectura',
+      },
       admin: {
-        description: 'Estimated reading time in minutes',
+        description: {
+          en: 'Estimated reading time in minutes',
+          es: 'Tiempo estimado de lectura en minutos',
+        },
         position: 'sidebar',
       },
     },
     {
       name: 'expertiseLevel',
       type: 'select',
+      label: {
+        en: 'Expertise Level',
+        es: 'Nivel de Experiencia',
+      },
       options: [
-        { label: 'Beginner', value: 'beginner' },
-        { label: 'Intermediate', value: 'intermediate' },
-        { label: 'Advanced', value: 'advanced' },
+        {
+          label: {
+            en: 'Beginner',
+            es: 'Principiante',
+          },
+          value: 'beginner',
+        },
+        {
+          label: {
+            en: 'Intermediate',
+            es: 'Intermedio',
+          },
+          value: 'intermediate',
+        },
+        {
+          label: {
+            en: 'Advanced',
+            es: 'Avanzado',
+          },
+          value: 'advanced',
+        },
       ],
       admin: {
         position: 'sidebar',
@@ -110,9 +191,16 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'featuredPost',
       type: 'checkbox',
+      label: {
+        en: 'Featured Post',
+        es: 'Artículo Destacado',
+      },
       admin: {
         position: 'sidebar',
-        description: 'Display this post as featured on the blog index',
+        description: {
+          en: 'Display this post as featured on the blog index',
+          es: 'Mostrar este artículo como destacado en la página principal del blog',
+        },
       },
     },
     {
@@ -123,11 +211,19 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'heroImage',
               type: 'upload',
+              label: {
+                en: 'Hero Image',
+                es: 'Imagen Principal',
+              },
               relationTo: 'media',
             },
             {
               name: 'content',
               type: 'richText',
+              label: {
+                en: 'Content',
+                es: 'Contenido',
+              },
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -140,17 +236,23 @@ export const Posts: CollectionConfig<'posts'> = {
                   ]
                 },
               }),
-              label: false,
               required: true,
             },
           ],
-          label: 'Content',
+          label: {
+            en: 'Content',
+            es: 'Contenido',
+          },
         },
         {
           fields: [
             {
               name: 'relatedPosts',
               type: 'relationship',
+              label: {
+                en: 'Related Posts',
+                es: 'Artículos Relacionados',
+              },
               admin: {
                 position: 'sidebar',
               },
@@ -167,6 +269,10 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'categories',
               type: 'relationship',
+              label: {
+                en: 'Categories',
+                es: 'Categorías',
+              },
               admin: {
                 position: 'sidebar',
               },
@@ -174,11 +280,17 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'categories',
             },
           ],
-          label: 'Meta',
+          label: {
+            en: 'Meta',
+            es: 'Meta',
+          },
         },
         {
           name: 'meta',
-          label: 'SEO',
+          label: {
+            en: 'SEO',
+            es: 'SEO',
+          },
           fields: [
             OverviewField({
               titlePath: 'meta.title',
@@ -208,6 +320,10 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'publishedAt',
       type: 'date',
+      label: {
+        en: 'Published At',
+        es: 'Fecha de Publicación',
+      },
       admin: {
         date: {
           pickerAppearance: 'dayAndTime',
@@ -228,6 +344,10 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'authors',
       type: 'relationship',
+      label: {
+        en: 'Authors',
+        es: 'Autores',
+      },
       admin: {
         position: 'sidebar',
       },
@@ -240,6 +360,10 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'populatedAuthors',
       type: 'array',
+      label: {
+        en: 'Populated Authors',
+        es: 'Autores Populados',
+      },
       access: {
         update: () => false,
       },
@@ -251,10 +375,18 @@ export const Posts: CollectionConfig<'posts'> = {
         {
           name: 'id',
           type: 'text',
+          label: {
+            en: 'ID',
+            es: 'ID',
+          },
         },
         {
           name: 'name',
           type: 'text',
+          label: {
+            en: 'Name',
+            es: 'Nombre',
+          },
         },
       ],
     },

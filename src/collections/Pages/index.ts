@@ -19,6 +19,7 @@ import { AnimatedTimeline } from '@/blocks/AnimatedTimeline/config'
 import { FeatureGrid } from '@/blocks/FeatureGrid/config'
 import { StatCounter } from '@/blocks/StatCounter/config'
 import { FloatingCTA } from '@/blocks/FloatingCTA/config'
+import { SmartContractDemo } from '@/blocks/SmartContractDemo/config'
 
 import {
   MetaDescriptionField,
@@ -30,6 +31,16 @@ import {
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
+  labels: {
+    singular: {
+      en: 'Page',
+      es: 'Página',
+    },
+    plural: {
+      en: 'Pages',
+      es: 'Páginas',
+    },
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -45,6 +56,10 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    group: {
+      en: 'Content',
+      es: 'Contenido',
+    },
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
@@ -69,15 +84,53 @@ export const Pages: CollectionConfig<'pages'> = {
       name: 'title',
       type: 'text',
       required: true,
+      label: {
+        en: 'Title',
+        es: 'Título',
+      },
+      admin: {
+        placeholder: {
+          en: 'Enter page title',
+          es: 'Ingrese título de la página',
+        },
+      },
     },
     {
       name: 'pageType',
       type: 'select',
+      label: {
+        en: 'Page Type',
+        es: 'Tipo de Página',
+      },
       options: [
-        { label: 'Standard Page', value: 'standard' },
-        { label: 'Landing Page', value: 'landing' },
-        { label: 'Product Page', value: 'product' },
-        { label: 'Case Study', value: 'caseStudy' },
+        {
+          label: {
+            en: 'Standard Page',
+            es: 'Página Estándar',
+          },
+          value: 'standard',
+        },
+        {
+          label: {
+            en: 'Landing Page',
+            es: 'Página de Aterrizaje',
+          },
+          value: 'landing',
+        },
+        {
+          label: {
+            en: 'Product Page',
+            es: 'Página de Producto',
+          },
+          value: 'product',
+        },
+        {
+          label: {
+            en: 'Case Study',
+            es: 'Caso de Estudio',
+          },
+          value: 'caseStudy',
+        },
       ],
       admin: {
         position: 'sidebar',
@@ -88,13 +141,20 @@ export const Pages: CollectionConfig<'pages'> = {
       tabs: [
         {
           fields: [hero],
-          label: 'Hero',
+          label: {
+            en: 'Hero',
+            es: 'Héroe',
+          },
         },
         {
           fields: [
             {
               name: 'layout',
               type: 'blocks',
+              label: {
+                en: 'Layout',
+                es: 'Diseño',
+              },
               blocks: [
                 // Existing blocks
                 CallToAction,
@@ -108,6 +168,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 FeatureGrid,
                 StatCounter,
                 FloatingCTA,
+                // Interactive demo block
+                SmartContractDemo,
               ],
               required: true,
               admin: {
@@ -115,11 +177,17 @@ export const Pages: CollectionConfig<'pages'> = {
               },
             },
           ],
-          label: 'Content',
+          label: {
+            en: 'Content',
+            es: 'Contenido',
+          },
         },
         {
           name: 'meta',
-          label: 'SEO',
+          label: {
+            en: 'SEO',
+            es: 'SEO',
+          },
           fields: [
             OverviewField({
               titlePath: 'meta.title',
@@ -149,6 +217,10 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'publishedAt',
       type: 'date',
+      label: {
+        en: 'Published At',
+        es: 'Fecha de Publicación',
+      },
       admin: {
         position: 'sidebar',
       },

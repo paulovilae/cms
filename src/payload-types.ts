@@ -76,6 +76,10 @@ export interface Config {
     testimonials: Testimonial;
     features: Feature;
     'pricing-plans': PricingPlan;
+    'export-transactions': ExportTransaction;
+    companies: Company;
+    routes: Route;
+    'smart-contracts': SmartContract;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -96,6 +100,10 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     features: FeaturesSelect<false> | FeaturesSelect<true>;
     'pricing-plans': PricingPlansSelect<false> | PricingPlansSelect<true>;
+    'export-transactions': ExportTransactionsSelect<false> | ExportTransactionsSelect<true>;
+    companies: CompaniesSelect<false> | CompaniesSelect<true>;
+    routes: RoutesSelect<false> | RoutesSelect<true>;
+    'smart-contracts': SmartContractsSelect<false> | SmartContractsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -211,6 +219,7 @@ export interface Page {
     | FeatureGridBlock
     | StatCounterBlock
     | FloatingCTABlock
+    | SmartContractDemoBlock
   )[];
   meta?: {
     title?: string | null;
@@ -909,6 +918,311 @@ export interface FloatingCTABlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SmartContractDemoBlock".
+ */
+export interface SmartContractDemoBlock {
+  heading?: string | null;
+  description?: string | null;
+  /**
+   * Select an export transaction to showcase in this demo
+   */
+  transaction: number | ExportTransaction;
+  showTechnicalDetails?: boolean | null;
+  animationSpeed?: ('slow' | 'medium' | 'fast') | null;
+  interactiveMode?: ('manual' | 'auto' | 'both') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'smart-contract-demo';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "export-transactions".
+ */
+export interface ExportTransaction {
+  id: number;
+  title: string;
+  /**
+   * The blockchain address of the smart contract
+   */
+  contractAddress?: string | null;
+  /**
+   * Select a company with type "exporter" or "both"
+   */
+  exporter: number | Company;
+  /**
+   * Select a company with type "importer" or "both"
+   */
+  importer: number | Company;
+  productDetails: {
+    name: string;
+    description?: string | null;
+    category?:
+      | (
+          | 'agricultural'
+          | 'food-beverages'
+          | 'textiles'
+          | 'raw-materials'
+          | 'electronics'
+          | 'machinery'
+          | 'pharmaceuticals'
+          | 'other'
+        )
+      | null;
+    quantity: number;
+    unitOfMeasurement: 'mt' | 'kg' | 'lb' | 'units' | 'barrels' | 'cbm' | 'other';
+    weight?: number | null;
+    weightUnit?: ('kg' | 'lb' | 'mt') | null;
+    /**
+     * Format: length x width x height (e.g., 120cm x 80cm x 100cm)
+     */
+    dimensions?: string | null;
+    hazardousClassification?: string | null;
+  };
+  routeInformation: {
+    /**
+     * Will be converted to a relationship when Routes collection is implemented
+     */
+    route?: string | null;
+    originPort: string;
+    destinationPort: string;
+    estimatedDepartureDate?: string | null;
+    estimatedArrivalDate?: string | null;
+    actualDepartureDate?: string | null;
+    actualArrivalDate?: string | null;
+    /**
+     * Transit time in days
+     */
+    transitTime?: number | null;
+  };
+  shippingDetails?: {
+    carrier?: string | null;
+    vesselName?: string | null;
+    voyageNumber?: string | null;
+    containerNumbers?:
+      | {
+          number: string;
+          type?:
+            | ('20ft-standard' | '40ft-standard' | '40ft-high-cube' | 'reefer' | 'open-top' | 'flat-rack' | 'other')
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    sealNumbers?:
+      | {
+          number: string;
+          type?: ('carrier' | 'shipper' | 'customs' | 'other') | null;
+          id?: string | null;
+        }[]
+      | null;
+    shipmentType?: ('fcl' | 'lcl' | 'break-bulk' | 'bulk' | 'other') | null;
+    incoterms?: ('fob' | 'cif' | 'cfr' | 'exw' | 'dap' | 'ddp' | 'fca' | 'other') | null;
+    insuranceProvider?: string | null;
+    insuranceValue?: number | null;
+  };
+  documentReferences?: {
+    /**
+     * Commercial invoice number
+     */
+    commercialInvoice?: string | null;
+    /**
+     * Bill of lading number
+     */
+    billOfLading?: string | null;
+    /**
+     * Packing list reference
+     */
+    packingList?: string | null;
+    /**
+     * Certificate of origin reference
+     */
+    certificateOfOrigin?: string | null;
+    /**
+     * Insurance policy number
+     */
+    insurancePolicy?: string | null;
+    /**
+     * Inspection certificate reference
+     */
+    inspectionCertificate?: string | null;
+    /**
+     * Export license number
+     */
+    exportLicense?: string | null;
+    /**
+     * Import license number
+     */
+    importLicense?: string | null;
+    /**
+     * Customs declaration number
+     */
+    customsDeclaration?: string | null;
+    documents?:
+      | {
+          documentType:
+            | 'commercial-invoice'
+            | 'bill-of-lading'
+            | 'packing-list'
+            | 'certificate-of-origin'
+            | 'insurance-policy'
+            | 'inspection-certificate'
+            | 'export-license'
+            | 'import-license'
+            | 'customs-declaration'
+            | 'other';
+          referenceNumber?: string | null;
+          issueDate?: string | null;
+          issuer?: string | null;
+          document?: (number | null) | Media;
+          verificationStatus?: ('pending' | 'verified' | 'rejected') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  product: string;
+  amount: number;
+  currency?: ('usd' | 'usdc' | 'usdt') | null;
+  status?: ('created' | 'in-progress' | 'completed') | null;
+  verificationSteps?:
+    | {
+        stepName: string;
+        description?: string | null;
+        status?: ('pending' | 'in-progress' | 'verified' | 'failed' | 'disputed') | null;
+        verifiedBy?: string | null;
+        timestamp?: string | null;
+        /**
+         * Percentage of total payment released at this step
+         */
+        paymentReleased?: number | null;
+        /**
+         * Location where verification occurred
+         */
+        location?: string | null;
+        /**
+         * Format: latitude,longitude (e.g., 34.0522,-118.2437)
+         */
+        gpsCoordinates?: string | null;
+        evidenceType?: ('photo' | 'gps' | 'document' | 'multiple') | null;
+        evidence?: (number | Media)[] | null;
+        dataPoints?:
+          | {
+              dataType: 'temperature' | 'humidity' | 'weight' | 'location' | 'document-hash' | 'timestamp' | 'other';
+              value: string;
+              unit?: string | null;
+              /**
+               * Source of this data point (e.g., IoT sensor, GPS device)
+               */
+              source?: string | null;
+              timestamp?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        verificationMethod?:
+          | (
+              | 'automated-oracle'
+              | 'manual-oracle'
+              | 'document-verification'
+              | 'blockchain-consensus'
+              | 'multi-signature'
+            )
+          | null;
+        /**
+         * Smart contract code for this verification step
+         */
+        contractCode?: string | null;
+        /**
+         * Oracle interaction code for this verification step
+         */
+        oracleInteraction?: string | null;
+        /**
+         * Blockchain transaction hash for this verification
+         */
+        transactionHash?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Complete smart contract code
+   */
+  smartContractCode?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companies".
+ */
+export interface Company {
+  id: number;
+  name: string;
+  type: 'exporter' | 'importer' | 'both';
+  description?: string | null;
+  address?: {
+    streetAddress?: string | null;
+    city?: string | null;
+    stateProvince?: string | null;
+    postalCode?: string | null;
+    country?: string | null;
+    /**
+     * Format: latitude,longitude (e.g., 34.0522,-118.2437)
+     */
+    gpsCoordinates?: string | null;
+  };
+  contactInfo?: {
+    primaryPhone?: string | null;
+    alternatePhone?: string | null;
+    email?: string | null;
+    contactPerson?: string | null;
+    contactPosition?: string | null;
+  };
+  businessDetails?: {
+    registrationNumber?: string | null;
+    taxId?: string | null;
+    yearEstablished?: number | null;
+    industrySector?:
+      | (
+          | 'agriculture'
+          | 'manufacturing'
+          | 'food-processing'
+          | 'textiles'
+          | 'electronics'
+          | 'pharmaceuticals'
+          | 'automotive'
+          | 'commodities'
+          | 'retail'
+          | 'other'
+        )
+      | null;
+    employeeCount?: number | null;
+    /**
+     * Annual revenue in USD
+     */
+    annualRevenue?: number | null;
+    certifications?:
+      | {
+          name: string;
+          issuingBody?: string | null;
+          issueDate?: string | null;
+          expiryDate?: string | null;
+          document?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  country?: string | null;
+  logo?: (number | null) | Media;
+  /**
+   * Full URL including https://
+   */
+  website?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "team-members".
  */
 export interface TeamMember {
@@ -994,6 +1308,142 @@ export interface PricingPlan {
    */
   order?: number | null;
   planType: 'starter' | 'professional' | 'enterprise';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "routes".
+ */
+export interface Route {
+  id: number;
+  name: string;
+  description?: string | null;
+  originCountry: string;
+  originPort: string;
+  destinationCountry: string;
+  destinationPort: string;
+  transitPorts?:
+    | {
+        portName: string;
+        country: string;
+        estimatedDaysFromOrigin?: number | null;
+        services?: ('transshipment' | 'customs' | 'inspection' | 'container-handling' | 'other')[] | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Total transit time in days
+   */
+  estimatedTransitTime?: number | null;
+  /**
+   * Distance in nautical miles
+   */
+  distance?: number | null;
+  transportMode: 'ocean' | 'air' | 'road' | 'rail' | 'multimodal';
+  carriers?:
+    | {
+        name: string;
+        service?: string | null;
+        /**
+         * How often this carrier serves this route (e.g., weekly, bi-weekly)
+         */
+        frequency?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * How often ships/vehicles depart on this route (e.g., daily, weekly)
+   */
+  frequencyOfService?: string | null;
+  /**
+   * Average cost in USD for standard container/shipment
+   */
+  averageCost?: number | null;
+  riskLevel?: ('low' | 'medium' | 'high') | null;
+  mapImage?: (number | null) | Media;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "smart-contracts".
+ */
+export interface SmartContract {
+  id: number;
+  title: string;
+  description?: string | null;
+  /**
+   * Semantic versioning (e.g., 1.0.0)
+   */
+  version?: string | null;
+  contractType: 'export-escrow' | 'trade-finance' | 'supply-chain' | 'letter-of-credit' | 'insurance' | 'other';
+  templateOrInstance: 'template' | 'instance';
+  associatedTransaction?: (number | null) | ExportTransaction;
+  /**
+   * The template this contract instance is based on
+   */
+  parentTemplate?: (number | null) | SmartContract;
+  blockchainNetwork?:
+    | ('ethereum-mainnet' | 'ethereum-goerli' | 'polygon' | 'avalanche' | 'arbitrum' | 'optimism' | 'local' | 'other')
+    | null;
+  /**
+   * The blockchain address where this contract is deployed
+   */
+  contractAddress?: string | null;
+  /**
+   * Solidity source code
+   */
+  sourceCode?: string | null;
+  /**
+   * ABI JSON interface
+   */
+  abiInterface?: string | null;
+  deploymentDate?: string | null;
+  status?: ('draft' | 'reviewed' | 'deployed' | 'active' | 'completed' | 'terminated') | null;
+  createdBy?: (number | null) | User;
+  /**
+   * Information about security audits performed on this contract
+   */
+  auditInformation?: string | null;
+  /**
+   * Transaction hash of the deployment transaction
+   */
+  deploymentTransaction?: string | null;
+  /**
+   * Gas used for deployment
+   */
+  gasUsed?: number | null;
+  parameters?:
+    | {
+        name: string;
+        description?: string | null;
+        dataType: 'address' | 'uint256' | 'string' | 'bool' | 'bytes32' | 'array' | 'struct' | 'other';
+        value?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  events?:
+    | {
+        eventName: string;
+        description?: string | null;
+        emittedAt?: string | null;
+        transactionHash?: string | null;
+        blockNumber?: number | null;
+        parameters?:
+          | {
+              name: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1207,6 +1657,22 @@ export interface PayloadLockedDocument {
         value: number | PricingPlan;
       } | null)
     | ({
+        relationTo: 'export-transactions';
+        value: number | ExportTransaction;
+      } | null)
+    | ({
+        relationTo: 'companies';
+        value: number | Company;
+      } | null)
+    | ({
+        relationTo: 'routes';
+        value: number | Route;
+      } | null)
+    | ({
+        relationTo: 'smart-contracts';
+        value: number | SmartContract;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1310,6 +1776,7 @@ export interface PagesSelect<T extends boolean = true> {
         'feature-grid'?: T | FeatureGridBlockSelect<T>;
         'stat-counter'?: T | StatCounterBlockSelect<T>;
         'floating-cta'?: T | FloatingCTABlockSelect<T>;
+        'smart-contract-demo'?: T | SmartContractDemoBlockSelect<T>;
       };
   meta?:
     | T
@@ -1508,6 +1975,20 @@ export interface FloatingCTABlockSelect<T extends boolean = true> {
   textColor?: T;
   icon?: T;
   dismissible?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SmartContractDemoBlock_select".
+ */
+export interface SmartContractDemoBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  transaction?: T;
+  showTechnicalDetails?: T;
+  animationSpeed?: T;
+  interactiveMode?: T;
   id?: T;
   blockName?: T;
 }
@@ -1751,6 +2232,276 @@ export interface PricingPlansSelect<T extends boolean = true> {
   featured?: T;
   order?: T;
   planType?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "export-transactions_select".
+ */
+export interface ExportTransactionsSelect<T extends boolean = true> {
+  title?: T;
+  contractAddress?: T;
+  exporter?: T;
+  importer?: T;
+  productDetails?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        category?: T;
+        quantity?: T;
+        unitOfMeasurement?: T;
+        weight?: T;
+        weightUnit?: T;
+        dimensions?: T;
+        hazardousClassification?: T;
+      };
+  routeInformation?:
+    | T
+    | {
+        route?: T;
+        originPort?: T;
+        destinationPort?: T;
+        estimatedDepartureDate?: T;
+        estimatedArrivalDate?: T;
+        actualDepartureDate?: T;
+        actualArrivalDate?: T;
+        transitTime?: T;
+      };
+  shippingDetails?:
+    | T
+    | {
+        carrier?: T;
+        vesselName?: T;
+        voyageNumber?: T;
+        containerNumbers?:
+          | T
+          | {
+              number?: T;
+              type?: T;
+              id?: T;
+            };
+        sealNumbers?:
+          | T
+          | {
+              number?: T;
+              type?: T;
+              id?: T;
+            };
+        shipmentType?: T;
+        incoterms?: T;
+        insuranceProvider?: T;
+        insuranceValue?: T;
+      };
+  documentReferences?:
+    | T
+    | {
+        commercialInvoice?: T;
+        billOfLading?: T;
+        packingList?: T;
+        certificateOfOrigin?: T;
+        insurancePolicy?: T;
+        inspectionCertificate?: T;
+        exportLicense?: T;
+        importLicense?: T;
+        customsDeclaration?: T;
+        documents?:
+          | T
+          | {
+              documentType?: T;
+              referenceNumber?: T;
+              issueDate?: T;
+              issuer?: T;
+              document?: T;
+              verificationStatus?: T;
+              id?: T;
+            };
+      };
+  product?: T;
+  amount?: T;
+  currency?: T;
+  status?: T;
+  verificationSteps?:
+    | T
+    | {
+        stepName?: T;
+        description?: T;
+        status?: T;
+        verifiedBy?: T;
+        timestamp?: T;
+        paymentReleased?: T;
+        location?: T;
+        gpsCoordinates?: T;
+        evidenceType?: T;
+        evidence?: T;
+        dataPoints?:
+          | T
+          | {
+              dataType?: T;
+              value?: T;
+              unit?: T;
+              source?: T;
+              timestamp?: T;
+              id?: T;
+            };
+        verificationMethod?: T;
+        contractCode?: T;
+        oracleInteraction?: T;
+        transactionHash?: T;
+        id?: T;
+      };
+  smartContractCode?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companies_select".
+ */
+export interface CompaniesSelect<T extends boolean = true> {
+  name?: T;
+  type?: T;
+  description?: T;
+  address?:
+    | T
+    | {
+        streetAddress?: T;
+        city?: T;
+        stateProvince?: T;
+        postalCode?: T;
+        country?: T;
+        gpsCoordinates?: T;
+      };
+  contactInfo?:
+    | T
+    | {
+        primaryPhone?: T;
+        alternatePhone?: T;
+        email?: T;
+        contactPerson?: T;
+        contactPosition?: T;
+      };
+  businessDetails?:
+    | T
+    | {
+        registrationNumber?: T;
+        taxId?: T;
+        yearEstablished?: T;
+        industrySector?: T;
+        employeeCount?: T;
+        annualRevenue?: T;
+        certifications?:
+          | T
+          | {
+              name?: T;
+              issuingBody?: T;
+              issueDate?: T;
+              expiryDate?: T;
+              document?: T;
+              id?: T;
+            };
+      };
+  country?: T;
+  logo?: T;
+  website?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "routes_select".
+ */
+export interface RoutesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  originCountry?: T;
+  originPort?: T;
+  destinationCountry?: T;
+  destinationPort?: T;
+  transitPorts?:
+    | T
+    | {
+        portName?: T;
+        country?: T;
+        estimatedDaysFromOrigin?: T;
+        services?: T;
+        id?: T;
+      };
+  estimatedTransitTime?: T;
+  distance?: T;
+  transportMode?: T;
+  carriers?:
+    | T
+    | {
+        name?: T;
+        service?: T;
+        frequency?: T;
+        id?: T;
+      };
+  frequencyOfService?: T;
+  averageCost?: T;
+  riskLevel?: T;
+  mapImage?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "smart-contracts_select".
+ */
+export interface SmartContractsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  version?: T;
+  contractType?: T;
+  templateOrInstance?: T;
+  associatedTransaction?: T;
+  parentTemplate?: T;
+  blockchainNetwork?: T;
+  contractAddress?: T;
+  sourceCode?: T;
+  abiInterface?: T;
+  deploymentDate?: T;
+  status?: T;
+  createdBy?: T;
+  auditInformation?: T;
+  deploymentTransaction?: T;
+  gasUsed?: T;
+  parameters?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        dataType?: T;
+        value?: T;
+        id?: T;
+      };
+  events?:
+    | T
+    | {
+        eventName?: T;
+        description?: T;
+        emittedAt?: T;
+        transactionHash?: T;
+        blockNumber?: T;
+        parameters?:
+          | T
+          | {
+              name?: T;
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  slug?: T;
+  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }

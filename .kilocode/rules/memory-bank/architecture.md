@@ -18,6 +18,14 @@ The application is organized into two main sections:
   - Media - `src/collections/Media.ts`
   - Users - `src/collections/Users/index.ts`
   - Categories - `src/collections/Categories.ts`
+  - Companies - `src/collections/Companies/index.ts`
+  - ExportTransactions - `src/collections/ExportTransactions/index.ts`
+  - Routes - `src/collections/Routes/index.ts`
+  - SmartContracts - `src/collections/SmartContracts/index.ts`
+  - TeamMembers - `src/collections/TeamMembers/index.ts`
+  - Testimonials - `src/collections/Testimonials/index.ts`
+  - Features - `src/collections/Features/index.ts`
+  - PricingPlans - `src/collections/PricingPlans/index.ts`
 - **Globals**: Configuration settings accessible across the entire application
   - Header - `src/Header/config.ts`
   - Footer - `src/Footer/config.ts`
@@ -34,6 +42,12 @@ The CMS uses a modular block-based system for creating flexible page layouts:
   - Form blocks - Interactive forms
   - Banner blocks - Promotional content
   - Code blocks - Code snippets and examples
+  - SmartContractDemo blocks - Interactive blockchain demonstrations
+  - ParallaxHero blocks - Animated hero sections
+  - FeatureGrid blocks - Grid layout for features
+  - StatCounter blocks - Animated statistics display
+  - FloatingCTA blocks - Floating call-to-action elements
+  - AnimatedTimeline blocks - Animated process timelines
 
 #### Hero Sections
 Multiple hero section styles defined in `src/heros` directory:
@@ -55,6 +69,70 @@ Multiple hero section styles defined in `src/heros` directory:
 2. Drafts are stored in the versions system
 3. Content can be previewed before publishing
 4. Published content is accessible through the frontend
+
+### Trade Finance Data Model
+The system implements a comprehensive data model for trade finance operations:
+
+#### Companies Collection
+- Stores business entities (exporters and importers)
+- Contains detailed company information including:
+  - Business type (exporter/importer/both)
+  - Contact information and addresses
+  - Business details (registration numbers, certifications)
+  - Industry sector, employee count, annual revenue
+  - Location data including GPS coordinates
+
+#### ExportTransactions Collection
+- Core transaction records for trade finance operations
+- Links exporters and importers (relationships to Companies collection)
+- Stores product details, amounts, and currencies
+- Contains shipping information including:
+  - Route information
+  - Container and seal numbers
+  - Incoterms and shipping details
+- Document references for trade documentation
+- Verification steps with blockchain integration:
+  - Oracle verification evidence (photos, GPS coordinates)
+  - Verification timestamps and status
+  - Payment release information based on verification
+  - Smart contract code references
+  - Blockchain transaction hashes
+
+#### Routes Collection
+- Shipping route information between ports
+- Origin, destination, and transit ports
+- Transport modes and carriers
+- Estimated transit times and distances
+- Risk assessment and cost information
+
+#### SmartContracts Collection
+- Contract templates and deployed instances
+- Solidity source code and ABI interfaces
+- Deployment information (network, address, transaction hash)
+- Contract parameters and events
+- Relationship to export transactions for deployed contracts
+- Audit information and contract status tracking
+
+### Blockchain Verification System
+The data model supports blockchain-based verification through:
+
+1. **Oracle Integration**: ExportTransactions contain verification steps with oracle data
+   - Evidence collection (photos, GPS coordinates, documents)
+   - Verification methods (automated/manual oracle, document verification)
+   - Oracle interaction code and smart contract code
+
+2. **Smart Contract Management**: 
+   - Templates for reusable contract patterns
+   - Deployed instances linked to specific transactions
+   - Event tracking for contract state changes
+   - Parameter management for contract configuration
+
+3. **Verification Data Flow**:
+   - Transaction created with smart contract deployment
+   - Verification evidence submitted via oracles
+   - Smart contract executes based on verification
+   - Payment release triggered by verified milestones
+   - All steps recorded with blockchain transaction hashes
 
 ### User Authentication
 - Access control defined in `src/access` directory
@@ -88,3 +166,8 @@ Multiple hero section styles defined in `src/heros` directory:
 - Draft versions stored in the database
 - Preview routes for viewing drafts
 - Live preview for real-time content editing
+
+### Data Seeding
+- Standalone seed script for generating demo data
+- Individual seed modules for each collection
+- Command-line interface for triggering seed operations
