@@ -92,10 +92,70 @@ const config = {
         success: 'hsl(var(--success))',
         error: 'hsl(var(--error))',
         warning: 'hsl(var(--warning))',
+
+        // Component tokens
+        component: {
+          bg: 'var(--component-bg)',
+          'bg-elevated': 'var(--component-bg-elevated)',
+          border: 'var(--component-border)',
+          text: 'var(--component-text)',
+          'text-muted': 'var(--component-text-muted)',
+          'text-strong': 'var(--component-text-strong)',
+        },
+
+        // Button tokens
+        button: {
+          'primary-bg': 'var(--button-primary-bg)',
+          'primary-text': 'var(--button-primary-text)',
+          'primary-hover': 'var(--button-primary-hover)',
+          'secondary-bg': 'var(--button-secondary-bg)',
+          'secondary-text': 'var(--button-secondary-text)',
+          'secondary-hover': 'var(--button-secondary-hover)',
+          'disabled-bg': 'var(--button-disabled-bg)',
+          'disabled-text': 'var(--button-disabled-text)',
+        },
+
+        // Status tokens
+        status: {
+          'success-bg': 'var(--status-success-bg)',
+          'success-text': 'var(--status-success-text)',
+          'success-border': 'var(--status-success-border)',
+          'warning-bg': 'var(--status-warning-bg)',
+          'warning-text': 'var(--status-warning-text)',
+          'warning-border': 'var(--status-warning-border)',
+          'error-bg': 'var(--status-error-bg)',
+          'error-text': 'var(--status-error-text)',
+          'error-border': 'var(--status-error-border)',
+        },
+
+        // Interactive tokens
+        interactive: {
+          bg: 'var(--interactive-bg)',
+          'bg-hover': 'var(--interactive-bg-hover)',
+          text: 'var(--interactive-text)',
+          border: 'var(--interactive-border)',
+        },
+
+        // Code tokens
+        code: {
+          bg: 'var(--code-bg)',
+          text: 'var(--code-text)',
+        },
       },
       fontFamily: {
         mono: ['var(--font-geist-mono)'],
         sans: ['var(--font-geist-sans)'],
+      },
+      spacing: {
+        xs: 'var(--spacing-xs)',
+        sm: 'var(--spacing-sm)',
+        md: 'var(--spacing-md)',
+        lg: 'var(--spacing-lg)',
+        xl: 'var(--spacing-xl)',
+      },
+      boxShadow: {
+        component: 'var(--component-shadow)',
+        'component-sm': 'var(--component-shadow-sm)',
       },
       keyframes: {
         'accordion-down': {

@@ -19,14 +19,24 @@
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: #111827;
+  color: #ffffff !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .smart-contract-demo__description {
   font-size: 1.125rem;
   margin-bottom: 2rem;
   max-width: 800px;
-  color: #374151;
+  color: #ffffff !important;
+  font-weight: 600;
+  line-height: 1.6;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .smart-contract-demo__transaction-info {
