@@ -47,6 +47,60 @@
     --success: 196 52% 74%;
     --warning: 34 89% 85%;
     --error: 10 100% 86%;
+
+    /* Component-level semantic tokens */
+    --component-bg: hsl(var(--card));
+    --component-bg-elevated: hsl(var(--card) / 0.8);
+    --component-border: hsl(var(--border));
+    --component-text: hsl(var(--foreground));
+    --component-text-muted: hsl(var(--muted-foreground));
+    --component-text-strong: hsl(var(--foreground));
+    --component-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --component-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    /* Button semantic tokens */
+    --button-primary-bg: hsl(var(--primary));
+    --button-primary-text: hsl(var(--primary-foreground));
+    --button-primary-hover: hsl(var(--primary) / 0.9);
+    --button-secondary-bg: hsl(var(--secondary));
+    --button-secondary-text: hsl(var(--secondary-foreground));
+    --button-secondary-hover: hsl(var(--secondary) / 0.8);
+    --button-disabled-bg: hsl(var(--muted));
+    --button-disabled-text: hsl(var(--muted-foreground));
+    
+    /* Status semantic tokens */
+    --status-success-bg: hsl(var(--success) / 0.1);
+    --status-success-text: hsl(var(--success));
+    --status-success-border: hsl(var(--success));
+    --status-warning-bg: hsl(var(--warning) / 0.1);
+    --status-warning-text: hsl(var(--warning));
+    --status-warning-border: hsl(var(--warning));
+    --status-error-bg: hsl(var(--error) / 0.1);
+    --status-error-text: hsl(var(--error));
+    --status-error-border: hsl(var(--error));
+    
+    /* Interactive element tokens */
+    --interactive-bg: hsl(var(--secondary));
+    --interactive-bg-hover: hsl(var(--secondary) / 0.8);
+    --interactive-text: hsl(var(--secondary-foreground));
+    --interactive-border: hsl(var(--border));
+    
+    /* Code block tokens */
+    --code-bg: hsl(220, 13%, 18%);
+    --code-text: hsl(220, 14%, 71%);
+    
+    /* Spacing tokens */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Border radius tokens */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-full: 9999px;
   }
 
   [data-theme='dark'] {
@@ -81,6 +135,10 @@
     --success: 196 100% 14%;
     --warning: 34 51% 25%;
     --error: 10 39% 43%;
+
+    /* Override tokens for dark theme */
+    --component-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --component-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 }
 

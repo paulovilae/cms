@@ -28,6 +28,14 @@ import { ExportTransactions } from './collections/ExportTransactions'
 import { Companies } from './collections/Companies'
 import { Routes } from './collections/Routes'
 import { SmartContracts } from './collections/SmartContracts'
+import { AIProviders } from './collections/AIProviders'
+
+// Import Salarium collections
+import { FlowTemplates } from './collections/FlowTemplates'
+import { FlowInstances } from './collections/FlowInstances'
+import { Organizations } from './collections/Organizations'
+import { JobFamilies } from './collections/JobFamilies'
+import { Departments } from './collections/Departments'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -97,6 +105,13 @@ export default buildConfig({
     Companies,
     Routes,
     SmartContracts,
+    AIProviders,
+    // Salarium collections
+    FlowTemplates,
+    FlowInstances,
+    Organizations,
+    JobFamilies,
+    Departments,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

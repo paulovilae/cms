@@ -80,6 +80,12 @@ export interface Config {
     companies: Company;
     routes: Route;
     'smart-contracts': SmartContract;
+    'ai-providers': AiProvider;
+    'flow-templates': FlowTemplate;
+    'flow-instances': FlowInstance;
+    organizations: Organization;
+    'job-families': JobFamily;
+    departments: Department;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -104,6 +110,12 @@ export interface Config {
     companies: CompaniesSelect<false> | CompaniesSelect<true>;
     routes: RoutesSelect<false> | RoutesSelect<true>;
     'smart-contracts': SmartContractsSelect<false> | SmartContractsSelect<true>;
+    'ai-providers': AiProvidersSelect<false> | AiProvidersSelect<true>;
+    'flow-templates': FlowTemplatesSelect<false> | FlowTemplatesSelect<true>;
+    'flow-instances': FlowInstancesSelect<false> | FlowInstancesSelect<true>;
+    organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
+    'job-families': JobFamiliesSelect<false> | JobFamiliesSelect<true>;
+    departments: DepartmentsSelect<false> | DepartmentsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1449,6 +1461,1111 @@ export interface SmartContract {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-providers".
+ */
+export interface AiProvider {
+  id: number;
+  /**
+   * Display name of the AI provider (e.g., "OpenAI", "Anthropic", "Ollama")
+   */
+  name: string;
+  /**
+   * API endpoint URL or local server URL (e.g., "https://api.openai.com/v1" or "http://localhost:11434")
+   */
+  baseUrl: string;
+  /**
+   * Type of AI provider - cloud services, local installations, or proxy services
+   */
+  providerType: 'cloud' | 'local' | 'proxy';
+  /**
+   * Authentication method required by this provider
+   */
+  authType: 'api-key' | 'bearer' | 'oauth' | 'none';
+  /**
+   * Current operational status of the provider
+   */
+  status: 'active' | 'inactive' | 'maintenance' | 'testing';
+  /**
+   * Brief description of the provider and its capabilities
+   */
+  description?: string | null;
+  /**
+   * Link to the provider's API documentation or setup guide
+   */
+  documentation?: string | null;
+  /**
+   * Configuration specific to local AI providers
+   */
+  localConfig?: {
+    /**
+     * Default port number for local server (e.g., 11434 for Ollama, 1234 for LM Studio)
+     */
+    defaultPort?: number | null;
+    /**
+     * Default installation path or executable location
+     */
+    installationPath?: string | null;
+    /**
+     * Whether this provider requires GPU acceleration for optimal performance
+     */
+    requiresGPU?: boolean | null;
+    /**
+     * Model formats supported by this local provider
+     */
+    supportedFormats?:
+      | {
+          format: 'gguf' | 'ggml' | 'safetensors' | 'pytorch' | 'onnx' | 'other';
+          id?: string | null;
+        }[]
+      | null;
+    minSystemRequirements?: {
+      /**
+       * Minimum RAM required in GB
+       */
+      ramGB?: number | null;
+      /**
+       * Minimum disk space required in GB
+       */
+      diskSpaceGB?: number | null;
+      /**
+       * Recommended minimum CPU cores
+       */
+      cpuCores?: number | null;
+    };
+  };
+  /**
+   * Configuration specific to cloud AI providers
+   */
+  cloudConfig?: {
+    rateLimits?: {
+      /**
+       * Default rate limit for requests per minute
+       */
+      requestsPerMinute?: number | null;
+      /**
+       * Default rate limit for tokens per minute
+       */
+      tokensPerMinute?: number | null;
+      /**
+       * Default rate limit for requests per day
+       */
+      requestsPerDay?: number | null;
+    };
+    /**
+     * Available regions and their specific endpoints
+     */
+    regions?:
+      | {
+          region: string;
+          endpoint?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Connection testing configuration and results
+   */
+  connectionTest?: {
+    /**
+     * Specific endpoint to use for connection testing
+     */
+    testEndpoint?: string | null;
+    /**
+     * Last time connection was successfully tested
+     */
+    lastTestDate?: string | null;
+    /**
+     * Result of the last connection test
+     */
+    lastTestStatus?: ('success' | 'failed' | 'not-tested') | null;
+    /**
+     * Error message from last failed test (if any)
+     */
+    lastTestError?: string | null;
+  };
+  /**
+   * Additional provider metadata
+   */
+  metadata?: {
+    /**
+     * Provider's official website
+     */
+    website?: string | null;
+    /**
+     * Support contact information or URL
+     */
+    supportContact?: string | null;
+    /**
+     * Provider version or API version
+     */
+    version?: string | null;
+    /**
+     * Tags for categorizing and filtering providers
+     */
+    tags?:
+      | {
+          tag: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flow-templates".
+ */
+export interface FlowTemplate {
+  id: number;
+  /**
+   * Template name (e.g., "Job Description Creation")
+   */
+  name: string;
+  /**
+   * Template purpose and usage instructions
+   */
+  description: string;
+  /**
+   * Template category for organization
+   */
+  category: 'hr' | 'legal' | 'marketing' | 'operations' | 'finance' | 'other';
+  /**
+   * Template version (semantic versioning)
+   */
+  version: string;
+  /**
+   * Enable/disable template for use
+   */
+  isActive?: boolean | null;
+  /**
+   * Default AI provider for this template
+   */
+  aiProvider: number | AiProvider;
+  /**
+   * Workflow steps in order
+   */
+  steps?:
+    | {
+        /**
+         * Order of this step in the workflow
+         */
+        stepNumber: number;
+        /**
+         * Step title (e.g., "Job Title")
+         */
+        title: string;
+        /**
+         * Instructions for this step
+         */
+        description?: string | null;
+        /**
+         * Question presented to the user
+         */
+        questionText: string;
+        /**
+         * AI system prompt for processing user input
+         */
+        systemPrompt: string;
+        stepType: 'text' | 'textarea' | 'select' | 'file-upload' | 'multiple-choice';
+        /**
+         * Is this step mandatory?
+         */
+        isRequired?: boolean | null;
+        validationRules?: {
+          /**
+           * Minimum character length
+           */
+          minLength?: number | null;
+          /**
+           * Maximum character length
+           */
+          maxLength?: number | null;
+          /**
+           * Regex pattern for validation
+           */
+          pattern?: string | null;
+          /**
+           * Custom validation error message
+           */
+          customMessage?: string | null;
+        };
+        /**
+         * Options for select/multiple choice steps
+         */
+        selectOptions?:
+          | {
+              label: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Conditional logic for showing this step
+         */
+        dependencies?: {
+          /**
+           * Step number this depends on
+           */
+          dependsOnStep?: number | null;
+          /**
+           * Required value to show this step
+           */
+          requiredValue?: string | null;
+          condition?: ('equals' | 'contains' | 'not-empty' | 'greater-than' | 'less-than') | null;
+        };
+        /**
+         * Override template AI provider for this step
+         */
+        aiProviderOverride?: (number | null) | AiProvider;
+        /**
+         * Example inputs and outputs for guidance
+         */
+        examples?:
+          | {
+              /**
+               * Example user input
+               */
+              userInput: string;
+              /**
+               * Expected AI output
+               */
+              expectedOutput: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Final document template with placeholders (e.g., {{jobTitle}}, {{mission}})
+   */
+  outputTemplate: string;
+  /**
+   * Additional template information
+   */
+  metadata: {
+    /**
+     * Tags for categorizing and filtering templates
+     */
+    tags?:
+      | {
+          tag: string;
+          id?: string | null;
+        }[]
+      | null;
+    difficulty?: ('beginner' | 'intermediate' | 'advanced') | null;
+    /**
+     * Estimated completion time in minutes
+     */
+    estimatedTime?: number | null;
+    /**
+     * Industries this template is suitable for
+     */
+    industry?:
+      | {
+          industry:
+            | 'technology'
+            | 'healthcare'
+            | 'finance'
+            | 'manufacturing'
+            | 'retail'
+            | 'education'
+            | 'government'
+            | 'non-profit'
+            | 'other';
+          id?: string | null;
+        }[]
+      | null;
+    language: 'en' | 'es' | 'pt' | 'fr';
+  };
+  /**
+   * Usage statistics and tracking
+   */
+  usage?: {
+    /**
+     * Number of times this template has been used
+     */
+    timesUsed?: number | null;
+    /**
+     * Average completion time in minutes
+     */
+    averageCompletionTime?: number | null;
+    /**
+     * Percentage of successful completions
+     */
+    successRate?: number | null;
+    /**
+     * Last time this template was used
+     */
+    lastUsed?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flow-instances".
+ */
+export interface FlowInstance {
+  id: number;
+  /**
+   * Instance name (e.g., "Senior Developer Job Description")
+   */
+  title: string;
+  /**
+   * The template this instance is based on
+   */
+  template: number | FlowTemplate;
+  /**
+   * User who created this instance
+   */
+  user: number | User;
+  /**
+   * Organization ID for multi-tenant isolation
+   */
+  organizationId?: string | null;
+  /**
+   * Current status of the workflow instance
+   */
+  status: 'draft' | 'in-progress' | 'completed' | 'archived' | 'paused';
+  /**
+   * Current step number in the workflow
+   */
+  currentStep?: number | null;
+  /**
+   * Total number of steps in the template
+   */
+  totalSteps?: number | null;
+  /**
+   * Completion percentage (0-100)
+   */
+  progress?: number | null;
+  /**
+   * User responses for each step
+   */
+  stepResponses?:
+    | {
+        stepNumber: number;
+        stepTitle: string;
+        /**
+         * Original user response
+         */
+        userInput?: string | null;
+        /**
+         * AI-processed content
+         */
+        aiGeneratedContent?: string | null;
+        isCompleted?: boolean | null;
+        completedAt?: string | null;
+        /**
+         * All versions of content for this step
+         */
+        versions?:
+          | {
+              version: number;
+              userInput?: string | null;
+              aiGeneratedContent?: string | null;
+              /**
+               * User feedback for regeneration
+               */
+              feedback?: string | null;
+              /**
+               * Additional context for AI regeneration
+               */
+              regenerationPrompt?: string | null;
+              aiProvider?: (number | null) | AiProvider;
+              /**
+               * AI response time in milliseconds
+               */
+              processingTime?: number | null;
+              createdAt?: string | null;
+              /**
+               * Is this the current active version?
+               */
+              isActive?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Complete generated document
+   */
+  finalDocument?: string | null;
+  documentFormat?: ('markdown' | 'html' | 'text' | 'pdf') | null;
+  /**
+   * Users who can view and edit this instance
+   */
+  collaborators?:
+    | {
+        user: number | User;
+        role: 'viewer' | 'editor' | 'admin';
+        addedAt?: string | null;
+        addedBy?: (number | null) | User;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Instance metadata and tracking
+   */
+  metadata?: {
+    /**
+     * When the workflow was started
+     */
+    startedAt?: string | null;
+    /**
+     * When the workflow was completed
+     */
+    completedAt?: string | null;
+    /**
+     * Total time spent in minutes
+     */
+    totalTime?: number | null;
+    /**
+     * Total number of AI interactions
+     */
+    aiInteractions?: number | null;
+    /**
+     * Number of content regenerations
+     */
+    regenerations?: number | null;
+    /**
+     * Export history
+     */
+    exports?:
+      | {
+          format: 'pdf' | 'docx' | 'html' | 'md';
+          exportedAt?: string | null;
+          exportedBy?: (number | null) | User;
+          /**
+           * File size in bytes
+           */
+          fileSize?: number | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Custom tags for organization
+     */
+    tags?:
+      | {
+          tag: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Internal notes about this instance
+     */
+    notes?: string | null;
+  };
+  /**
+   * Instance-specific settings
+   */
+  settings?: {
+    /**
+     * Automatically save progress
+     */
+    autoSave?: boolean | null;
+    /**
+     * Override template AI provider for this instance
+     */
+    aiProvider?: (number | null) | AiProvider;
+    language?: ('en' | 'es' | 'pt' | 'fr') | null;
+    /**
+     * Allow public viewing of this instance
+     */
+    isPublic?: boolean | null;
+    /**
+     * Allow collaborators to add comments
+     */
+    allowComments?: boolean | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organizations".
+ */
+export interface Organization {
+  id: number;
+  /**
+   * Organization name
+   */
+  name: string;
+  /**
+   * Email domain for auto-assignment (e.g., company.com)
+   */
+  domain?: string | null;
+  /**
+   * Organization description for job postings
+   */
+  description?: string | null;
+  /**
+   * Primary industry classification
+   */
+  industry?:
+    | (
+        | 'technology'
+        | 'healthcare'
+        | 'finance'
+        | 'manufacturing'
+        | 'retail'
+        | 'education'
+        | 'government'
+        | 'non-profit'
+        | 'consulting'
+        | 'media'
+        | 'real-estate'
+        | 'transportation'
+        | 'energy'
+        | 'agriculture'
+        | 'other'
+      )
+    | null;
+  location?: {
+    /**
+     * Country where organization is based
+     */
+    country?: string | null;
+    /**
+     * State or province
+     */
+    state?: string | null;
+    /**
+     * Primary city location
+     */
+    city?: string | null;
+    timezone?:
+      | (
+          | 'UTC-12'
+          | 'UTC-11'
+          | 'UTC-10'
+          | 'UTC-9'
+          | 'UTC-8'
+          | 'UTC-7'
+          | 'UTC-6'
+          | 'UTC-5'
+          | 'UTC-4'
+          | 'UTC-3'
+          | 'UTC-2'
+          | 'UTC-1'
+          | 'UTC+0'
+          | 'UTC+1'
+          | 'UTC+2'
+          | 'UTC+3'
+          | 'UTC+4'
+          | 'UTC+5'
+          | 'UTC+6'
+          | 'UTC+7'
+          | 'UTC+8'
+          | 'UTC+9'
+          | 'UTC+10'
+          | 'UTC+11'
+          | 'UTC+12'
+        )
+      | null;
+  };
+  /**
+   * Subscription and billing information
+   */
+  subscription: {
+    plan: 'free' | 'starter' | 'professional' | 'enterprise';
+    status: 'active' | 'inactive' | 'suspended' | 'trial';
+    limits?: {
+      /**
+       * Maximum number of users allowed
+       */
+      maxUsers?: number | null;
+      /**
+       * Maximum number of templates allowed
+       */
+      maxTemplates?: number | null;
+      /**
+       * Maximum number of flow instances per month
+       */
+      maxInstances?: number | null;
+      /**
+       * Maximum AI requests per month
+       */
+      maxAIRequests?: number | null;
+    };
+    /**
+     * Email for billing notifications
+     */
+    billingEmail?: string | null;
+    /**
+     * When subscription started
+     */
+    subscriptionStart?: string | null;
+    /**
+     * When subscription expires
+     */
+    subscriptionEnd?: string | null;
+  };
+  /**
+   * Organization branding and customization
+   */
+  branding?: {
+    /**
+     * Organization logo
+     */
+    logo?: (number | null) | Media;
+    /**
+     * Primary brand color (hex code)
+     */
+    primaryColor?: string | null;
+    /**
+     * Secondary brand color (hex code)
+     */
+    secondaryColor?: string | null;
+    /**
+     * Custom domain for branded experience
+     */
+    customDomain?: string | null;
+    /**
+     * Custom CSS for branding
+     */
+    customCSS?: string | null;
+  };
+  /**
+   * Organization-specific settings
+   */
+  settings: {
+    defaultLanguage: 'en' | 'es' | 'pt' | 'fr';
+    /**
+     * Default AI provider for this organization
+     */
+    defaultAIProvider?: (number | null) | AiProvider;
+    /**
+     * Allow users to create public templates
+     */
+    allowPublicTemplates?: boolean | null;
+    /**
+     * Require admin approval for new templates
+     */
+    requireApproval?: boolean | null;
+    /**
+     * Enable collaboration features
+     */
+    enableCollaboration?: boolean | null;
+    /**
+     * Enable usage analytics
+     */
+    enableAnalytics?: boolean | null;
+  };
+  /**
+   * Organization members
+   */
+  users?:
+    | {
+        user: number | User;
+        role: 'owner' | 'admin' | 'manager' | 'user' | 'viewer';
+        joinedAt?: string | null;
+        invitedBy?: (number | null) | User;
+        isActive?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Usage statistics
+   */
+  usage?: {
+    /**
+     * Total number of users
+     */
+    totalUsers?: number | null;
+    /**
+     * Total number of templates created
+     */
+    totalTemplates?: number | null;
+    /**
+     * Total number of flow instances
+     */
+    totalInstances?: number | null;
+    /**
+     * AI requests this month
+     */
+    monthlyAIRequests?: number | null;
+    /**
+     * Last activity timestamp
+     */
+    lastActivity?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-families".
+ */
+export interface JobFamily {
+  id: number;
+  /**
+   * Job family name (e.g., "Engineering", "Sales", "Marketing")
+   */
+  name: string;
+  /**
+   * Description of this job family and its scope
+   */
+  description: string;
+  /**
+   * Parent job family for hierarchical structure
+   */
+  parentFamily?: (number | null) | JobFamily;
+  /**
+   * Industries where this job family is relevant
+   */
+  industryAlignment?:
+    | {
+        industry:
+          | 'technology'
+          | 'healthcare'
+          | 'finance'
+          | 'manufacturing'
+          | 'retail'
+          | 'education'
+          | 'government'
+          | 'non-profit'
+          | 'consulting'
+          | 'media'
+          | 'real-estate'
+          | 'transportation'
+          | 'energy'
+          | 'agriculture'
+          | 'other';
+        relevance: 'high' | 'medium' | 'low';
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Common skills required for this job family
+   */
+  commonSkills?:
+    | {
+        skill: string;
+        category: 'technical' | 'soft' | 'leadership' | 'communication' | 'analytical' | 'creative' | 'other';
+        importance: 'essential' | 'important' | 'preferred';
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Career progression levels within this family
+   */
+  careerProgression?:
+    | {
+        /**
+         * Career level (e.g., "Junior", "Senior", "Lead")
+         */
+        level: string;
+        /**
+         * Order in progression (1 = entry level)
+         */
+        order: number;
+        /**
+         * Common job titles at this level
+         */
+        typicalTitles?:
+          | {
+              title: string;
+              id?: string | null;
+            }[]
+          | null;
+        experienceRange?: {
+          /**
+           * Minimum years of experience
+           */
+          minYears?: number | null;
+          /**
+           * Maximum years of experience
+           */
+          maxYears?: number | null;
+        };
+        /**
+         * Key responsibilities at this level
+         */
+        keyResponsibilities?:
+          | {
+              responsibility: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Skills required at this level
+         */
+        requiredSkills?:
+          | {
+              skill: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Related job families and their relationship
+   */
+  relatedFamilies?:
+    | {
+        family: number | JobFamily;
+        relationship: 'similar' | 'complementary' | 'career-path' | 'cross-functional';
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Market and salary information
+   */
+  marketData?: {
+    /**
+     * Current market demand for this job family
+     */
+    demandLevel?: ('very-high' | 'high' | 'medium' | 'low' | 'very-low') | null;
+    /**
+     * Expected growth in the next 5 years
+     */
+    growthProjection?: ('rapid-growth' | 'growing' | 'stable' | 'declining' | 'rapid-decline') | null;
+    /**
+     * Competition level for talent in this family
+     */
+    competitiveness?: ('very-competitive' | 'competitive' | 'moderate' | 'low-competition') | null;
+    /**
+     * When market data was last updated
+     */
+    lastUpdated?: string | null;
+  };
+  /**
+   * Additional metadata
+   */
+  metadata?: {
+    /**
+     * Tags for categorizing and filtering
+     */
+    tags?:
+      | {
+          tag: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Is this job family currently active?
+     */
+    isActive?: boolean | null;
+    /**
+     * User who created this job family
+     */
+    createdBy?: (number | null) | User;
+    /**
+     * When this job family was last reviewed
+     */
+    lastReviewed?: string | null;
+    /**
+     * Notes from last review
+     */
+    reviewNotes?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "departments".
+ */
+export interface Department {
+  id: number;
+  /**
+   * Department name (e.g., "Engineering", "Human Resources")
+   */
+  name: string;
+  /**
+   * Department description and purpose
+   */
+  description?: string | null;
+  /**
+   * Organization this department belongs to
+   */
+  organization: number | Organization;
+  /**
+   * Parent department for hierarchical structure
+   */
+  parentDepartment?: (number | null) | Department;
+  /**
+   * Department head/manager
+   */
+  headOfDepartment?: (number | null) | User;
+  /**
+   * Type of department
+   */
+  departmentType?: ('core' | 'support' | 'administrative' | 'strategic' | 'operational') | null;
+  /**
+   * Department budget information
+   */
+  budget?: {
+    /**
+     * Annual budget in USD
+     */
+    annualBudget?: number | null;
+    currency?: ('USD' | 'EUR' | 'GBP' | 'CAD' | 'AUD' | 'BRL' | 'MXN' | 'COP') | null;
+    budgetPeriod?: ('annual' | 'quarterly' | 'monthly') | null;
+    /**
+     * Amount spent in current period
+     */
+    spentToDate?: number | null;
+    /**
+     * When budget was last updated
+     */
+    lastUpdated?: string | null;
+  };
+  /**
+   * Department staffing information
+   */
+  headcount?: {
+    /**
+     * Current number of employees
+     */
+    currentHeadcount?: number | null;
+    /**
+     * Target number of employees
+     */
+    targetHeadcount?: number | null;
+    /**
+     * Number of contractors/consultants
+     */
+    contractors?: number | null;
+    /**
+     * Number of open positions
+     */
+    openPositions?: number | null;
+    /**
+     * Headcount breakdown by level
+     */
+    breakdown?:
+      | {
+          level: 'executive' | 'senior-management' | 'middle-management' | 'senior' | 'mid-level' | 'junior' | 'intern';
+          count: number;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Department location information
+   */
+  location: {
+    type: 'physical' | 'remote' | 'hybrid' | 'distributed';
+    primaryLocation?: {
+      country?: string | null;
+      state?: string | null;
+      city?: string | null;
+      address?: string | null;
+      floor?: string | null;
+    };
+    /**
+     * Additional office locations for this department
+     */
+    additionalLocations?:
+      | {
+          country: string;
+          city: string;
+          /**
+           * Number of employees at this location
+           */
+          headcount?: number | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Department responsibilities and scope
+   */
+  responsibilities?:
+    | {
+        responsibility: string;
+        category: 'primary' | 'secondary' | 'support' | 'compliance' | 'strategic';
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Job families present in this department
+   */
+  jobFamilies?:
+    | {
+        jobFamily: number | JobFamily;
+        relevance: 'primary' | 'secondary' | 'occasional';
+        /**
+         * Current number of employees in this job family
+         */
+        currentCount?: number | null;
+        /**
+         * Target number of employees in this job family
+         */
+        targetCount?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Department goals and objectives
+   */
+  goals?:
+    | {
+        goal: string;
+        type: 'annual' | 'quarterly' | 'project' | 'ongoing';
+        status: 'not-started' | 'in-progress' | 'on-track' | 'at-risk' | 'completed' | 'cancelled';
+        targetDate?: string | null;
+        /**
+         * Progress percentage (0-100)
+         */
+        progress?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Additional department metadata
+   */
+  metadata?: {
+    /**
+     * When the department was established
+     */
+    establishedDate?: string | null;
+    /**
+     * Cost center code for accounting
+     */
+    costCenter?: string | null;
+    /**
+     * Tags for categorizing and filtering
+     */
+    tags?:
+      | {
+          tag: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Is this department currently active?
+     */
+    isActive?: boolean | null;
+    /**
+     * Internal notes about this department
+     */
+    notes?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1671,6 +2788,30 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'smart-contracts';
         value: number | SmartContract;
+      } | null)
+    | ({
+        relationTo: 'ai-providers';
+        value: number | AiProvider;
+      } | null)
+    | ({
+        relationTo: 'flow-templates';
+        value: number | FlowTemplate;
+      } | null)
+    | ({
+        relationTo: 'flow-instances';
+        value: number | FlowInstance;
+      } | null)
+    | ({
+        relationTo: 'organizations';
+        value: number | Organization;
+      } | null)
+    | ({
+        relationTo: 'job-families';
+        value: number | JobFamily;
+      } | null)
+    | ({
+        relationTo: 'departments';
+        value: number | Department;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2499,6 +3640,523 @@ export interface SmartContractsSelect<T extends boolean = true> {
               id?: T;
             };
         id?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-providers_select".
+ */
+export interface AiProvidersSelect<T extends boolean = true> {
+  name?: T;
+  baseUrl?: T;
+  providerType?: T;
+  authType?: T;
+  status?: T;
+  description?: T;
+  documentation?: T;
+  localConfig?:
+    | T
+    | {
+        defaultPort?: T;
+        installationPath?: T;
+        requiresGPU?: T;
+        supportedFormats?:
+          | T
+          | {
+              format?: T;
+              id?: T;
+            };
+        minSystemRequirements?:
+          | T
+          | {
+              ramGB?: T;
+              diskSpaceGB?: T;
+              cpuCores?: T;
+            };
+      };
+  cloudConfig?:
+    | T
+    | {
+        rateLimits?:
+          | T
+          | {
+              requestsPerMinute?: T;
+              tokensPerMinute?: T;
+              requestsPerDay?: T;
+            };
+        regions?:
+          | T
+          | {
+              region?: T;
+              endpoint?: T;
+              id?: T;
+            };
+      };
+  connectionTest?:
+    | T
+    | {
+        testEndpoint?: T;
+        lastTestDate?: T;
+        lastTestStatus?: T;
+        lastTestError?: T;
+      };
+  metadata?:
+    | T
+    | {
+        website?: T;
+        supportContact?: T;
+        version?: T;
+        tags?:
+          | T
+          | {
+              tag?: T;
+              id?: T;
+            };
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flow-templates_select".
+ */
+export interface FlowTemplatesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  category?: T;
+  version?: T;
+  isActive?: T;
+  aiProvider?: T;
+  steps?:
+    | T
+    | {
+        stepNumber?: T;
+        title?: T;
+        description?: T;
+        questionText?: T;
+        systemPrompt?: T;
+        stepType?: T;
+        isRequired?: T;
+        validationRules?:
+          | T
+          | {
+              minLength?: T;
+              maxLength?: T;
+              pattern?: T;
+              customMessage?: T;
+            };
+        selectOptions?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+        dependencies?:
+          | T
+          | {
+              dependsOnStep?: T;
+              requiredValue?: T;
+              condition?: T;
+            };
+        aiProviderOverride?: T;
+        examples?:
+          | T
+          | {
+              userInput?: T;
+              expectedOutput?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  outputTemplate?: T;
+  metadata?:
+    | T
+    | {
+        tags?:
+          | T
+          | {
+              tag?: T;
+              id?: T;
+            };
+        difficulty?: T;
+        estimatedTime?: T;
+        industry?:
+          | T
+          | {
+              industry?: T;
+              id?: T;
+            };
+        language?: T;
+      };
+  usage?:
+    | T
+    | {
+        timesUsed?: T;
+        averageCompletionTime?: T;
+        successRate?: T;
+        lastUsed?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flow-instances_select".
+ */
+export interface FlowInstancesSelect<T extends boolean = true> {
+  title?: T;
+  template?: T;
+  user?: T;
+  organizationId?: T;
+  status?: T;
+  currentStep?: T;
+  totalSteps?: T;
+  progress?: T;
+  stepResponses?:
+    | T
+    | {
+        stepNumber?: T;
+        stepTitle?: T;
+        userInput?: T;
+        aiGeneratedContent?: T;
+        isCompleted?: T;
+        completedAt?: T;
+        versions?:
+          | T
+          | {
+              version?: T;
+              userInput?: T;
+              aiGeneratedContent?: T;
+              feedback?: T;
+              regenerationPrompt?: T;
+              aiProvider?: T;
+              processingTime?: T;
+              createdAt?: T;
+              isActive?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  finalDocument?: T;
+  documentFormat?: T;
+  collaborators?:
+    | T
+    | {
+        user?: T;
+        role?: T;
+        addedAt?: T;
+        addedBy?: T;
+        id?: T;
+      };
+  metadata?:
+    | T
+    | {
+        startedAt?: T;
+        completedAt?: T;
+        totalTime?: T;
+        aiInteractions?: T;
+        regenerations?: T;
+        exports?:
+          | T
+          | {
+              format?: T;
+              exportedAt?: T;
+              exportedBy?: T;
+              fileSize?: T;
+              id?: T;
+            };
+        tags?:
+          | T
+          | {
+              tag?: T;
+              id?: T;
+            };
+        notes?: T;
+      };
+  settings?:
+    | T
+    | {
+        autoSave?: T;
+        aiProvider?: T;
+        language?: T;
+        isPublic?: T;
+        allowComments?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organizations_select".
+ */
+export interface OrganizationsSelect<T extends boolean = true> {
+  name?: T;
+  domain?: T;
+  description?: T;
+  industry?: T;
+  location?:
+    | T
+    | {
+        country?: T;
+        state?: T;
+        city?: T;
+        timezone?: T;
+      };
+  subscription?:
+    | T
+    | {
+        plan?: T;
+        status?: T;
+        limits?:
+          | T
+          | {
+              maxUsers?: T;
+              maxTemplates?: T;
+              maxInstances?: T;
+              maxAIRequests?: T;
+            };
+        billingEmail?: T;
+        subscriptionStart?: T;
+        subscriptionEnd?: T;
+      };
+  branding?:
+    | T
+    | {
+        logo?: T;
+        primaryColor?: T;
+        secondaryColor?: T;
+        customDomain?: T;
+        customCSS?: T;
+      };
+  settings?:
+    | T
+    | {
+        defaultLanguage?: T;
+        defaultAIProvider?: T;
+        allowPublicTemplates?: T;
+        requireApproval?: T;
+        enableCollaboration?: T;
+        enableAnalytics?: T;
+      };
+  users?:
+    | T
+    | {
+        user?: T;
+        role?: T;
+        joinedAt?: T;
+        invitedBy?: T;
+        isActive?: T;
+        id?: T;
+      };
+  usage?:
+    | T
+    | {
+        totalUsers?: T;
+        totalTemplates?: T;
+        totalInstances?: T;
+        monthlyAIRequests?: T;
+        lastActivity?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-families_select".
+ */
+export interface JobFamiliesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  parentFamily?: T;
+  industryAlignment?:
+    | T
+    | {
+        industry?: T;
+        relevance?: T;
+        id?: T;
+      };
+  commonSkills?:
+    | T
+    | {
+        skill?: T;
+        category?: T;
+        importance?: T;
+        id?: T;
+      };
+  careerProgression?:
+    | T
+    | {
+        level?: T;
+        order?: T;
+        typicalTitles?:
+          | T
+          | {
+              title?: T;
+              id?: T;
+            };
+        experienceRange?:
+          | T
+          | {
+              minYears?: T;
+              maxYears?: T;
+            };
+        keyResponsibilities?:
+          | T
+          | {
+              responsibility?: T;
+              id?: T;
+            };
+        requiredSkills?:
+          | T
+          | {
+              skill?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  relatedFamilies?:
+    | T
+    | {
+        family?: T;
+        relationship?: T;
+        id?: T;
+      };
+  marketData?:
+    | T
+    | {
+        demandLevel?: T;
+        growthProjection?: T;
+        competitiveness?: T;
+        lastUpdated?: T;
+      };
+  metadata?:
+    | T
+    | {
+        tags?:
+          | T
+          | {
+              tag?: T;
+              id?: T;
+            };
+        isActive?: T;
+        createdBy?: T;
+        lastReviewed?: T;
+        reviewNotes?: T;
+      };
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "departments_select".
+ */
+export interface DepartmentsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  organization?: T;
+  parentDepartment?: T;
+  headOfDepartment?: T;
+  departmentType?: T;
+  budget?:
+    | T
+    | {
+        annualBudget?: T;
+        currency?: T;
+        budgetPeriod?: T;
+        spentToDate?: T;
+        lastUpdated?: T;
+      };
+  headcount?:
+    | T
+    | {
+        currentHeadcount?: T;
+        targetHeadcount?: T;
+        contractors?: T;
+        openPositions?: T;
+        breakdown?:
+          | T
+          | {
+              level?: T;
+              count?: T;
+              id?: T;
+            };
+      };
+  location?:
+    | T
+    | {
+        type?: T;
+        primaryLocation?:
+          | T
+          | {
+              country?: T;
+              state?: T;
+              city?: T;
+              address?: T;
+              floor?: T;
+            };
+        additionalLocations?:
+          | T
+          | {
+              country?: T;
+              city?: T;
+              headcount?: T;
+              id?: T;
+            };
+      };
+  responsibilities?:
+    | T
+    | {
+        responsibility?: T;
+        category?: T;
+        id?: T;
+      };
+  jobFamilies?:
+    | T
+    | {
+        jobFamily?: T;
+        relevance?: T;
+        currentCount?: T;
+        targetCount?: T;
+        id?: T;
+      };
+  goals?:
+    | T
+    | {
+        goal?: T;
+        type?: T;
+        status?: T;
+        targetDate?: T;
+        progress?: T;
+        id?: T;
+      };
+  metadata?:
+    | T
+    | {
+        establishedDate?: T;
+        costCenter?: T;
+        tags?:
+          | T
+          | {
+              tag?: T;
+              id?: T;
+            };
+        isActive?: T;
+        notes?: T;
       };
   slug?: T;
   slugLock?: T;

@@ -38,8 +38,8 @@ async function seedDatabase() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: 'test@test.com',
-        password: 'test',
+        email: process.env.SEED_EMAIL || 'test@test.com',
+        password: process.env.SEED_PASSWORD || 'test',
       }),
     })
 
@@ -86,7 +86,9 @@ async function seedDatabase() {
     console.error('Make sure:')
     console.error('1. The development server is running (npm run dev)')
     console.error('2. The server URL is correct (env NEXT_PUBLIC_SERVER_URL)')
-    console.error('3. You have a user with email "test@test.com" and password "test"')
+    console.error(
+      `3. You have a user with email "${process.env.SEED_EMAIL || 'test@test.com'}" and password "${process.env.SEED_PASSWORD || 'test'}"`,
+    )
     console.log('')
 
     process.exit(1)

@@ -18,6 +18,8 @@ import { seedCompanies } from './companies'
 import { seedExportTransactions } from './export-transactions'
 import { seedRoutes } from './routes'
 import { seedSmartContracts } from './smart-contracts'
+import { seedAIProviders } from './ai-providers'
+import { seedSalariumCollections } from './salarium-seed'
 import type { ExportTransaction } from '@/payload-types'
 
 // Define the collections as a standard CollectionSlug array for type safety
@@ -38,7 +40,16 @@ const standardCollections: CollectionSlug[] = [
 ]
 
 // Custom collections that aren't yet in the CollectionSlug type
-const customCollections = ['routes', 'smart-contracts']
+const customCollections = [
+  'routes',
+  'smart-contracts',
+  'ai-providers',
+  'flow-templates',
+  'flow-instances',
+  'organizations',
+  'job-families',
+  'departments',
+]
 
 // Combined array for use in operations
 const collections = [...standardCollections, ...customCollections]
@@ -425,6 +436,12 @@ export const seed = async ({
 
   // (4) Smart Contracts last (with references to companies and transactions)
   await seedSmartContracts(payload, companyMap, transactionMap)
+
+  // (5) AI Providers (independent collection)
+  await seedAIProviders(payload)
+
+  // (6) Salarium collections (HR workflow system)
+  await seedSalariumCollections(payload)
 
   // Get the first export transaction for the demo page
   const exportTransactions = await payload.find({
