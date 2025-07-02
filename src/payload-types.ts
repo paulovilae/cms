@@ -1398,12 +1398,20 @@ export interface Search {
   createdAt: string;
 }
 /**
+ * Manage AI providers with comprehensive configuration and monitoring
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ai-providers".
  */
 export interface AiProvider {
   id: number;
+  /**
+   * Descriptive name for this AI provider configuration
+   */
   name: string;
+  /**
+   * AI provider type
+   */
   provider: 'openai' | 'anthropic' | 'google' | 'azure' | 'ollama' | 'lmstudio';
   /**
    * API endpoint URL (e.g., https://api.openai.com/v1 or http://localhost:11434)
@@ -1414,22 +1422,139 @@ export interface AiProvider {
    */
   apiKey?: string | null;
   /**
-   * Default model name (e.g., gpt-4, claude-3-sonnet, llama2)
-   */
-  model?: string | null;
-  /**
-   * Maximum tokens for this provider
-   */
-  maxTokens?: number | null;
-  /**
-   * Temperature setting (0.0 - 1.0)
-   */
-  temperature?: number | null;
-  status?: ('active' | 'inactive' | 'testing') | null;
-  /**
    * Brief description of the provider and its capabilities
    */
   description?: string | null;
+  /**
+   * Select from available models. Test connection to discover more models automatically.
+   */
+  model:
+    | 'deepseek-r1:1.5b'
+    | 'lucasmg/deepseek-r1-8b-0528-qwen3-q4_K_M-tool-true:latest'
+    | 'nomic-embed-text:latest'
+    | 'qwen2.5:7b-instruct-q4_K_M'
+    | 'mychen76/qwen3_cline_roocode:8b'
+    | 'llama3.2:latest'
+    | 'llama2'
+    | 'gpt-4o'
+    | 'gpt-4o-mini'
+    | 'gpt-3.5-turbo'
+    | 'claude-3-5-sonnet-20241022'
+    | 'claude-3-5-haiku-20241022'
+    | 'gemini-1.5-pro'
+    | 'gemini-1.5-flash';
+  /**
+   * Maximum tokens that can be generated (auto-updated when model changes)
+   */
+  maxOutputTokens?: number | null;
+  /**
+   * Total context window size in tokens (auto-updated when model changes)
+   */
+  contextWindow?: number | null;
+  /**
+   * Can process and analyze images (auto-updated when model changes)
+   */
+  supportsImages?: boolean | null;
+  /**
+   * Can interact with computer interfaces (Claude Computer Use)
+   */
+  supportsComputerUse?: boolean | null;
+  /**
+   * Supports caching of prompts for cost optimization
+   */
+  supportsPromptCaching?: boolean | null;
+  /**
+   * Can call external functions and tools (auto-updated when model changes)
+   */
+  supportsFunctionCalling?: boolean | null;
+  /**
+   * Can stream responses in real-time
+   */
+  supportsStreaming?: boolean | null;
+  /**
+   * Can analyze and understand visual content (auto-updated when model changes)
+   */
+  supportsVision?: boolean | null;
+  /**
+   * Cost in cents per 1 million input tokens (auto-updated when model changes)
+   */
+  inputPriceCents?: number | null;
+  /**
+   * Cost in cents per 1 million output tokens (auto-updated when model changes)
+   */
+  outputPriceCents?: number | null;
+  /**
+   * Cost in cents per 1 million cached tokens read (e.g., 30 for $0.30)
+   */
+  cacheReadsPriceCents?: number | null;
+  /**
+   * Cost in cents per 1 million tokens written to cache (e.g., 375 for $3.75)
+   */
+  cacheWritesPriceCents?: number | null;
+  /**
+   * Controls randomness in responses (0.0 - 2.0)
+   */
+  temperature?: number | null;
+  /**
+   * Nucleus sampling parameter (0.0 - 1.0)
+   */
+  topP?: number | null;
+  /**
+   * Top-K sampling parameter (optional, provider-specific)
+   */
+  topK?: number | null;
+  /**
+   * Penalizes frequent tokens (-2.0 to 2.0)
+   */
+  frequencyPenalty?: number | null;
+  /**
+   * Penalizes tokens that have appeared (-2.0 to 2.0)
+   */
+  presencePenalty?: number | null;
+  /**
+   * Official website URL
+   */
+  website?: string | null;
+  /**
+   * API documentation URL
+   */
+  documentation?: string | null;
+  /**
+   * Support email or contact information
+   */
+  supportContact?: string | null;
+  /**
+   * API or model version
+   */
+  version?: string | null;
+  /**
+   * JSON array of tags for categorization (e.g., ["fast", "cheap", "local"])
+   */
+  tags?: string | null;
+  connectionStatus?: ('connected' | 'disconnected' | 'testing' | 'error') | null;
+  lastTestDate?: string | null;
+  responseTimeMs?: number | null;
+  lastTestError?: string | null;
+  /**
+   * Specific endpoint to test (defaults to base URL)
+   */
+  testEndpoint?: string | null;
+  /**
+   * Automatically test connection when saving this provider
+   */
+  autoTestOnSave?: boolean | null;
+  /**
+   * Auto-populated by model discovery
+   */
+  availableModels?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -3458,11 +3583,37 @@ export interface AiProvidersSelect<T extends boolean = true> {
   provider?: T;
   baseUrl?: T;
   apiKey?: T;
-  model?: T;
-  maxTokens?: T;
-  temperature?: T;
-  status?: T;
   description?: T;
+  model?: T;
+  maxOutputTokens?: T;
+  contextWindow?: T;
+  supportsImages?: T;
+  supportsComputerUse?: T;
+  supportsPromptCaching?: T;
+  supportsFunctionCalling?: T;
+  supportsStreaming?: T;
+  supportsVision?: T;
+  inputPriceCents?: T;
+  outputPriceCents?: T;
+  cacheReadsPriceCents?: T;
+  cacheWritesPriceCents?: T;
+  temperature?: T;
+  topP?: T;
+  topK?: T;
+  frequencyPenalty?: T;
+  presencePenalty?: T;
+  website?: T;
+  documentation?: T;
+  supportContact?: T;
+  version?: T;
+  tags?: T;
+  connectionStatus?: T;
+  lastTestDate?: T;
+  responseTimeMs?: T;
+  lastTestError?: T;
+  testEndpoint?: T;
+  autoTestOnSave?: T;
+  availableModels?: T;
   updatedAt?: T;
   createdAt?: T;
 }
