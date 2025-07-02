@@ -91,6 +91,7 @@
 .smart-contract-demo__button:disabled {
   background-color: #c5c5c5;
   cursor: not-allowed;
+  color: #6b7280;
 }
 
 .smart-contract-demo__step-controls {
@@ -107,6 +108,8 @@
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s;
+  color: #374151;
+  font-weight: 500;
 }
 
 .smart-contract-demo__step-button.active {
