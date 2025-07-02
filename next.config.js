@@ -16,6 +16,11 @@ const nextConfig = {
           protocol: url.protocol.replace(':', ''),
         }
       }),
+      // Add production domain for image optimization
+      {
+        hostname: 'trade.paulovila.org',
+        protocol: 'https',
+      },
     ],
   },
   reactStrictMode: true,
