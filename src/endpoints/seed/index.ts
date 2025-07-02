@@ -26,7 +26,7 @@ const standardCollections: CollectionSlug[] = [
   'testimonials',
   'features',
   'pricing-plans',
-  'export-transactions', 
+  'export-transactions',
   'companies',
   'pages',
   'posts',
@@ -38,10 +38,7 @@ const standardCollections: CollectionSlug[] = [
 ]
 
 // Custom collections that aren't yet in the CollectionSlug type
-const customCollections = [
-  'routes',
-  'smart-contracts',
-]
+const customCollections = ['routes', 'smart-contracts']
 
 // Combined array for use in operations
 const collections = [...standardCollections, ...customCollections]
@@ -85,15 +82,13 @@ export const seed = async ({
 
   // Delete standard collections
   await Promise.all(
-    standardCollections.map((collection) => 
-      payload.db.deleteMany({ collection, req, where: {} })
-    ),
+    standardCollections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
   )
-  
+
   // Delete custom collections with type assertion
   await Promise.all(
-    customCollections.map((collection) => 
-      payload.db.deleteMany({ collection: collection as any, req, where: {} })
+    customCollections.map((collection) =>
+      payload.db.deleteMany({ collection: collection as any, req, where: {} }),
     ),
   )
 
@@ -103,12 +98,14 @@ export const seed = async ({
       .filter((collection) => Boolean(payload.collections[collection]?.config.versions))
       .map((collection) => payload.db.deleteVersions({ collection, req, where: {} })),
   )
-  
+
   // Delete versions for custom collections (if they have versions)
   await Promise.all(
     customCollections
       .filter((collection) => Boolean(payload.collections[collection as any]?.config.versions))
-      .map((collection) => payload.db.deleteVersions({ collection: collection as any, req, where: {} })),
+      .map((collection) =>
+        payload.db.deleteVersions({ collection: collection as any, req, where: {} }),
+      ),
   )
 
   payload.logger.info(`— Seeding demo author and user...`)
@@ -419,13 +416,13 @@ export const seed = async ({
   // Seed the business data collections in the correct order
   // (1) Companies first
   const companyMap = await seedCompanies(payload)
-  
+
   // (2) Routes second
   const routeMap = await seedRoutes(payload)
-  
+
   // (3) Export Transactions third (with references to companies and routes)
   const transactionMap = await seedExportTransactions(payload, companyMap, routeMap)
-  
+
   // (4) Smart Contracts last (with references to companies and transactions)
   await seedSmartContracts(payload, companyMap, transactionMap)
 
@@ -716,6 +713,20 @@ export const seed = async ({
                       version: 1,
                     },
                   ],
+                  direction: 'ltr',
+                  format: '',
+                  indent: 0,
+                  textFormat: 0,
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              version: 1,
+            },
+          },
+          links: [
             {
               link: {
                 type: 'custom',
