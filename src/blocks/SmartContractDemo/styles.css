@@ -192,7 +192,7 @@
 .info-row .label {
   font-weight: 500;
   min-width: 120px;
-  color: #6c757d;
+  color: #374151;
 }
 
 .info-row .value {
@@ -217,7 +217,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6c757d;
+  color: #374151;
 }
 
 .oracle-verification-card__code {
@@ -277,7 +277,7 @@
 
 .contract-address .label {
   font-weight: 500;
-  color: #6c757d;
+  color: #374151;
 }
 
 .contract-address .address {
@@ -333,6 +333,8 @@
 .node-label {
   font-size: 0.875rem;
   text-align: center;
+  color: #374151;
+  font-weight: 500;
 }
 
 .blockchain-connection {
@@ -390,7 +392,7 @@
 
 .progress-text {
   font-size: 0.875rem;
-  color: #6c757d;
+  color: #374151;
   margin-top: 0.5rem;
 }
 
