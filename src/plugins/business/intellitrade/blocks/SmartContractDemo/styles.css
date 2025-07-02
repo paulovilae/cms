@@ -1,0 +1,485 @@
+/* SmartContractDemo Styles */
+
+.smart-contract-demo {
+  margin: 2rem 0;
+  font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.smart-contract-demo.loading,
+.smart-contract-demo.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+}
+
+.smart-contract-demo__heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #ffffff !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.smart-contract-demo__description {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  max-width: 800px;
+  color: #ffffff !important;
+  font-weight: 600;
+  line-height: 1.6;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.smart-contract-demo__transaction-info {
+  background-color: #ffffff;
+  border: 1px solid #e0e4e8;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.smart-contract-demo__details {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.smart-contract-demo__details > div {
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+.smart-contract-demo__details strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+.smart-contract-demo__transaction-info h3 {
+  color: #111827;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.smart-contract-demo__visualizer {
+  margin-bottom: 2rem;
+}
+
+.smart-contract-demo__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.smart-contract-demo__button {
+  background-color: #1E4EFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.smart-contract-demo__button:hover {
+  background-color: #0a38e0;
+}
+
+.smart-contract-demo__button:disabled {
+  background-color: #c5c5c5;
+  cursor: not-allowed;
+  color: #6b7280;
+}
+
+.smart-contract-demo__step-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.smart-contract-demo__step-button {
+  background-color: #f0f2f5;
+  border: 1px solid #e0e4e8;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #374151;
+  font-weight: 500;
+}
+
+.smart-contract-demo__step-button.active {
+  background-color: #1E4EFF;
+  border-color: #1E4EFF;
+  color: white;
+}
+
+.smart-contract-demo__step-content {
+  margin-top: 1.5rem;
+}
+
+.smart-contract-demo__completed {
+  background-color: #f0f7f0;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.smart-contract-demo__stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.smart-contract-demo__stat-item {
+  text-align: center;
+}
+
+/* Oracle Verification Card Styles */
+
+.oracle-verification-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.oracle-verification-card.verified {
+  border-left: 4px solid #28a745;
+}
+
+.oracle-verification-card.pending {
+  border-left: 4px solid #ffc107;
+}
+
+.oracle-verification-card__header {
+  background-color: #f7f9fc;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.oracle-verification-card__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.oracle-verification-card__status {
+  display: flex;
+  align-items: center;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-badge.verified {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.status-badge.pending {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+.oracle-verification-card__content {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.oracle-verification-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.info-row .label {
+  font-weight: 500;
+  min-width: 120px;
+  color: #374151;
+}
+
+.info-row .value {
+  font-weight: 400;
+}
+
+.info-row .payment {
+  font-weight: 600;
+  color: #28a745;
+}
+
+.oracle-verification-card__evidence {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.evidence-placeholder {
+  background-color: #f7f9fc;
+  border-radius: 4px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #374151;
+}
+
+.oracle-verification-card__code {
+  border-top: 1px solid #e0e4e8;
+  padding: 1.5rem;
+}
+
+.code-section {
+  margin-bottom: 1.5rem;
+}
+
+.code-section h4 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.code-block {
+  background-color: #1a1a1a;
+  color: #e6e6e6;
+  border-radius: 4px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Smart Contract Visualizer Styles */
+
+.smart-contract-visualizer {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.smart-contract-visualizer__header {
+  padding: 1rem 1.5rem;
+  background-color: #f7f9fc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.smart-contract-visualizer__header h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.contract-address {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contract-address .label {
+  font-weight: 500;
+  color: #374151;
+}
+
+.contract-address .address {
+  background-color: rgba(30, 78, 255, 0.1);
+  color: #1E4EFF;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.875rem;
+}
+
+.smart-contract-visualizer__blockchain {
+  padding: 2rem 1.5rem;
+}
+
+.blockchain-visualization {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.blockchain-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.blockchain-node.active {
+  opacity: 1;
+}
+
+.node-icon {
+  font-size: 1.5rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f2f5;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
+
+.blockchain-node.active .node-icon {
+  background-color: rgba(30, 78, 255, 0.1);
+}
+
+.node-label {
+  font-size: 0.875rem;
+  text-align: center;
+  color: #374151;
+  font-weight: 500;
+}
+
+.blockchain-connection {
+  flex-grow: 1;
+  height: 2px;
+  background-color: #e0e4e8;
+  margin: 0 0.5rem;
+}
+
+.contract-status {
+  text-align: center;
+}
+
+.status-indicator {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.status-created {
+  background-color: rgba(30, 78, 255, 0.1);
+  color: #1E4EFF;
+}
+
+.status-in-progress {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+.status-completed {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.progress-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #e0e4e8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #1E4EFF;
+  transition: width 0.5s;
+}
+
+.progress-text {
+  font-size: 0.875rem;
+  color: #374151;
+  margin-top: 0.5rem;
+}
+
+.smart-contract-visualizer__code {
+  border-top: 1px solid #e0e4e8;
+  padding: 1.5rem;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.code-header h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.code-toggle {
+  background: transparent;
+  border: 1px solid #e0e4e8;
+  border-radius: 4px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.code-toggle:hover {
+  background-color: #f0f2f5;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .oracle-verification-card__content {
+    grid-template-columns: 1fr;
+  }
+  
+  .smart-contract-visualizer__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .blockchain-visualization {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .blockchain-connection {
+    width: 2px;
+    height: 20px;
+    margin: 0.5rem 0;
+  }
+}

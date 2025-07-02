@@ -83,8 +83,8 @@ export const FloatingCTA: React.FC<FloatingCTAProps> = (props) => {
           </div>
         )}
 
-        <div className="flex-1">
-          <CMSLink className="font-medium" style={{ color: textColor }} label={text} url={link} />
+        <div className="flex-1" style={{ color: textColor }}>
+          <CMSLink className="font-medium" label={text} url={link} />
         </div>
 
         {dismissible && (

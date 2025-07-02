@@ -113,7 +113,7 @@ export const seed = async ({
   // Delete versions for custom collections (if they have versions)
   await Promise.all(
     customCollections
-      .filter((collection) => Boolean(payload.collections[collection as any]?.config.versions))
+      .filter((collection) => Boolean((payload.collections as any)[collection]?.config.versions))
       .map((collection) =>
         payload.db.deleteVersions({ collection: collection as any, req, where: {} }),
       ),

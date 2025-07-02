@@ -8,6 +8,7 @@ export const seedAIProviders = async (payload: Payload): Promise<void> => {
     {
       name: 'OpenAI',
       slug: 'openai',
+      provider: 'openai' as const,
       baseUrl: 'https://api.openai.com/v1',
       providerType: 'cloud' as const,
       authType: 'api-key' as const,
@@ -43,6 +44,7 @@ export const seedAIProviders = async (payload: Payload): Promise<void> => {
     {
       name: 'Anthropic',
       slug: 'anthropic',
+      provider: 'anthropic' as const,
       baseUrl: 'https://api.anthropic.com',
       providerType: 'cloud' as const,
       authType: 'api-key' as const,
@@ -78,6 +80,7 @@ export const seedAIProviders = async (payload: Payload): Promise<void> => {
     {
       name: 'OpenRouter',
       slug: 'openrouter',
+      provider: 'openai' as const,
       baseUrl: 'https://openrouter.ai/api/v1',
       providerType: 'proxy' as const,
       authType: 'api-key' as const,
@@ -109,6 +112,7 @@ export const seedAIProviders = async (payload: Payload): Promise<void> => {
     {
       name: 'Ollama',
       slug: 'ollama',
+      provider: 'ollama' as const,
       baseUrl: 'http://localhost:11434',
       providerType: 'local' as const,
       authType: 'none' as const,
@@ -137,6 +141,7 @@ export const seedAIProviders = async (payload: Payload): Promise<void> => {
     {
       name: 'LM Studio',
       slug: 'lm-studio',
+      provider: 'lmstudio' as const,
       baseUrl: 'http://localhost:1234',
       providerType: 'local' as const,
       authType: 'none' as const,

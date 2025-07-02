@@ -76,20 +76,20 @@ export interface Config {
     testimonials: Testimonial;
     features: Feature;
     'pricing-plans': PricingPlan;
-    'export-transactions': ExportTransaction;
+    redirects: Redirect;
+    forms: Form;
+    'form-submissions': FormSubmission;
+    search: Search;
+    'ai-providers': AiProvider;
     companies: Company;
+    'export-transactions': ExportTransaction;
     routes: Route;
     'smart-contracts': SmartContract;
-    'ai-providers': AiProvider;
     'flow-templates': FlowTemplate;
     'flow-instances': FlowInstance;
     organizations: Organization;
     'job-families': JobFamily;
     departments: Department;
-    redirects: Redirect;
-    forms: Form;
-    'form-submissions': FormSubmission;
-    search: Search;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -106,20 +106,20 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     features: FeaturesSelect<false> | FeaturesSelect<true>;
     'pricing-plans': PricingPlansSelect<false> | PricingPlansSelect<true>;
-    'export-transactions': ExportTransactionsSelect<false> | ExportTransactionsSelect<true>;
+    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
+    forms: FormsSelect<false> | FormsSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
+    search: SearchSelect<false> | SearchSelect<true>;
+    'ai-providers': AiProvidersSelect<false> | AiProvidersSelect<true>;
     companies: CompaniesSelect<false> | CompaniesSelect<true>;
+    'export-transactions': ExportTransactionsSelect<false> | ExportTransactionsSelect<true>;
     routes: RoutesSelect<false> | RoutesSelect<true>;
     'smart-contracts': SmartContractsSelect<false> | SmartContractsSelect<true>;
-    'ai-providers': AiProvidersSelect<false> | AiProvidersSelect<true>;
     'flow-templates': FlowTemplatesSelect<false> | FlowTemplatesSelect<true>;
     'flow-instances': FlowInstancesSelect<false> | FlowInstancesSelect<true>;
     organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
     'job-families': JobFamiliesSelect<false> | JobFamiliesSelect<true>;
     departments: DepartmentsSelect<false> | DepartmentsSelect<true>;
-    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
-    forms: FormsSelect<false> | FormsSelect<true>;
-    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
-    search: SearchSelect<false> | SearchSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -1325,6 +1325,116 @@ export interface PricingPlan {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: number;
+  /**
+   * You will need to rebuild the website when changing this field.
+   */
+  from: string;
+  to?: {
+    type?: ('reference' | 'custom') | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: number;
+  form: number | Form;
+  submissionData?:
+    | {
+        field: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search".
+ */
+export interface Search {
+  id: number;
+  title?: string | null;
+  priority?: number | null;
+  doc: {
+    relationTo: 'posts';
+    value: number | Post;
+  };
+  slug?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  categories?:
+    | {
+        relationTo?: string | null;
+        categoryID?: string | null;
+        title?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-providers".
+ */
+export interface AiProvider {
+  id: number;
+  name: string;
+  provider: 'openai' | 'anthropic' | 'google' | 'azure' | 'ollama' | 'lmstudio';
+  /**
+   * API endpoint URL (e.g., https://api.openai.com/v1 or http://localhost:11434)
+   */
+  baseUrl?: string | null;
+  /**
+   * API key for the AI provider (leave empty for local providers)
+   */
+  apiKey?: string | null;
+  /**
+   * Default model name (e.g., gpt-4, claude-3-sonnet, llama2)
+   */
+  model?: string | null;
+  /**
+   * Maximum tokens for this provider
+   */
+  maxTokens?: number | null;
+  /**
+   * Temperature setting (0.0 - 1.0)
+   */
+  temperature?: number | null;
+  status?: ('active' | 'inactive' | 'testing') | null;
+  /**
+   * Brief description of the provider and its capabilities
+   */
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "routes".
  */
 export interface Route {
@@ -1454,161 +1564,6 @@ export interface SmartContract {
         id?: string | null;
       }[]
     | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ai-providers".
- */
-export interface AiProvider {
-  id: number;
-  /**
-   * Display name of the AI provider (e.g., "OpenAI", "Anthropic", "Ollama")
-   */
-  name: string;
-  /**
-   * API endpoint URL or local server URL (e.g., "https://api.openai.com/v1" or "http://localhost:11434")
-   */
-  baseUrl: string;
-  /**
-   * Type of AI provider - cloud services, local installations, or proxy services
-   */
-  providerType: 'cloud' | 'local' | 'proxy';
-  /**
-   * Authentication method required by this provider
-   */
-  authType: 'api-key' | 'bearer' | 'oauth' | 'none';
-  /**
-   * Current operational status of the provider
-   */
-  status: 'active' | 'inactive' | 'maintenance' | 'testing';
-  /**
-   * Brief description of the provider and its capabilities
-   */
-  description?: string | null;
-  /**
-   * Link to the provider's API documentation or setup guide
-   */
-  documentation?: string | null;
-  /**
-   * Configuration specific to local AI providers
-   */
-  localConfig?: {
-    /**
-     * Default port number for local server (e.g., 11434 for Ollama, 1234 for LM Studio)
-     */
-    defaultPort?: number | null;
-    /**
-     * Default installation path or executable location
-     */
-    installationPath?: string | null;
-    /**
-     * Whether this provider requires GPU acceleration for optimal performance
-     */
-    requiresGPU?: boolean | null;
-    /**
-     * Model formats supported by this local provider
-     */
-    supportedFormats?:
-      | {
-          format: 'gguf' | 'ggml' | 'safetensors' | 'pytorch' | 'onnx' | 'other';
-          id?: string | null;
-        }[]
-      | null;
-    minSystemRequirements?: {
-      /**
-       * Minimum RAM required in GB
-       */
-      ramGB?: number | null;
-      /**
-       * Minimum disk space required in GB
-       */
-      diskSpaceGB?: number | null;
-      /**
-       * Recommended minimum CPU cores
-       */
-      cpuCores?: number | null;
-    };
-  };
-  /**
-   * Configuration specific to cloud AI providers
-   */
-  cloudConfig?: {
-    rateLimits?: {
-      /**
-       * Default rate limit for requests per minute
-       */
-      requestsPerMinute?: number | null;
-      /**
-       * Default rate limit for tokens per minute
-       */
-      tokensPerMinute?: number | null;
-      /**
-       * Default rate limit for requests per day
-       */
-      requestsPerDay?: number | null;
-    };
-    /**
-     * Available regions and their specific endpoints
-     */
-    regions?:
-      | {
-          region: string;
-          endpoint?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  /**
-   * Connection testing configuration and results
-   */
-  connectionTest?: {
-    /**
-     * Specific endpoint to use for connection testing
-     */
-    testEndpoint?: string | null;
-    /**
-     * Last time connection was successfully tested
-     */
-    lastTestDate?: string | null;
-    /**
-     * Result of the last connection test
-     */
-    lastTestStatus?: ('success' | 'failed' | 'not-tested') | null;
-    /**
-     * Error message from last failed test (if any)
-     */
-    lastTestError?: string | null;
-  };
-  /**
-   * Additional provider metadata
-   */
-  metadata?: {
-    /**
-     * Provider's official website
-     */
-    website?: string | null;
-    /**
-     * Support contact information or URL
-     */
-    supportContact?: string | null;
-    /**
-     * Provider version or API version
-     */
-    version?: string | null;
-    /**
-     * Tags for categorizing and filtering providers
-     */
-    tags?:
-      | {
-          tag: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -2566,80 +2521,6 @@ export interface Department {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "redirects".
- */
-export interface Redirect {
-  id: number;
-  /**
-   * You will need to rebuild the website when changing this field.
-   */
-  from: string;
-  to?: {
-    type?: ('reference' | 'custom') | null;
-    reference?:
-      | ({
-          relationTo: 'pages';
-          value: number | Page;
-        } | null)
-      | ({
-          relationTo: 'posts';
-          value: number | Post;
-        } | null);
-    url?: string | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions".
- */
-export interface FormSubmission {
-  id: number;
-  form: number | Form;
-  submissionData?:
-    | {
-        field: string;
-        value: string;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "search".
- */
-export interface Search {
-  id: number;
-  title?: string | null;
-  priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: number | Post;
-  };
-  slug?: string | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (number | null) | Media;
-  };
-  categories?:
-    | {
-        relationTo?: string | null;
-        categoryID?: string | null;
-        title?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
@@ -2774,12 +2655,32 @@ export interface PayloadLockedDocument {
         value: number | PricingPlan;
       } | null)
     | ({
-        relationTo: 'export-transactions';
-        value: number | ExportTransaction;
+        relationTo: 'redirects';
+        value: number | Redirect;
+      } | null)
+    | ({
+        relationTo: 'forms';
+        value: number | Form;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: number | FormSubmission;
+      } | null)
+    | ({
+        relationTo: 'search';
+        value: number | Search;
+      } | null)
+    | ({
+        relationTo: 'ai-providers';
+        value: number | AiProvider;
       } | null)
     | ({
         relationTo: 'companies';
         value: number | Company;
+      } | null)
+    | ({
+        relationTo: 'export-transactions';
+        value: number | ExportTransaction;
       } | null)
     | ({
         relationTo: 'routes';
@@ -2788,10 +2689,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'smart-contracts';
         value: number | SmartContract;
-      } | null)
-    | ({
-        relationTo: 'ai-providers';
-        value: number | AiProvider;
       } | null)
     | ({
         relationTo: 'flow-templates';
@@ -2812,22 +2709,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'departments';
         value: number | Department;
-      } | null)
-    | ({
-        relationTo: 'redirects';
-        value: number | Redirect;
-      } | null)
-    | ({
-        relationTo: 'forms';
-        value: number | Form;
-      } | null)
-    | ({
-        relationTo: 'form-submissions';
-        value: number | FormSubmission;
-      } | null)
-    | ({
-        relationTo: 'search';
-        value: number | Search;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -3378,6 +3259,270 @@ export interface PricingPlansSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects_select".
+ */
+export interface RedirectsSelect<T extends boolean = true> {
+  from?: T;
+  to?:
+    | T
+    | {
+        type?: T;
+        reference?: T;
+        url?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms_select".
+ */
+export interface FormsSelect<T extends boolean = true> {
+  title?: T;
+  fields?:
+    | T
+    | {
+        checkbox?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
+              id?: T;
+              blockName?: T;
+            };
+        country?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        email?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        message?:
+          | T
+          | {
+              message?: T;
+              id?: T;
+              blockName?: T;
+            };
+        number?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        select?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              placeholder?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        state?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        text?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        textarea?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  submitButtonLabel?: T;
+  confirmationType?: T;
+  confirmationMessage?: T;
+  redirect?:
+    | T
+    | {
+        url?: T;
+      };
+  emails?:
+    | T
+    | {
+        emailTo?: T;
+        cc?: T;
+        bcc?: T;
+        replyTo?: T;
+        emailFrom?: T;
+        subject?: T;
+        message?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions_select".
+ */
+export interface FormSubmissionsSelect<T extends boolean = true> {
+  form?: T;
+  submissionData?:
+    | T
+    | {
+        field?: T;
+        value?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search_select".
+ */
+export interface SearchSelect<T extends boolean = true> {
+  title?: T;
+  priority?: T;
+  doc?: T;
+  slug?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  categories?:
+    | T
+    | {
+        relationTo?: T;
+        categoryID?: T;
+        title?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-providers_select".
+ */
+export interface AiProvidersSelect<T extends boolean = true> {
+  name?: T;
+  provider?: T;
+  baseUrl?: T;
+  apiKey?: T;
+  model?: T;
+  maxTokens?: T;
+  temperature?: T;
+  status?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companies_select".
+ */
+export interface CompaniesSelect<T extends boolean = true> {
+  name?: T;
+  type?: T;
+  description?: T;
+  address?:
+    | T
+    | {
+        streetAddress?: T;
+        city?: T;
+        stateProvince?: T;
+        postalCode?: T;
+        country?: T;
+        gpsCoordinates?: T;
+      };
+  contactInfo?:
+    | T
+    | {
+        primaryPhone?: T;
+        alternatePhone?: T;
+        email?: T;
+        contactPerson?: T;
+        contactPosition?: T;
+      };
+  businessDetails?:
+    | T
+    | {
+        registrationNumber?: T;
+        taxId?: T;
+        yearEstablished?: T;
+        industrySector?: T;
+        employeeCount?: T;
+        annualRevenue?: T;
+        certifications?:
+          | T
+          | {
+              name?: T;
+              issuingBody?: T;
+              issueDate?: T;
+              expiryDate?: T;
+              document?: T;
+              id?: T;
+            };
+      };
+  country?: T;
+  logo?: T;
+  website?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "export-transactions_select".
  */
 export interface ExportTransactionsSelect<T extends boolean = true> {
@@ -3500,61 +3645,6 @@ export interface ExportTransactionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "companies_select".
- */
-export interface CompaniesSelect<T extends boolean = true> {
-  name?: T;
-  type?: T;
-  description?: T;
-  address?:
-    | T
-    | {
-        streetAddress?: T;
-        city?: T;
-        stateProvince?: T;
-        postalCode?: T;
-        country?: T;
-        gpsCoordinates?: T;
-      };
-  contactInfo?:
-    | T
-    | {
-        primaryPhone?: T;
-        alternatePhone?: T;
-        email?: T;
-        contactPerson?: T;
-        contactPosition?: T;
-      };
-  businessDetails?:
-    | T
-    | {
-        registrationNumber?: T;
-        taxId?: T;
-        yearEstablished?: T;
-        industrySector?: T;
-        employeeCount?: T;
-        annualRevenue?: T;
-        certifications?:
-          | T
-          | {
-              name?: T;
-              issuingBody?: T;
-              issueDate?: T;
-              expiryDate?: T;
-              document?: T;
-              id?: T;
-            };
-      };
-  country?: T;
-  logo?: T;
-  website?: T;
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "routes_select".
  */
 export interface RoutesSelect<T extends boolean = true> {
@@ -3640,82 +3730,6 @@ export interface SmartContractsSelect<T extends boolean = true> {
               id?: T;
             };
         id?: T;
-      };
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ai-providers_select".
- */
-export interface AiProvidersSelect<T extends boolean = true> {
-  name?: T;
-  baseUrl?: T;
-  providerType?: T;
-  authType?: T;
-  status?: T;
-  description?: T;
-  documentation?: T;
-  localConfig?:
-    | T
-    | {
-        defaultPort?: T;
-        installationPath?: T;
-        requiresGPU?: T;
-        supportedFormats?:
-          | T
-          | {
-              format?: T;
-              id?: T;
-            };
-        minSystemRequirements?:
-          | T
-          | {
-              ramGB?: T;
-              diskSpaceGB?: T;
-              cpuCores?: T;
-            };
-      };
-  cloudConfig?:
-    | T
-    | {
-        rateLimits?:
-          | T
-          | {
-              requestsPerMinute?: T;
-              tokensPerMinute?: T;
-              requestsPerDay?: T;
-            };
-        regions?:
-          | T
-          | {
-              region?: T;
-              endpoint?: T;
-              id?: T;
-            };
-      };
-  connectionTest?:
-    | T
-    | {
-        testEndpoint?: T;
-        lastTestDate?: T;
-        lastTestStatus?: T;
-        lastTestError?: T;
-      };
-  metadata?:
-    | T
-    | {
-        website?: T;
-        supportContact?: T;
-        version?: T;
-        tags?:
-          | T
-          | {
-              tag?: T;
-              id?: T;
-            };
       };
   slug?: T;
   slugLock?: T;
@@ -4160,198 +4174,6 @@ export interface DepartmentsSelect<T extends boolean = true> {
       };
   slug?: T;
   slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "redirects_select".
- */
-export interface RedirectsSelect<T extends boolean = true> {
-  from?: T;
-  to?:
-    | T
-    | {
-        type?: T;
-        reference?: T;
-        url?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms_select".
- */
-export interface FormsSelect<T extends boolean = true> {
-  title?: T;
-  fields?:
-    | T
-    | {
-        checkbox?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              required?: T;
-              defaultValue?: T;
-              id?: T;
-              blockName?: T;
-            };
-        country?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              required?: T;
-              id?: T;
-              blockName?: T;
-            };
-        email?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              required?: T;
-              id?: T;
-              blockName?: T;
-            };
-        message?:
-          | T
-          | {
-              message?: T;
-              id?: T;
-              blockName?: T;
-            };
-        number?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              defaultValue?: T;
-              required?: T;
-              id?: T;
-              blockName?: T;
-            };
-        select?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              defaultValue?: T;
-              placeholder?: T;
-              options?:
-                | T
-                | {
-                    label?: T;
-                    value?: T;
-                    id?: T;
-                  };
-              required?: T;
-              id?: T;
-              blockName?: T;
-            };
-        state?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              required?: T;
-              id?: T;
-              blockName?: T;
-            };
-        text?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              defaultValue?: T;
-              required?: T;
-              id?: T;
-              blockName?: T;
-            };
-        textarea?:
-          | T
-          | {
-              name?: T;
-              label?: T;
-              width?: T;
-              defaultValue?: T;
-              required?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  submitButtonLabel?: T;
-  confirmationType?: T;
-  confirmationMessage?: T;
-  redirect?:
-    | T
-    | {
-        url?: T;
-      };
-  emails?:
-    | T
-    | {
-        emailTo?: T;
-        cc?: T;
-        bcc?: T;
-        replyTo?: T;
-        emailFrom?: T;
-        subject?: T;
-        message?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions_select".
- */
-export interface FormSubmissionsSelect<T extends boolean = true> {
-  form?: T;
-  submissionData?:
-    | T
-    | {
-        field?: T;
-        value?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "search_select".
- */
-export interface SearchSelect<T extends boolean = true> {
-  title?: T;
-  priority?: T;
-  doc?: T;
-  slug?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  categories?:
-    | T
-    | {
-        relationTo?: T;
-        categoryID?: T;
-        title?: T;
-        id?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
 }

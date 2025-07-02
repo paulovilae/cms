@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Disallow: /admin/*
+
+# Host
+Host: http://localhost:3003
+
+# Sitemaps
+Sitemap: http://localhost:3003/sitemap.xml
+Sitemap: http://localhost:3003/pages-sitemap.xml
+Sitemap: http://localhost:3003/posts-sitemap.xml

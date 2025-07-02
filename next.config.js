@@ -25,6 +25,13 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects,
+  // Enable standalone output for Docker
+  output: 'standalone',
+  // Turbopack configuration (Next.js 15.3.0+)
+  turbopack: {
+    // Empty configuration to acknowledge Turbopack usage
+    // This tells Next.js we're aware of Turbopack and using default settings
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

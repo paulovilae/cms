@@ -46,6 +46,8 @@ The Memory Bank consists of core files and optional context files, all in Markdo
 ### Additional Files
 Create additional files/folders within memory-bank/ when they help organize:
 - `tasks.md` - Documentation of repetitive tasks and their workflows
+- `payload-guide.md` - Comprehensive Payload CMS development guide
+- `plugin-ecosystem.md` - Plugin architecture and extensibility framework
 - Complex feature documentation
 - Integration specifications
 - API documentation

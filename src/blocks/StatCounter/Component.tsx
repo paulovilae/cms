@@ -140,7 +140,7 @@ export const StatCounter: React.FC<StatCounterProps> = (props) => {
                   style={stat.color ? { color: stat.color } : undefined}
                 >
                   {stat.prefix || ''}
-                  {animatedValues[index].toLocaleString()}
+                  {(animatedValues[index] ?? 0).toLocaleString()}
                   {stat.suffix || ''}
                 </div>
                 <div

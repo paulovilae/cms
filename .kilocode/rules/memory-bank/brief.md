@@ -1,5 +1,10 @@
-cms is a content management system based on payload, the Next.js fullstack framework
-espcififically this cms is for # IntelliTrade Product Overview
+# Multi-Tenant Business Platform
+
+This is a plugin-based content management system built on Payload CMS and Next.js, designed to serve multiple independent business products through a single codebase with runtime decoupling.
+
+## Business Products
+
+### 1. IntelliTrade - Trade Finance Platform
 
 ## Purpose
 
@@ -106,7 +111,62 @@ The initial implementation focuses on:
 - KYC Completion < 24 hours
 
 
-The cms is an open public showcase of the product with a marketing place where users can find about Product characteristics, benefits, price plans, product team , etc.. and when registered they can have a full demo of the product with gamification and education. 
-as said before. All has to run inside the payload platform. The platform look and feel is very similar to payload web site @https://payloadcms.com/
-Remember, to create a page you must create it as a pege with sqlite or using payload cms endpoints or collections.
-the payload documentation is here @https://payloadcms.com/docs/getting-started/what-is-payloadS
+### 2. Salarium - HR Document Flow Platform
+A human resources management system focused on document workflows, employee management, and organizational processes.
+
+### 3. Latinos - Trading Stocks Bot Platform
+An automated trading platform with bot functionality for stock market operations.
+
+## Architecture Overview
+
+### Plugin-Based Multi-Tenant System
+- **Single Codebase**: All three businesses share core Payload CMS infrastructure
+- **Runtime Decoupling**: Environment variables determine which business plugins load
+- **Independent Databases**: Each business operates with its own SQLite database
+- **Docker Deployment**: Each business runs in separate containers on different ports
+
+### Environment-Based Plugin Loading
+```typescript
+// Runtime plugin selection based on BUSINESS_MODE environment variable
+const activePlugins = {
+  intellitrade: [intellitradePlugin()],
+  salarium: [salariumPlugin()],
+  latinos: [latinosPlugin()],
+  all: [intellitradePlugin(), salariumPlugin(), latinosPlugin()]
+}
+```
+
+### Deployment Strategy
+- **IntelliTrade**: Port 3001 with intellitrade.db
+- **Salarium**: Port 3002 with salarium.db
+- **Latinos**: Port 3003 with latinos.db
+- **Development**: Port 3000 with all plugins active
+
+## Business Plugin Structure
+
+Each business is implemented as a self-contained Payload plugin containing:
+- Collections (data models)
+- Blocks (content components)
+- Components (UI elements)
+- Business-specific logic
+
+## Future Detachment Strategy
+
+When ready to separate a business:
+1. Copy entire codebase
+2. Remove unused business plugins
+3. Configure environment for single business
+4. Deploy independently
+
+This approach provides shared development benefits while maintaining easy business separation capabilities.
+
+## Current Implementation
+
+The platform serves as an open public showcase where users can:
+- Learn about product characteristics, benefits, and pricing
+- Meet the product team
+- Access full interactive demos with gamification and education when registered
+
+All functionality runs within the Payload platform with a look and feel similar to the Payload website (https://payloadcms.com/).
+
+Pages are created using Payload CMS collections and endpoints, following Payload documentation patterns (https://payloadcms.com/docs/getting-started/what-is-payload).

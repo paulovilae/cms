@@ -1,12 +1,19 @@
-# System Architecture
+# Multi-Tenant Plugin-Based Architecture
 
 ## Overview
-The IntelliTrade CMS is built on the Payload CMS framework with a Next.js frontend. It follows a headless CMS architecture where the content management system is decoupled from the frontend presentation layer.
+The platform is built on Payload CMS with Next.js, designed as a multi-tenant system serving three independent business products through a single codebase with runtime plugin decoupling.
+
+## Business Products Architecture
+- **IntelliTrade**: Trade finance platform (Port 3001)
+- **Salarium**: HR document flow system (Port 3002)
+- **Latinos**: Trading stocks bot platform (Port 3003)
+- **Development**: All plugins active (Port 3000)
 
 ## Application Structure
-The application is organized into two main sections:
-- **Admin Panel**: `/src/app/(payload)` - The Payload CMS admin interface
-- **Frontend Website**: `/src/app/(frontend)` - The public-facing website using Next.js App Router
+The application uses environment-based plugin loading:
+- **Admin Panel**: `/src/app/(payload)` - Unified admin interface with business-specific collections
+- **Frontend Websites**: `/src/app/(frontend)` - Business-specific frontends with conditional theming
+- **Plugin System**: `/src/plugins/` - Self-contained business logic modules
 
 ## Core Components
 

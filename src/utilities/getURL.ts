@@ -17,3 +17,9 @@ export const getClientSideURL = () => {
   // For server-side execution, use the same centralized config
   return getServerURL()
 }
+
+// Unified URL function that ensures consistency between server and client
+export const getUnifiedURL = () => {
+  // Always use server config for consistency during SSR
+  return getServerURL()
+}

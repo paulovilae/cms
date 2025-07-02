@@ -1,4 +1,4 @@
-import { getClientSideURL } from '@/utilities/getURL'
+import { getUnifiedURL } from '@/utilities/getURL'
 
 /**
  * Processes media resource URL to ensure proper formatting
@@ -14,7 +14,7 @@ export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | 
     return cacheTag ? `${url}?${cacheTag}` : url
   }
 
-  // Otherwise prepend client-side URL
-  const baseUrl = getClientSideURL()
+  // Use unified URL for consistency between server and client
+  const baseUrl = getUnifiedURL()
   return cacheTag ? `${baseUrl}${url}?${cacheTag}` : `${baseUrl}${url}`
 }

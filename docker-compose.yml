@@ -1,31 +1,88 @@
-version: '3'
-
 services:
-  payload:
-    image: node:18-alpine
+  # IntelliTrade - Trade Finance Platform
+  intellitrade:
+    build: .
     ports:
-      - '3000:3000'
+      - "3001:3000"
+    environment:
+      - BUSINESS_MODE=intellitrade
+      - ENABLED_FEATURES=aiManagement
+      - DATABASE_PATH=/app/databases/intellitrade.db
+      - FRONTEND_THEME=intellitrade
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:-your-secret-key}
+      - NEXT_PUBLIC_SERVER_URL=http://localhost:3001
     volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "yarn install && yarn dev"
-    depends_on:
-      - mongo
-    env_file:
-      - .env
+      - ./databases:/app/databases
+      - ./public:/app/public
+    restart: unless-stopped
+    networks:
+      - cms-network
 
-  mongo:
-    image: mongo:latest
+  # Salarium - HR Document Flow Platform  
+  salarium:
+    build: .
     ports:
-      - '27017:27017'
-    command:
-      - --storageEngine=wiredTiger
+      - "3002:3000"
+    environment:
+      - BUSINESS_MODE=salarium
+      - ENABLED_FEATURES=aiManagement
+      - DATABASE_PATH=/app/databases/salarium.db
+      - FRONTEND_THEME=salarium
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:-your-secret-key}
+      - NEXT_PUBLIC_SERVER_URL=http://localhost:3002
     volumes:
-      - data:/data/db
-    logging:
-      driver: none
+      - ./databases:/app/databases
+      - ./public:/app/public
+    restart: unless-stopped
+    networks:
+      - cms-network
+
+  # Latinos - Trading Stocks Bot Platform
+  latinos:
+    build: .
+    ports:
+      - "3003:3000"
+    environment:
+      - BUSINESS_MODE=latinos
+      - ENABLED_FEATURES=aiManagement
+      - DATABASE_PATH=/app/databases/latinos.db
+      - FRONTEND_THEME=latinos
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:-your-secret-key}
+      - NEXT_PUBLIC_SERVER_URL=http://localhost:3003
+    volumes:
+      - ./databases:/app/databases
+      - ./public:/app/public
+    restart: unless-stopped
+    networks:
+      - cms-network
+
+  # Development Mode - All Plugins Active
+  dev-all:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - BUSINESS_MODE=all
+      - ENABLED_FEATURES=aiManagement
+      - DATABASE_PATH=/app/databases/dev.db
+      - FRONTEND_THEME=all
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:-your-secret-key}
+      - NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+    volumes:
+      - ./databases:/app/databases
+      - ./public:/app/public
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - cms-network
+    profiles:
+      - dev
+
+networks:
+  cms-network:
+    driver: bridge
 
 volumes:
-  data:
-  node_modules:
+  databases:
+    driver: local
