@@ -1,13 +1,12 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 
 export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
   access: {
     create: authenticated,
     delete: authenticated,
-    read: authenticatedOrPublished,
+    read: () => true, // Public read access since this is demo content
     update: authenticated,
   },
   admin: {
