@@ -91,17 +91,41 @@ export const seed = async ({
     ),
   )
 
-  // Delete standard collections
-  await Promise.all(
-    standardCollections.map((collection) => payload.db.deleteMany({ collection, req, where: {} })),
-  )
+  // We need to be careful about the order of deletion due to foreign key constraints
+  // First delete collections that depend on other collections
+  payload.logger.info(`— Deleting dependent collections first...`)
 
-  // Delete custom collections with type assertion
-  await Promise.all(
-    customCollections.map((collection) =>
-      payload.db.deleteMany({ collection: collection as any, req, where: {} }),
-    ),
-  )
+  // 1. First delete flow_templates since they depend on ai_providers
+  try {
+    await payload.db.deleteMany({ collection: 'flow-templates' as any, req, where: {} })
+  } catch (error: any) {
+    payload.logger.info(`— Skipping flow-templates deletion: ${error?.message || 'Unknown error'}`)
+  }
+
+  // 2. Then delete flow_instances since they depend on flow_templates
+  try {
+    await payload.db.deleteMany({ collection: 'flow-instances' as any, req, where: {} })
+  } catch (error: any) {
+    payload.logger.info(`— Skipping flow-instances deletion: ${error?.message || 'Unknown error'}`)
+  }
+
+  // 3. Delete standard collections
+  for (const collection of standardCollections) {
+    try {
+      await payload.db.deleteMany({ collection, req, where: {} })
+    } catch (error: any) {
+      payload.logger.info(`— Error deleting ${collection}: ${error?.message || 'Unknown error'}`)
+    }
+  }
+
+  // 4. Delete remaining custom collections
+  for (const collection of customCollections) {
+    try {
+      await payload.db.deleteMany({ collection: collection as any, req, where: {} })
+    } catch (error: any) {
+      payload.logger.info(`— Error deleting ${collection}: ${error?.message || 'Unknown error'}`)
+    }
+  }
 
   // Delete versions for standard collections
   await Promise.all(

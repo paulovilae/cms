@@ -79,7 +79,10 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "sharp"
+      "esbuild",
+      "sharp",
+      "sqlite3",
+      "unrs-resolver"
     ]
   }
 }
