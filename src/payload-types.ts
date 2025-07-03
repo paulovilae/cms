@@ -65,7 +65,10 @@ export interface Config {
   auth: {
     users: UserAuthOperations;
   };
-  blocks: {};
+  blocks: {
+    liveTradingDashboard: LiveTradingDashboard;
+    botPerformanceAnalytics: BotPerformanceAnalytics;
+  };
   collections: {
     pages: Page;
     posts: Post;
@@ -90,6 +93,11 @@ export interface Config {
     organizations: Organization;
     'job-families': JobFamily;
     departments: Department;
+    'trading-bots': TradingBot;
+    'trading-formulas': TradingFormula;
+    'trading-strategies': TradingStrategy;
+    'trading-trades': TradingTrade;
+    'market-data': MarketDatum;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -120,6 +128,11 @@ export interface Config {
     organizations: OrganizationsSelect<false> | OrganizationsSelect<true>;
     'job-families': JobFamiliesSelect<false> | JobFamiliesSelect<true>;
     departments: DepartmentsSelect<false> | DepartmentsSelect<true>;
+    'trading-bots': TradingBotsSelect<false> | TradingBotsSelect<true>;
+    'trading-formulas': TradingFormulasSelect<false> | TradingFormulasSelect<true>;
+    'trading-strategies': TradingStrategiesSelect<false> | TradingStrategiesSelect<true>;
+    'trading-trades': TradingTradesSelect<false> | TradingTradesSelect<true>;
+    'market-data': MarketDataSelect<false> | MarketDataSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -168,6 +181,380 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "liveTradingDashboard".
+ */
+export interface LiveTradingDashboard {
+  /**
+   * Dashboard title displayed to users
+   */
+  title?: string | null;
+  /**
+   * Optional subtitle or description
+   */
+  subtitle?: string | null;
+  displayOptions?: {
+    /**
+     * Show overall performance metrics
+     */
+    showPerformanceMetrics?: boolean | null;
+    /**
+     * Show currently active trades
+     */
+    showActiveTrades?: boolean | null;
+    /**
+     * Show real-time market data
+     */
+    showMarketData?: boolean | null;
+    /**
+     * Show trading system status
+     */
+    showSystemStatus?: boolean | null;
+    /**
+     * Show list of active trading bots
+     */
+    showBotList?: boolean | null;
+  };
+  refreshSettings?: {
+    /**
+     * Refresh interval in seconds (1-60)
+     */
+    refreshInterval?: number | null;
+    /**
+     * Enable automatic data refresh
+     */
+    enableAutoRefresh?: boolean | null;
+    /**
+     * Enable real-time WebSocket updates
+     */
+    enableRealTimeUpdates?: boolean | null;
+  };
+  layout?: {
+    /**
+     * Number of columns in the dashboard grid
+     */
+    gridColumns?: ('1' | '2' | '3' | '4') | null;
+    /**
+     * Size of dashboard cards
+     */
+    cardSize?: ('small' | 'medium' | 'large') | null;
+    /**
+     * Dashboard color theme
+     */
+    theme?: ('light' | 'dark' | 'auto') | null;
+  };
+  filters?: {
+    botFilter?:
+      | {
+          /**
+           * Specific bots to display (leave empty for all)
+           */
+          botId?: (number | null) | TradingBot;
+          id?: string | null;
+        }[]
+      | null;
+    symbolFilter?:
+      | {
+          /**
+           * Trading symbols to display (e.g., AAPL, BTC-USD)
+           */
+          symbol?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    statusFilter?:
+      | {
+          status?: ('active' | 'paused' | 'stopped' | 'error') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  alerts?: {
+    /**
+     * Enable dashboard alerts
+     */
+    enableAlerts?: boolean | null;
+    alertThresholds?: {
+      /**
+       * Alert when profit exceeds this amount
+       */
+      profitThreshold?: number | null;
+      /**
+       * Alert when loss exceeds this amount
+       */
+      lossThreshold?: number | null;
+      /**
+       * Alert when trading volume exceeds this amount
+       */
+      volumeThreshold?: number | null;
+    };
+  };
+  customization?: {
+    /**
+     * Custom CSS styles for the dashboard
+     */
+    customCSS?: string | null;
+    /**
+     * Custom JavaScript for dashboard functionality
+     */
+    customJS?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'liveTradingDashboard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trading-bots".
+ */
+export interface TradingBot {
+  id: number;
+  /**
+   * Unique name for this trading bot
+   */
+  name: string;
+  status?: ('active' | 'paused' | 'stopped' | 'error') | null;
+  strategy: number | TradingStrategy;
+  /**
+   * Trading symbol (e.g., AAPL, BTC-USD)
+   */
+  symbol: string;
+  exchange?: ('NASDAQ' | 'NYSE' | 'AMEX' | 'CRYPTO') | null;
+  /**
+   * Amount to invest per trade (USD)
+   */
+  investmentAmount: number;
+  riskLevel?: ('conservative' | 'moderate' | 'aggressive') | null;
+  maxDailyTrades?: number | null;
+  /**
+   * Stop loss percentage (1-20%)
+   */
+  stopLossPercentage?: number | null;
+  /**
+   * Take profit percentage (2-50%)
+   */
+  takeProfitPercentage?: number | null;
+  /**
+   * ID in the Python microservice
+   */
+  microserviceId?: string | null;
+  lastExecution?: string | null;
+  totalTrades?: number | null;
+  successfulTrades?: number | null;
+  totalProfit?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trading-strategies".
+ */
+export interface TradingStrategy {
+  id: number;
+  name: string;
+  description?: string | null;
+  type: 'rsi' | 'ma_crossover' | 'macd' | 'bollinger' | 'custom';
+  /**
+   * Default parameters for this strategy type
+   */
+  defaultParameters?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  riskProfile?: ('conservative' | 'moderate' | 'aggressive') | null;
+  backtestResults?: {
+    totalReturn?: number | null;
+    sharpeRatio?: number | null;
+    maxDrawdown?: number | null;
+    winRate?: number | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "botPerformanceAnalytics".
+ */
+export interface BotPerformanceAnalytics {
+  /**
+   * Analytics section title
+   */
+  title?: string | null;
+  /**
+   * Optional description for the analytics section
+   */
+  description?: string | null;
+  timeframe?: {
+    /**
+     * Default time frame for analytics
+     */
+    defaultTimeframe?: ('24h' | '7d' | '30d' | '90d' | '1y' | 'all') | null;
+    /**
+     * Allow users to change the time frame
+     */
+    allowTimeframeSelection?: boolean | null;
+    customTimeframes?:
+      | {
+          label: string;
+          /**
+           * Time frame value (e.g., 14d, 6m)
+           */
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  chartSettings?: {
+    /**
+     * Show profit/loss chart
+     */
+    showProfitChart?: boolean | null;
+    /**
+     * Show performance metrics chart
+     */
+    showPerformanceChart?: boolean | null;
+    /**
+     * Show trading volume chart
+     */
+    showVolumeChart?: boolean | null;
+    /**
+     * Show win rate chart
+     */
+    showWinRateChart?: boolean | null;
+    /**
+     * Default chart type
+     */
+    chartType?: ('line' | 'bar' | 'area' | 'candlestick') | null;
+    /**
+     * Chart height in pixels
+     */
+    chartHeight?: number | null;
+  };
+  metricsDisplay?: {
+    /**
+     * Show detailed trade history table
+     */
+    showTradeHistory?: boolean | null;
+    /**
+     * Show key performance metrics cards
+     */
+    showKeyMetrics?: boolean | null;
+    /**
+     * Show comparison with other bots
+     */
+    showComparison?: boolean | null;
+    metricsToShow?:
+      | {
+          metric:
+            | 'total_profit'
+            | 'win_rate'
+            | 'avg_trade'
+            | 'max_drawdown'
+            | 'sharpe_ratio'
+            | 'total_trades'
+            | 'successful_trades'
+            | 'avg_hold_time'
+            | 'best_trade'
+            | 'worst_trade';
+          /**
+           * Custom display name for this metric
+           */
+          displayName?: string | null;
+          format?: ('currency' | 'percentage' | 'number' | 'time') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  filterOptions?: {
+    /**
+     * Allow filtering by specific bots
+     */
+    enableBotFilter?: boolean | null;
+    /**
+     * Allow filtering by trading symbols
+     */
+    enableSymbolFilter?: boolean | null;
+    /**
+     * Allow filtering by trading strategies
+     */
+    enableStrategyFilter?: boolean | null;
+    defaultBots?:
+      | {
+          /**
+           * Bots to show by default (leave empty for all)
+           */
+          bot?: (number | null) | TradingBot;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  exportOptions?: {
+    /**
+     * Enable data export functionality
+     */
+    enableExport?: boolean | null;
+    exportFormats?:
+      | {
+          format: 'csv' | 'xlsx' | 'pdf' | 'json';
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Include charts in exported reports
+     */
+    includeCharts?: boolean | null;
+  };
+  alertSettings?: {
+    /**
+     * Enable performance-based alerts
+     */
+    enableAlerts?: boolean | null;
+    alertThresholds?:
+      | {
+          metric: 'profit' | 'loss' | 'win_rate' | 'drawdown';
+          /**
+           * Threshold value for the alert
+           */
+          threshold: number;
+          condition?: ('gt' | 'lt' | 'eq') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  styling?: {
+    /**
+     * Color scheme for charts and metrics
+     */
+    colorScheme?: ('default' | 'professional' | 'dark' | 'colorful') | null;
+    customColors?: {
+      /**
+       * Color for profit indicators (hex code)
+       */
+      profitColor?: string | null;
+      /**
+       * Color for loss indicators (hex code)
+       */
+      lossColor?: string | null;
+      /**
+       * Color for neutral indicators (hex code)
+       */
+      neutralColor?: string | null;
+    };
+    /**
+     * Custom CSS for additional styling
+     */
+    customCSS?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'botPerformanceAnalytics';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2646,6 +3033,85 @@ export interface Department {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trading-formulas".
+ */
+export interface TradingFormula {
+  id: number;
+  name: string;
+  bot: number | TradingBot;
+  interval: '1m' | '5m' | '15m' | '1h' | '1d';
+  /**
+   * Formula-specific parameters (RSI periods, MA lengths, etc.)
+   */
+  parameters?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  conditions?:
+    | {
+        indicator?: ('rsi' | 'ma' | 'macd' | 'bb' | 'volume') | null;
+        operator?: ('gt' | 'lt' | 'cross_above' | 'cross_below') | null;
+        value?: number | null;
+        action?: ('buy' | 'sell' | 'hold') | null;
+        id?: string | null;
+      }[]
+    | null;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trading-trades".
+ */
+export interface TradingTrade {
+  id: number;
+  bot: number | TradingBot;
+  symbol: string;
+  side: 'buy' | 'sell';
+  quantity: number;
+  price: number;
+  status: 'open' | 'filled' | 'cancelled' | 'expired' | 'rejected';
+  stopLoss?: number | null;
+  takeProfit?: number | null;
+  filledAt?: string | null;
+  /**
+   * Profit/Loss for this trade
+   */
+  profit?: number | null;
+  isSuccessful?: boolean | null;
+  /**
+   * Trade ID from Python microservice
+   */
+  microserviceTradeId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "market-data".
+ */
+export interface MarketDatum {
+  id: number;
+  symbol: string;
+  currentPrice: number;
+  volume?: number | null;
+  change24h?: number | null;
+  changePercent24h?: number | null;
+  high24h?: number | null;
+  low24h?: number | null;
+  marketCap?: number | null;
+  lastUpdated?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
@@ -2834,6 +3300,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'departments';
         value: number | Department;
+      } | null)
+    | ({
+        relationTo: 'trading-bots';
+        value: number | TradingBot;
+      } | null)
+    | ({
+        relationTo: 'trading-formulas';
+        value: number | TradingFormula;
+      } | null)
+    | ({
+        relationTo: 'trading-strategies';
+        value: number | TradingStrategy;
+      } | null)
+    | ({
+        relationTo: 'trading-trades';
+        value: number | TradingTrade;
+      } | null)
+    | ({
+        relationTo: 'market-data';
+        value: number | MarketDatum;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -4325,6 +4811,109 @@ export interface DepartmentsSelect<T extends boolean = true> {
       };
   slug?: T;
   slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trading-bots_select".
+ */
+export interface TradingBotsSelect<T extends boolean = true> {
+  name?: T;
+  status?: T;
+  strategy?: T;
+  symbol?: T;
+  exchange?: T;
+  investmentAmount?: T;
+  riskLevel?: T;
+  maxDailyTrades?: T;
+  stopLossPercentage?: T;
+  takeProfitPercentage?: T;
+  microserviceId?: T;
+  lastExecution?: T;
+  totalTrades?: T;
+  successfulTrades?: T;
+  totalProfit?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trading-formulas_select".
+ */
+export interface TradingFormulasSelect<T extends boolean = true> {
+  name?: T;
+  bot?: T;
+  interval?: T;
+  parameters?: T;
+  conditions?:
+    | T
+    | {
+        indicator?: T;
+        operator?: T;
+        value?: T;
+        action?: T;
+        id?: T;
+      };
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trading-strategies_select".
+ */
+export interface TradingStrategiesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  type?: T;
+  defaultParameters?: T;
+  riskProfile?: T;
+  backtestResults?:
+    | T
+    | {
+        totalReturn?: T;
+        sharpeRatio?: T;
+        maxDrawdown?: T;
+        winRate?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trading-trades_select".
+ */
+export interface TradingTradesSelect<T extends boolean = true> {
+  bot?: T;
+  symbol?: T;
+  side?: T;
+  quantity?: T;
+  price?: T;
+  status?: T;
+  stopLoss?: T;
+  takeProfit?: T;
+  filledAt?: T;
+  profit?: T;
+  isSuccessful?: T;
+  microserviceTradeId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "market-data_select".
+ */
+export interface MarketDataSelect<T extends boolean = true> {
+  symbol?: T;
+  currentPrice?: T;
+  volume?: T;
+  change24h?: T;
+  changePercent24h?: T;
+  high24h?: T;
+  low24h?: T;
+  marketCap?: T;
+  lastUpdated?: T;
   updatedAt?: T;
   createdAt?: T;
 }

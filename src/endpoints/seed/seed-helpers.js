@@ -26,6 +26,7 @@ import { seedRoutes } from './routes'
 import { seedSmartContracts } from './smart-contracts'
 import { seedAIProviders } from './ai-providers'
 import { seedSalariumCollections } from './salarium-seed'
+import { seedLatinosData } from '@/plugins/business/latinos/seed'
 
 // Define the collections for cleaning
 const standardCollections = [
@@ -53,6 +54,14 @@ const customCollections = [
   'organizations',
   'job-families',
   'departments',
+]
+
+const latinosCollections = [
+  'trading-bots',
+  'trading-strategies',
+  'trading-formulas',
+  'trading-trades',
+  'market-data',
 ]
 
 const globals = ['header', 'footer']
@@ -91,6 +100,13 @@ export async function clearCollections(payload, req) {
     ),
   )
 
+  // Delete Latinos collections
+  await Promise.all(
+    latinosCollections.map((collection) =>
+      payload.db.deleteMany({ collection: collection, req, where: {} }),
+    ),
+  )
+
   // Delete versions for standard collections
   await Promise.all(
     standardCollections
@@ -101,6 +117,13 @@ export async function clearCollections(payload, req) {
   // Delete versions for custom collections
   await Promise.all(
     customCollections
+      .filter((collection) => Boolean(payload.collections[collection]?.config.versions))
+      .map((collection) => payload.db.deleteVersions({ collection: collection, req, where: {} })),
+  )
+
+  // Delete versions for Latinos collections
+  await Promise.all(
+    latinosCollections
       .filter((collection) => Boolean(payload.collections[collection]?.config.versions))
       .map((collection) => payload.db.deleteVersions({ collection: collection, req, where: {} })),
   )
@@ -355,6 +378,9 @@ export async function seedBusinessData(payload) {
 
     // (6) Salarium collections (HR workflow system)
     await seedSalariumCollections(payload)
+
+    // (7) Latinos collections (Trading bot system)
+    await seedLatinosData(payload)
 
     payload.logger.info('✅ Business data seeded successfully')
     return { companyMap, routeMap, transactionMap }

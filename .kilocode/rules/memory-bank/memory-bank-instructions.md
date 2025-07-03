@@ -48,6 +48,8 @@ Create additional files/folders within memory-bank/ when they help organize:
 - `tasks.md` - Documentation of repetitive tasks and their workflows
 - `payload-guide.md` - Comprehensive Payload CMS development guide
 - `plugin-ecosystem.md` - Plugin architecture and extensibility framework
+- `database.md` - Database architecture, seeding, and management guide
+- `seed.md` - Seeding system architecture and workflows
 - Complex feature documentation
 - Integration specifications
 - API documentation

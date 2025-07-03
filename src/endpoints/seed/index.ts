@@ -20,6 +20,7 @@ import { seedRoutes } from './routes'
 import { seedSmartContracts } from './smart-contracts'
 import { seedAIProviders } from './ai-providers'
 import { seedSalariumCollections } from './salarium-seed'
+import { seedLatinosData } from '@/plugins/business/latinos/seed'
 import type { ExportTransaction } from '@/payload-types'
 
 // Define the collections as a standard CollectionSlug array for type safety
@@ -51,8 +52,17 @@ const customCollections = [
   'departments',
 ]
 
+// Latinos collections (trading bot system)
+const latinosCollections = [
+  'trading-bots',
+  'trading-strategies',
+  'trading-formulas',
+  'trading-trades',
+  'market-data',
+]
+
 // Combined array for use in operations
-const collections = [...standardCollections, ...customCollections]
+const collections = [...standardCollections, ...customCollections, ...latinosCollections]
 
 const globals: GlobalSlug[] = ['header', 'footer']
 
@@ -118,7 +128,16 @@ export const seed = async ({
     }
   }
 
-  // 4. Delete remaining custom collections
+  // 4. Delete Latinos collections (trading system)
+  for (const collection of latinosCollections) {
+    try {
+      await payload.db.deleteMany({ collection: collection as any, req, where: {} })
+    } catch (error: any) {
+      payload.logger.info(`— Error deleting ${collection}: ${error?.message || 'Unknown error'}`)
+    }
+  }
+
+  // 5. Delete remaining custom collections
   for (const collection of customCollections) {
     try {
       await payload.db.deleteMany({ collection: collection as any, req, where: {} })
@@ -137,6 +156,15 @@ export const seed = async ({
   // Delete versions for custom collections (if they have versions)
   await Promise.all(
     customCollections
+      .filter((collection) => Boolean((payload.collections as any)[collection]?.config.versions))
+      .map((collection) =>
+        payload.db.deleteVersions({ collection: collection as any, req, where: {} }),
+      ),
+  )
+
+  // Delete versions for Latinos collections (if they have versions)
+  await Promise.all(
+    latinosCollections
       .filter((collection) => Boolean((payload.collections as any)[collection]?.config.versions))
       .map((collection) =>
         payload.db.deleteVersions({ collection: collection as any, req, where: {} }),
@@ -466,6 +494,9 @@ export const seed = async ({
 
   // (6) Salarium collections (HR workflow system)
   await seedSalariumCollections(payload)
+
+  // (7) Latinos collections (Trading bot system)
+  await seedLatinosData(payload)
 
   // Get the first export transaction for the demo page
   const exportTransactions = await payload.find({

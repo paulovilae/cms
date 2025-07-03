@@ -9,6 +9,8 @@ This script allows you to seed the IntelliTrade CMS database with initial data i
 - Export transactions
 - Routes
 - Smart contracts
+- Salarium collections (HR workflow system)
+- Latinos collections (Trading bot system)
 - Pages
 - Posts
 - Categories
@@ -64,6 +66,26 @@ The seed script:
 2. Makes a request to the `/next/seed` endpoint
 3. The endpoint runs the seed function from `src/endpoints/seed/index.ts`
 4. The seed function clears existing data and creates new records for all collections
+
+### Business Collections Seeded
+
+**IntelliTrade Collections:**
+- Companies (exporters and importers)
+- Export transactions with blockchain verification
+- Routes (shipping routes between ports)
+- Smart contracts for trade finance
+
+**Salarium Collections:**
+- Organizations and departments
+- Job families and career progression
+- Flow templates for HR workflows
+
+**Latinos Collections:**
+- Market data for stocks and cryptocurrencies
+- Trading strategies (RSI, MACD, Bollinger Bands, etc.)
+- Trading bots with different risk levels
+- Trading formulas with technical indicators
+- Trading trades with profit/loss history
 
 ## Customization
 
