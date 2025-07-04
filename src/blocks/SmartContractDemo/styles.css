@@ -40,8 +40,8 @@
 }
 
 .smart-contract-demo__transaction-info {
-  background-color: #ffffff;
-  border: 1px solid #e0e4e8;
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -56,17 +56,17 @@
 }
 
 .smart-contract-demo__details > div {
-  color: #1f2937;
+  color: hsl(var(--foreground));
   font-size: 0.95rem;
 }
 
 .smart-contract-demo__details strong {
-  color: #111827;
+  color: hsl(var(--foreground));
   font-weight: 600;
 }
 
 .smart-contract-demo__transaction-info h3 {
-  color: #111827;
+  color: hsl(var(--foreground));
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
@@ -154,7 +154,7 @@
 /* Oracle Verification Card Styles */
 
 .oracle-verification-card {
-  background-color: white;
+  background-color: hsl(var(--card));
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -170,7 +170,7 @@
 }
 
 .oracle-verification-card__header {
-  background-color: #f7f9fc;
+  background-color: hsl(var(--muted));
   padding: 1rem 1.5rem;
   display: flex;
   justify-content: space-between;
@@ -181,6 +181,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
+  color: hsl(var(--foreground));
 }
 
 .oracle-verification-card__status {
@@ -226,11 +227,12 @@
 .info-row .label {
   font-weight: 500;
   min-width: 120px;
-  color: #374151;
+  color: hsl(var(--foreground));
 }
 
 .info-row .value {
   font-weight: 400;
+  color: hsl(var(--foreground));
 }
 
 .info-row .payment {
@@ -245,17 +247,17 @@
 }
 
 .evidence-placeholder {
-  background-color: #f7f9fc;
+  background-color: hsl(var(--muted));
   border-radius: 4px;
   height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #374151;
+  color: hsl(var(--muted-foreground));
 }
 
 .oracle-verification-card__code {
-  border-top: 1px solid #e0e4e8;
+  border-top: 1px solid hsl(var(--border));
   padding: 1.5rem;
 }
 
@@ -266,6 +268,7 @@
 .code-section h4 {
   font-size: 1rem;
   margin-bottom: 0.75rem;
+  color: hsl(var(--foreground));
 }
 
 .code-block {
@@ -282,7 +285,7 @@
 /* Smart Contract Visualizer Styles */
 
 .smart-contract-visualizer {
-  background-color: white;
+  background-color: hsl(var(--card));
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -290,7 +293,7 @@
 
 .smart-contract-visualizer__header {
   padding: 1rem 1.5rem;
-  background-color: #f7f9fc;
+  background-color: hsl(var(--muted));
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -301,6 +304,7 @@
 .smart-contract-visualizer__header h3 {
   margin: 0;
   font-weight: 600;
+  color: hsl(var(--foreground));
 }
 
 .contract-address {
@@ -311,7 +315,7 @@
 
 .contract-address .label {
   font-weight: 500;
-  color: #374151;
+  color: hsl(var(--foreground));
 }
 
 .contract-address .address {
@@ -355,7 +359,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f2f5;
+  background-color: hsl(var(--muted));
   border-radius: 50%;
   transition: background-color 0.3s;
 }
@@ -367,14 +371,14 @@
 .node-label {
   font-size: 0.875rem;
   text-align: center;
-  color: #374151;
+  color: hsl(var(--foreground));
   font-weight: 500;
 }
 
 .blockchain-connection {
   flex-grow: 1;
   height: 2px;
-  background-color: #e0e4e8;
+  background-color: hsl(var(--border));
   margin: 0 0.5rem;
 }
 
@@ -413,7 +417,7 @@
 
 .progress-bar {
   height: 8px;
-  background-color: #e0e4e8;
+  background-color: hsl(var(--muted));
   border-radius: 4px;
   overflow: hidden;
 }
@@ -426,12 +430,12 @@
 
 .progress-text {
   font-size: 0.875rem;
-  color: #374151;
+  color: hsl(var(--foreground));
   margin-top: 0.5rem;
 }
 
 .smart-contract-visualizer__code {
-  border-top: 1px solid #e0e4e8;
+  border-top: 1px solid hsl(var(--border));
   padding: 1.5rem;
 }
 
@@ -445,20 +449,22 @@
 .code-header h4 {
   margin: 0;
   font-size: 1rem;
+  color: hsl(var(--foreground));
 }
 
 .code-toggle {
   background: transparent;
-  border: 1px solid #e0e4e8;
+  border: 1px solid hsl(var(--border));
   border-radius: 4px;
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s;
+  color: hsl(var(--foreground));
 }
 
 .code-toggle:hover {
-  background-color: #f0f2f5;
+  background-color: hsl(var(--muted));
 }
 
 /* Responsive styles */

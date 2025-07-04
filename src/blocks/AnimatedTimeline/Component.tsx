@@ -182,7 +182,7 @@ export const AnimatedTimeline: React.FC<AnimatedTimelineProps> = (props) => {
                 )}
 
                 <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                {step.description && <p className="text-gray-600">{step.description}</p>}
+                {step.description && <p className="text-muted-foreground">{step.description}</p>}
 
                 {step.image && (
                   <div className="mt-4">

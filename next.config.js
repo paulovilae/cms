@@ -28,9 +28,12 @@ const nextConfig = {
   // Enable standalone output for Docker
   output: 'standalone',
   // Turbopack configuration (Next.js 15.3.0+)
+  // Turbopack handles CSS modules automatically, no explicit configuration needed
   turbopack: {
-    // Empty configuration to acknowledge Turbopack usage
-    // This tells Next.js we're aware of Turbopack and using default settings
+    // Resolve aliases for better module resolution
+    resolveAlias: {
+      // Add custom aliases if needed in the future
+    },
   },
 }
 

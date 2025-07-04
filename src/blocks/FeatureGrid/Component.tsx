@@ -94,7 +94,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = (props) => {
       ? 'bg-gray-900 text-white'
       : backgroundColor === 'brand'
         ? 'bg-blue-600 text-white'
-        : 'bg-white text-gray-900'
+        : 'bg-background text-foreground'
 
   return (
     <div className={cn('py-16', bgClasses)}>
@@ -122,7 +122,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = (props) => {
                     ? 'bg-gray-800'
                     : backgroundColor === 'brand'
                       ? 'bg-blue-700'
-                      : 'bg-white',
+                      : 'bg-card',
                 )}
               >
                 <div className="flex items-start mb-4">
@@ -146,7 +146,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = (props) => {
                       ? 'text-gray-300'
                       : backgroundColor === 'brand'
                         ? 'text-blue-100'
-                        : 'text-gray-600',
+                        : 'text-muted-foreground',
                   )}
                 >
                   {feature.description}

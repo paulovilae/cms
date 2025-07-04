@@ -133,7 +133,7 @@ export const ParallaxHero: React.FC<ParallaxHeroProps> = (props) => {
         <div
           className={cn(
             'container mx-auto text-center',
-            textColor === 'light' ? 'text-white' : 'text-gray-900',
+            textColor === 'light' ? 'text-white' : 'text-foreground',
           )}
         >
           {heading && (
