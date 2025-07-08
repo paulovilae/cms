@@ -12,12 +12,15 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
+import { getCurrentBranding, getBrandingCSSVars } from '@/utilities/branding'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+  const branding = getCurrentBranding()
+  const brandingVars = getBrandingCSSVars()
 
   return (
     <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
@@ -25,8 +28,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `:root { ${Object.entries(brandingVars)
+              .map(([key, value]) => `${key}: ${value}`)
+              .join('; ')} }`,
+          }}
+        />
       </head>
-      <body>
+      <body data-business={branding.name}>
         <Providers>
           <AdminBar
             adminBarProps={{
@@ -48,6 +58,6 @@ export const metadata: Metadata = {
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@intellitrade',
+    creator: getCurrentBranding().social.twitter,
   },
 }

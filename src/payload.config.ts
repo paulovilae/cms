@@ -35,6 +35,7 @@ import { latinosPlugin } from './plugins/business/latinos'
 
 // Shared feature plugins
 import { aiManagementPlugin } from './plugins/shared/ai-management'
+// import { affineIntegrationPlugin } from './plugins/shared/affine-integration' // Disabled - causing import errors
 
 // Utilities
 import { defaultLexical } from '@/fields/defaultLexical'
@@ -69,6 +70,7 @@ const getSharedFeaturePlugins = () => {
 
   const sharedPlugins: { [key: string]: any } = {
     aiManagement: aiManagementPlugin(),
+    // affineIntegration: affineIntegrationPlugin(), // Disabled - causing import errors
     // Add more shared plugins here as they're created
     // gamification: gamificationPlugin(),
     // digitalPayments: digitalPaymentsPlugin(),
@@ -79,6 +81,9 @@ const getSharedFeaturePlugins = () => {
   if (businessMode === 'salarium' || businessMode === 'all') {
     requiredPlugins.push(aiManagementPlugin())
   }
+
+  // Always include AFFiNE Integration for Universal Block System
+  // requiredPlugins.push(affineIntegrationPlugin()) // Disabled - causing import errors
 
   const featurePlugins = enabledFeatures
     .filter((feature) => sharedPlugins[feature])
@@ -164,6 +169,7 @@ export default buildConfig({
     PricingPlans,
 
     // Business-specific collections are added via plugins
+    // AFFiNE Integration collections are added via affineIntegrationPlugin (currently disabled)
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
@@ -222,6 +228,11 @@ export default buildConfig({
             productName: 'Latinos',
             features: 'Trading Features',
           },
+          affine: {
+            workspaces: 'AFFiNE Workspaces',
+            documents: 'Workflow Documents',
+            collaboration: 'Real-time Collaboration',
+          },
         },
       },
       es: {
@@ -268,6 +279,11 @@ export default buildConfig({
           latinos: {
             productName: 'Latinos',
             features: 'Características de Trading',
+          },
+          affine: {
+            workspaces: 'Espacios de Trabajo AFFiNE',
+            documents: 'Documentos de Flujo de Trabajo',
+            collaboration: 'Colaboración en Tiempo Real',
           },
         },
       },

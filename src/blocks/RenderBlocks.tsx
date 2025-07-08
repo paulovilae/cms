@@ -14,7 +14,6 @@ import { AnimatedTimeline } from '@/blocks/AnimatedTimeline/Component'
 import { FeatureGrid } from '@/blocks/FeatureGrid/Component'
 import { StatCounter } from '@/blocks/StatCounter/Component'
 import { FloatingCTA } from '@/blocks/FloatingCTA/Component'
-import { Component as SmartContractDemoBlock } from '@/blocks/SmartContractDemo/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -28,7 +27,6 @@ const blockComponents = {
   'feature-grid': FeatureGrid,
   'stat-counter': StatCounter,
   'floating-cta': FloatingCTA,
-  'smart-contract-demo': SmartContractDemoBlock,
 }
 
 export const RenderBlocks: React.FC<{

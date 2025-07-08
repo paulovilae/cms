@@ -4,6 +4,7 @@ import type { Media, Page, Post, Config } from '../payload-types'
 
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
+import { getCurrentBranding } from './branding'
 
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   const serverUrl = getServerSideURL()
@@ -23,17 +24,18 @@ export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post> | null
 }): Promise<Metadata> => {
   const { doc } = args
+  const branding = getCurrentBranding()
 
   const ogImage = getImageURL(doc?.meta?.image)
 
   const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | IntelliTrade Platform'
-    : 'IntelliTrade | Trade Finance Platform'
+    ? doc?.meta?.title + ` | ${branding.displayName}`
+    : `${branding.displayName} | ${branding.tagline}`
 
   return {
-    description: doc?.meta?.description,
+    description: doc?.meta?.description || branding.description,
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
+      description: doc?.meta?.description || branding.description,
       images: ogImage
         ? [
             {

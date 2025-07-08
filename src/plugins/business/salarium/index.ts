@@ -7,6 +7,17 @@ import { Organizations } from './collections/Organizations'
 import { JobFamilies } from './collections/JobFamilies'
 import { Departments } from './collections/Departments'
 
+// Import Salarium endpoints
+import { aiProcessEndpoint } from './endpoints/ai-process'
+import { flowTemplatesEndpoint, flowTemplateBySlugEndpoint } from './endpoints/flow-templates'
+import {
+  flowInstancesEndpoint,
+  createFlowInstanceEndpoint,
+  updateFlowInstanceEndpoint,
+  getFlowInstanceEndpoint,
+  deleteFlowInstanceEndpoint,
+} from './endpoints/flow-instances'
+
 /**
  * Salarium Plugin
  *
@@ -23,6 +34,17 @@ export const salariumPlugin = (): Plugin => (incomingConfig) => {
       Organizations,
       JobFamilies,
       Departments,
+    ],
+    endpoints: [
+      ...(incomingConfig.endpoints || []),
+      aiProcessEndpoint,
+      flowTemplatesEndpoint,
+      flowTemplateBySlugEndpoint,
+      flowInstancesEndpoint,
+      createFlowInstanceEndpoint,
+      updateFlowInstanceEndpoint,
+      getFlowInstanceEndpoint,
+      deleteFlowInstanceEndpoint,
     ],
   }
 }

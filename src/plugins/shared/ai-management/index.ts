@@ -84,6 +84,28 @@ export const aiManagementPlugin = (): Plugin => (incomingConfig) => {
                     },
                   },
 
+                  // Cloudflare Access fields (for protected Ollama instances)
+                  {
+                    name: 'cfAccessClientId',
+                    type: 'text',
+                    label: 'Cloudflare Access Client ID',
+                    admin: {
+                      description:
+                        'Client ID for Cloudflare Access service token (for protected Ollama instances)',
+                      condition: (data) => data.provider === 'ollama',
+                    },
+                  },
+                  {
+                    name: 'cfAccessClientSecret',
+                    type: 'text',
+                    label: 'Cloudflare Access Client Secret',
+                    admin: {
+                      description:
+                        'Client Secret for Cloudflare Access service token (for protected Ollama instances)',
+                      condition: (data) => data.provider === 'ollama',
+                    },
+                  },
+
                   // Model Selection - Dropdown with discovered models
                   {
                     name: 'model',
@@ -460,6 +482,8 @@ export const aiManagementPlugin = (): Plugin => (incomingConfig) => {
                     apiKey: data.apiKey,
                     model: data.model,
                     testEndpoint: data.testEndpoint,
+                    cfAccessClientId: data.cfAccessClientId,
+                    cfAccessClientSecret: data.cfAccessClientSecret,
                   })
 
                   // Update connection status fields

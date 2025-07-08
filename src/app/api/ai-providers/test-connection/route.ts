@@ -9,7 +9,16 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json()
-    const { id, provider, baseUrl, apiKey, model, testEndpoint } = body
+    const {
+      id,
+      provider,
+      baseUrl,
+      apiKey,
+      model,
+      testEndpoint,
+      cfAccessClientId,
+      cfAccessClientSecret,
+    } = body
 
     if (!provider) {
       return NextResponse.json({ error: 'Provider is required' }, { status: 400 })
@@ -24,6 +33,8 @@ export async function POST(request: NextRequest) {
         apiKey,
         model,
         testEndpoint,
+        cfAccessClientId,
+        cfAccessClientSecret,
       },
     )
 
@@ -74,6 +85,8 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const provider = searchParams.get('provider')
   const baseUrl = searchParams.get('baseUrl')
+  const cfAccessClientId = searchParams.get('cfAccessClientId')
+  const cfAccessClientSecret = searchParams.get('cfAccessClientSecret')
 
   if (!provider) {
     return NextResponse.json({ error: 'Provider parameter is required' }, { status: 400 })
@@ -83,6 +96,8 @@ export async function GET(request: NextRequest) {
     const testResult = await testConnection({ user: null } as any, {
       provider,
       baseUrl: baseUrl || undefined,
+      cfAccessClientId: cfAccessClientId || undefined,
+      cfAccessClientSecret: cfAccessClientSecret || undefined,
     })
 
     return NextResponse.json({

@@ -6,6 +6,8 @@ interface TestConnectionRequest {
   apiKey?: string
   model?: string
   testEndpoint?: string
+  cfAccessClientId?: string
+  cfAccessClientSecret?: string
 }
 
 interface TestConnectionResponse {
@@ -61,12 +63,21 @@ async function testOllamaConnection(
   const testUrl = data.testEndpoint || `${baseUrl}/api/tags`
 
   try {
+    // Prepare headers with optional Cloudflare Access service token
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    }
+
+    // Add Cloudflare Access service token headers if provided
+    if (data.cfAccessClientId && data.cfAccessClientSecret) {
+      headers['CF-Access-Client-Id'] = data.cfAccessClientId
+      headers['CF-Access-Client-Secret'] = data.cfAccessClientSecret
+    }
+
     // First, test if Ollama is running by checking available models
     const response = await fetch(testUrl, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
       signal: AbortSignal.timeout(10000), // 10 second timeout
     })
 
@@ -85,9 +96,7 @@ async function testOllamaConnection(
       try {
         const generateResponse = await fetch(`${baseUrl}/api/generate`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers,
           body: JSON.stringify({
             model: data.model,
             prompt: 'Hello',

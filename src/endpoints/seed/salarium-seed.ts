@@ -238,6 +238,7 @@ export const seedSalariumCollections = async (payload: Payload): Promise<void> =
       collection: 'flow-templates',
       data: {
         name: 'Job Description Creation',
+        slug: 'job-description-creation',
         description:
           'Create comprehensive job descriptions with AI assistance. This template guides you through defining job title, mission, scope, responsibilities, and qualifications.',
         category: 'hr',

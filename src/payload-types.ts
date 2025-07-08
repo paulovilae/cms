@@ -563,7 +563,11 @@ export interface BotPerformanceAnalytics {
 export interface Page {
   id: number;
   title: string;
-  pageType?: ('standard' | 'landing' | 'product' | 'caseStudy') | null;
+  /**
+   * Select which business this page belongs to. "All Businesses" makes it available to all.
+   */
+  business?: ('all' | 'intellitrade' | 'salarium' | 'latinos') | null;
+  pageType?: ('standard' | 'landing' | 'product' | 'caseStudy' | 'homepage') | null;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -618,7 +622,6 @@ export interface Page {
     | FeatureGridBlock
     | StatCounterBlock
     | FloatingCTABlock
-    | SmartContractDemoBlock
   )[];
   meta?: {
     title?: string | null;
@@ -812,6 +815,11 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
+  role?: ('admin' | 'user') | null;
+  /**
+   * Select which businesses this user can access
+   */
+  businessAccess?: ('intellitrade' | 'salarium' | 'latinos' | 'all')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1317,21 +1325,408 @@ export interface FloatingCTABlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "SmartContractDemoBlock".
+ * via the `definition` "team-members".
  */
-export interface SmartContractDemoBlock {
-  heading?: string | null;
+export interface TeamMember {
+  id: number;
+  name: string;
+  position: string;
+  photo: number | Media;
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  socialLinks?:
+    | {
+        platform: 'linkedin' | 'twitter' | 'github' | 'website';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Display order (lower numbers appear first)
+   */
+  order?: number | null;
+  department?: ('leadership' | 'engineering' | 'product' | 'marketing' | 'operations') | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  name: string;
+  position: string;
+  company: string;
+  photo?: (number | null) | Media;
+  quote: string;
+  rating: '5' | '4' | '3';
+  /**
+   * Display this testimonial prominently
+   */
+  featured?: boolean | null;
+  testimonialType?: ('exporter' | 'importer' | 'partner') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing-plans".
+ */
+export interface PricingPlan {
+  id: number;
+  name: string;
+  description: string;
+  priceMonthly: number;
+  priceYearly: number;
+  features?:
+    | {
+        feature: string;
+        included?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Highlight this plan
+   */
+  featured?: boolean | null;
+  /**
+   * Display order (lower numbers appear first)
+   */
+  order?: number | null;
+  planType: 'starter' | 'professional' | 'enterprise';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: number;
+  /**
+   * You will need to rebuild the website when changing this field.
+   */
+  from: string;
+  to?: {
+    type?: ('reference' | 'custom') | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: number;
+  form: number | Form;
+  submissionData?:
+    | {
+        field: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search".
+ */
+export interface Search {
+  id: number;
+  title?: string | null;
+  priority?: number | null;
+  doc: {
+    relationTo: 'posts';
+    value: number | Post;
+  };
+  slug?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  categories?:
+    | {
+        relationTo?: string | null;
+        categoryID?: string | null;
+        title?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Manage AI providers with comprehensive configuration and monitoring
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-providers".
+ */
+export interface AiProvider {
+  id: number;
+  /**
+   * Descriptive name for this AI provider configuration
+   */
+  name: string;
+  /**
+   * AI provider type
+   */
+  provider: 'openai' | 'anthropic' | 'google' | 'azure' | 'ollama' | 'lmstudio';
+  /**
+   * API endpoint URL (e.g., https://api.openai.com/v1 or http://localhost:11434)
+   */
+  baseUrl?: string | null;
+  /**
+   * API key for the AI provider (leave empty for local providers)
+   */
+  apiKey?: string | null;
+  /**
+   * Brief description of the provider and its capabilities
+   */
   description?: string | null;
   /**
-   * Select an export transaction to showcase in this demo
+   * Client ID for Cloudflare Access service token (for protected Ollama instances)
    */
-  transaction: number | ExportTransaction;
-  showTechnicalDetails?: boolean | null;
-  animationSpeed?: ('slow' | 'medium' | 'fast') | null;
-  interactiveMode?: ('manual' | 'auto' | 'both') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'smart-contract-demo';
+  cfAccessClientId?: string | null;
+  /**
+   * Client Secret for Cloudflare Access service token (for protected Ollama instances)
+   */
+  cfAccessClientSecret?: string | null;
+  /**
+   * Select from available models. Test connection to discover more models automatically.
+   */
+  model:
+    | 'deepseek-r1:1.5b'
+    | 'lucasmg/deepseek-r1-8b-0528-qwen3-q4_K_M-tool-true:latest'
+    | 'nomic-embed-text:latest'
+    | 'qwen2.5:7b-instruct-q4_K_M'
+    | 'mychen76/qwen3_cline_roocode:8b'
+    | 'llama3.2:latest'
+    | 'llama2'
+    | 'gpt-4o'
+    | 'gpt-4o-mini'
+    | 'gpt-3.5-turbo'
+    | 'claude-3-5-sonnet-20241022'
+    | 'claude-3-5-haiku-20241022'
+    | 'gemini-1.5-pro'
+    | 'gemini-1.5-flash';
+  /**
+   * Maximum tokens that can be generated (auto-updated when model changes)
+   */
+  maxOutputTokens?: number | null;
+  /**
+   * Total context window size in tokens (auto-updated when model changes)
+   */
+  contextWindow?: number | null;
+  /**
+   * Can process and analyze images (auto-updated when model changes)
+   */
+  supportsImages?: boolean | null;
+  /**
+   * Can interact with computer interfaces (Claude Computer Use)
+   */
+  supportsComputerUse?: boolean | null;
+  /**
+   * Supports caching of prompts for cost optimization
+   */
+  supportsPromptCaching?: boolean | null;
+  /**
+   * Can call external functions and tools (auto-updated when model changes)
+   */
+  supportsFunctionCalling?: boolean | null;
+  /**
+   * Can stream responses in real-time
+   */
+  supportsStreaming?: boolean | null;
+  /**
+   * Can analyze and understand visual content (auto-updated when model changes)
+   */
+  supportsVision?: boolean | null;
+  /**
+   * Cost in cents per 1 million input tokens (auto-updated when model changes)
+   */
+  inputPriceCents?: number | null;
+  /**
+   * Cost in cents per 1 million output tokens (auto-updated when model changes)
+   */
+  outputPriceCents?: number | null;
+  /**
+   * Cost in cents per 1 million cached tokens read (e.g., 30 for $0.30)
+   */
+  cacheReadsPriceCents?: number | null;
+  /**
+   * Cost in cents per 1 million tokens written to cache (e.g., 375 for $3.75)
+   */
+  cacheWritesPriceCents?: number | null;
+  /**
+   * Controls randomness in responses (0.0 - 2.0)
+   */
+  temperature?: number | null;
+  /**
+   * Nucleus sampling parameter (0.0 - 1.0)
+   */
+  topP?: number | null;
+  /**
+   * Top-K sampling parameter (optional, provider-specific)
+   */
+  topK?: number | null;
+  /**
+   * Penalizes frequent tokens (-2.0 to 2.0)
+   */
+  frequencyPenalty?: number | null;
+  /**
+   * Penalizes tokens that have appeared (-2.0 to 2.0)
+   */
+  presencePenalty?: number | null;
+  /**
+   * Official website URL
+   */
+  website?: string | null;
+  /**
+   * API documentation URL
+   */
+  documentation?: string | null;
+  /**
+   * Support email or contact information
+   */
+  supportContact?: string | null;
+  /**
+   * API or model version
+   */
+  version?: string | null;
+  /**
+   * JSON array of tags for categorization (e.g., ["fast", "cheap", "local"])
+   */
+  tags?: string | null;
+  connectionStatus?: ('connected' | 'disconnected' | 'testing' | 'error') | null;
+  lastTestDate?: string | null;
+  responseTimeMs?: number | null;
+  lastTestError?: string | null;
+  /**
+   * Specific endpoint to test (defaults to base URL)
+   */
+  testEndpoint?: string | null;
+  /**
+   * Automatically test connection when saving this provider
+   */
+  autoTestOnSave?: boolean | null;
+  /**
+   * Auto-populated by model discovery
+   */
+  availableModels?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companies".
+ */
+export interface Company {
+  id: number;
+  name: string;
+  type: 'exporter' | 'importer' | 'both';
+  description?: string | null;
+  address?: {
+    streetAddress?: string | null;
+    city?: string | null;
+    stateProvince?: string | null;
+    postalCode?: string | null;
+    country?: string | null;
+    /**
+     * Format: latitude,longitude (e.g., 34.0522,-118.2437)
+     */
+    gpsCoordinates?: string | null;
+  };
+  contactInfo?: {
+    primaryPhone?: string | null;
+    alternatePhone?: string | null;
+    email?: string | null;
+    contactPerson?: string | null;
+    contactPosition?: string | null;
+  };
+  businessDetails?: {
+    registrationNumber?: string | null;
+    taxId?: string | null;
+    yearEstablished?: number | null;
+    industrySector?:
+      | (
+          | 'agriculture'
+          | 'manufacturing'
+          | 'food-processing'
+          | 'textiles'
+          | 'electronics'
+          | 'pharmaceuticals'
+          | 'automotive'
+          | 'commodities'
+          | 'retail'
+          | 'other'
+        )
+      | null;
+    employeeCount?: number | null;
+    /**
+     * Annual revenue in USD
+     */
+    annualRevenue?: number | null;
+    certifications?:
+      | {
+          name: string;
+          issuingBody?: string | null;
+          issueDate?: string | null;
+          expiryDate?: string | null;
+          document?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  country?: string | null;
+  logo?: (number | null) | Media;
+  /**
+   * Full URL including https://
+   */
+  website?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1545,403 +1940,6 @@ export interface ExportTransaction {
   smartContractCode?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "companies".
- */
-export interface Company {
-  id: number;
-  name: string;
-  type: 'exporter' | 'importer' | 'both';
-  description?: string | null;
-  address?: {
-    streetAddress?: string | null;
-    city?: string | null;
-    stateProvince?: string | null;
-    postalCode?: string | null;
-    country?: string | null;
-    /**
-     * Format: latitude,longitude (e.g., 34.0522,-118.2437)
-     */
-    gpsCoordinates?: string | null;
-  };
-  contactInfo?: {
-    primaryPhone?: string | null;
-    alternatePhone?: string | null;
-    email?: string | null;
-    contactPerson?: string | null;
-    contactPosition?: string | null;
-  };
-  businessDetails?: {
-    registrationNumber?: string | null;
-    taxId?: string | null;
-    yearEstablished?: number | null;
-    industrySector?:
-      | (
-          | 'agriculture'
-          | 'manufacturing'
-          | 'food-processing'
-          | 'textiles'
-          | 'electronics'
-          | 'pharmaceuticals'
-          | 'automotive'
-          | 'commodities'
-          | 'retail'
-          | 'other'
-        )
-      | null;
-    employeeCount?: number | null;
-    /**
-     * Annual revenue in USD
-     */
-    annualRevenue?: number | null;
-    certifications?:
-      | {
-          name: string;
-          issuingBody?: string | null;
-          issueDate?: string | null;
-          expiryDate?: string | null;
-          document?: (number | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  country?: string | null;
-  logo?: (number | null) | Media;
-  /**
-   * Full URL including https://
-   */
-  website?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "team-members".
- */
-export interface TeamMember {
-  id: number;
-  name: string;
-  position: string;
-  photo: number | Media;
-  bio?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  socialLinks?:
-    | {
-        platform: 'linkedin' | 'twitter' | 'github' | 'website';
-        url: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Display order (lower numbers appear first)
-   */
-  order?: number | null;
-  department?: ('leadership' | 'engineering' | 'product' | 'marketing' | 'operations') | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials".
- */
-export interface Testimonial {
-  id: number;
-  name: string;
-  position: string;
-  company: string;
-  photo?: (number | null) | Media;
-  quote: string;
-  rating: '5' | '4' | '3';
-  /**
-   * Display this testimonial prominently
-   */
-  featured?: boolean | null;
-  testimonialType?: ('exporter' | 'importer' | 'partner') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pricing-plans".
- */
-export interface PricingPlan {
-  id: number;
-  name: string;
-  description: string;
-  priceMonthly: number;
-  priceYearly: number;
-  features?:
-    | {
-        feature: string;
-        included?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Highlight this plan
-   */
-  featured?: boolean | null;
-  /**
-   * Display order (lower numbers appear first)
-   */
-  order?: number | null;
-  planType: 'starter' | 'professional' | 'enterprise';
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "redirects".
- */
-export interface Redirect {
-  id: number;
-  /**
-   * You will need to rebuild the website when changing this field.
-   */
-  from: string;
-  to?: {
-    type?: ('reference' | 'custom') | null;
-    reference?:
-      | ({
-          relationTo: 'pages';
-          value: number | Page;
-        } | null)
-      | ({
-          relationTo: 'posts';
-          value: number | Post;
-        } | null);
-    url?: string | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions".
- */
-export interface FormSubmission {
-  id: number;
-  form: number | Form;
-  submissionData?:
-    | {
-        field: string;
-        value: string;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "search".
- */
-export interface Search {
-  id: number;
-  title?: string | null;
-  priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: number | Post;
-  };
-  slug?: string | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (number | null) | Media;
-  };
-  categories?:
-    | {
-        relationTo?: string | null;
-        categoryID?: string | null;
-        title?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Manage AI providers with comprehensive configuration and monitoring
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ai-providers".
- */
-export interface AiProvider {
-  id: number;
-  /**
-   * Descriptive name for this AI provider configuration
-   */
-  name: string;
-  /**
-   * AI provider type
-   */
-  provider: 'openai' | 'anthropic' | 'google' | 'azure' | 'ollama' | 'lmstudio';
-  /**
-   * API endpoint URL (e.g., https://api.openai.com/v1 or http://localhost:11434)
-   */
-  baseUrl?: string | null;
-  /**
-   * API key for the AI provider (leave empty for local providers)
-   */
-  apiKey?: string | null;
-  /**
-   * Brief description of the provider and its capabilities
-   */
-  description?: string | null;
-  /**
-   * Select from available models. Test connection to discover more models automatically.
-   */
-  model:
-    | 'deepseek-r1:1.5b'
-    | 'lucasmg/deepseek-r1-8b-0528-qwen3-q4_K_M-tool-true:latest'
-    | 'nomic-embed-text:latest'
-    | 'qwen2.5:7b-instruct-q4_K_M'
-    | 'mychen76/qwen3_cline_roocode:8b'
-    | 'llama3.2:latest'
-    | 'llama2'
-    | 'gpt-4o'
-    | 'gpt-4o-mini'
-    | 'gpt-3.5-turbo'
-    | 'claude-3-5-sonnet-20241022'
-    | 'claude-3-5-haiku-20241022'
-    | 'gemini-1.5-pro'
-    | 'gemini-1.5-flash';
-  /**
-   * Maximum tokens that can be generated (auto-updated when model changes)
-   */
-  maxOutputTokens?: number | null;
-  /**
-   * Total context window size in tokens (auto-updated when model changes)
-   */
-  contextWindow?: number | null;
-  /**
-   * Can process and analyze images (auto-updated when model changes)
-   */
-  supportsImages?: boolean | null;
-  /**
-   * Can interact with computer interfaces (Claude Computer Use)
-   */
-  supportsComputerUse?: boolean | null;
-  /**
-   * Supports caching of prompts for cost optimization
-   */
-  supportsPromptCaching?: boolean | null;
-  /**
-   * Can call external functions and tools (auto-updated when model changes)
-   */
-  supportsFunctionCalling?: boolean | null;
-  /**
-   * Can stream responses in real-time
-   */
-  supportsStreaming?: boolean | null;
-  /**
-   * Can analyze and understand visual content (auto-updated when model changes)
-   */
-  supportsVision?: boolean | null;
-  /**
-   * Cost in cents per 1 million input tokens (auto-updated when model changes)
-   */
-  inputPriceCents?: number | null;
-  /**
-   * Cost in cents per 1 million output tokens (auto-updated when model changes)
-   */
-  outputPriceCents?: number | null;
-  /**
-   * Cost in cents per 1 million cached tokens read (e.g., 30 for $0.30)
-   */
-  cacheReadsPriceCents?: number | null;
-  /**
-   * Cost in cents per 1 million tokens written to cache (e.g., 375 for $3.75)
-   */
-  cacheWritesPriceCents?: number | null;
-  /**
-   * Controls randomness in responses (0.0 - 2.0)
-   */
-  temperature?: number | null;
-  /**
-   * Nucleus sampling parameter (0.0 - 1.0)
-   */
-  topP?: number | null;
-  /**
-   * Top-K sampling parameter (optional, provider-specific)
-   */
-  topK?: number | null;
-  /**
-   * Penalizes frequent tokens (-2.0 to 2.0)
-   */
-  frequencyPenalty?: number | null;
-  /**
-   * Penalizes tokens that have appeared (-2.0 to 2.0)
-   */
-  presencePenalty?: number | null;
-  /**
-   * Official website URL
-   */
-  website?: string | null;
-  /**
-   * API documentation URL
-   */
-  documentation?: string | null;
-  /**
-   * Support email or contact information
-   */
-  supportContact?: string | null;
-  /**
-   * API or model version
-   */
-  version?: string | null;
-  /**
-   * JSON array of tags for categorization (e.g., ["fast", "cheap", "local"])
-   */
-  tags?: string | null;
-  connectionStatus?: ('connected' | 'disconnected' | 'testing' | 'error') | null;
-  lastTestDate?: string | null;
-  responseTimeMs?: number | null;
-  lastTestError?: string | null;
-  /**
-   * Specific endpoint to test (defaults to base URL)
-   */
-  testEndpoint?: string | null;
-  /**
-   * Automatically test connection when saving this provider
-   */
-  autoTestOnSave?: boolean | null;
-  /**
-   * Auto-populated by model discovery
-   */
-  availableModels?:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -3373,6 +3371,7 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  business?: T;
   pageType?: T;
   hero?:
     | T
@@ -3409,7 +3408,6 @@ export interface PagesSelect<T extends boolean = true> {
         'feature-grid'?: T | FeatureGridBlockSelect<T>;
         'stat-counter'?: T | StatCounterBlockSelect<T>;
         'floating-cta'?: T | FloatingCTABlockSelect<T>;
-        'smart-contract-demo'?: T | SmartContractDemoBlockSelect<T>;
       };
   meta?:
     | T
@@ -3613,20 +3611,6 @@ export interface FloatingCTABlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "SmartContractDemoBlock_select".
- */
-export interface SmartContractDemoBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
-  transaction?: T;
-  showTechnicalDetails?: T;
-  animationSpeed?: T;
-  interactiveMode?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -3779,6 +3763,8 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  role?: T;
+  businessAccess?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -4070,6 +4056,8 @@ export interface AiProvidersSelect<T extends boolean = true> {
   baseUrl?: T;
   apiKey?: T;
   description?: T;
+  cfAccessClientId?: T;
+  cfAccessClientSecret?: T;
   model?: T;
   maxOutputTokens?: T;
   contextWindow?: T;

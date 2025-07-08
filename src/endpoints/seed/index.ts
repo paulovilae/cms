@@ -21,6 +21,7 @@ import { seedSmartContracts } from './smart-contracts'
 import { seedAIProviders } from './ai-providers'
 import { seedSalariumCollections } from './salarium-seed'
 import { seedLatinosData } from '@/plugins/business/latinos/seed'
+import { seedBusinessHomepages } from './business-homepages'
 import type { ExportTransaction } from '@/payload-types'
 
 // Define the collections as a standard CollectionSlug array for type safety
@@ -880,16 +881,62 @@ export const seed = async ({
             backgroundColor: 'light',
           },
           {
-            blockName: 'Interactive Demo',
-            blockType: 'smart-contract-demo',
-            heading: 'Interactive Smart Contract Demo',
-            description:
-              'Explore the Don Hugo Peanut Export process with our interactive demonstration. Step through each verification milestone to see how oracles verify information and trigger smart contract payments.',
-            // Use a number type for the ID since that's what the relationship field expects
-            transaction: demoTransaction ? demoTransaction.id : 0,
-            showTechnicalDetails: true,
-            animationSpeed: 'medium',
-            interactiveMode: 'both',
+            blockName: 'Interactive Demo Content',
+            blockType: 'content',
+            columns: [
+              {
+                size: 'full',
+                richText: {
+                  root: {
+                    type: 'root',
+                    children: [
+                      {
+                        type: 'heading',
+                        children: [
+                          {
+                            type: 'text',
+                            detail: 0,
+                            format: 0,
+                            mode: 'normal',
+                            style: '',
+                            text: 'Interactive Smart Contract Demo',
+                            version: 1,
+                          },
+                        ],
+                        direction: 'ltr',
+                        format: '',
+                        indent: 0,
+                        tag: 'h2',
+                        version: 1,
+                      },
+                      {
+                        type: 'paragraph',
+                        children: [
+                          {
+                            type: 'text',
+                            detail: 0,
+                            format: 0,
+                            mode: 'normal',
+                            style: '',
+                            text: 'Explore the Don Hugo Peanut Export process with our interactive demonstration. Step through each verification milestone to see how oracles verify information and trigger smart contract payments.',
+                            version: 1,
+                          },
+                        ],
+                        direction: 'ltr',
+                        format: '',
+                        indent: 0,
+                        textFormat: 0,
+                        version: 1,
+                      },
+                    ],
+                    direction: 'ltr',
+                    format: '',
+                    indent: 0,
+                    version: 1,
+                  },
+                },
+              },
+            ],
           },
           {
             blockName: 'Statistics',
@@ -993,6 +1040,9 @@ export const seed = async ({
       },
     }),
   ])
+
+  // Seed business-specific homepage pages
+  await seedBusinessHomepages(payload, imageHomeDoc, image2Doc)
 
   payload.logger.info(`— Seeding globals...`)
 

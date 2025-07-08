@@ -19,7 +19,6 @@ import { AnimatedTimeline } from '@/blocks/AnimatedTimeline/config'
 import { FeatureGrid } from '@/blocks/FeatureGrid/config'
 import { StatCounter } from '@/blocks/StatCounter/config'
 import { FloatingCTA } from '@/blocks/FloatingCTA/config'
-import { SmartContractDemo } from '@/blocks/SmartContractDemo/config'
 
 import {
   MetaDescriptionField,
@@ -53,9 +52,10 @@ export const Pages: CollectionConfig<'pages'> = {
   defaultPopulate: {
     title: true,
     slug: true,
+    business: true,
   },
   admin: {
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ['title', 'business', 'slug', 'updatedAt'],
     group: {
       en: 'Content',
       es: 'Contenido',
@@ -96,6 +96,52 @@ export const Pages: CollectionConfig<'pages'> = {
       },
     },
     {
+      name: 'business',
+      type: 'select',
+      label: {
+        en: 'Business',
+        es: 'Negocio',
+      },
+      options: [
+        {
+          label: {
+            en: 'All Businesses',
+            es: 'Todos los Negocios',
+          },
+          value: 'all',
+        },
+        {
+          label: {
+            en: 'IntelliTrade',
+            es: 'IntelliTrade',
+          },
+          value: 'intellitrade',
+        },
+        {
+          label: {
+            en: 'Salarium',
+            es: 'Salarium',
+          },
+          value: 'salarium',
+        },
+        {
+          label: {
+            en: 'Latinos',
+            es: 'Latinos',
+          },
+          value: 'latinos',
+        },
+      ],
+      defaultValue: 'all',
+      admin: {
+        position: 'sidebar',
+        description: {
+          en: 'Select which business this page belongs to. "All Businesses" makes it available to all.',
+          es: 'Seleccione a qué negocio pertenece esta página. "Todos los Negocios" la hace disponible para todos.',
+        },
+      },
+    },
+    {
       name: 'pageType',
       type: 'select',
       label: {
@@ -130,6 +176,13 @@ export const Pages: CollectionConfig<'pages'> = {
             es: 'Caso de Estudio',
           },
           value: 'caseStudy',
+        },
+        {
+          label: {
+            en: 'Homepage',
+            es: 'Página de Inicio',
+          },
+          value: 'homepage',
         },
       ],
       admin: {
@@ -168,8 +221,6 @@ export const Pages: CollectionConfig<'pages'> = {
                 FeatureGrid,
                 StatCounter,
                 FloatingCTA,
-                // Interactive demo block
-                SmartContractDemo,
               ],
               required: true,
               admin: {

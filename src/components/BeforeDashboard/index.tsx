@@ -32,7 +32,7 @@ export const BeforeDashboard: React.FC = () => {
 
   return (
     <div className="p-4 mb-4 bg-white rounded shadow-md dark:bg-gray-800">
-      <h2 className="mb-2 text-xl font-semibold">IntelliTrade Admin Tools</h2>
+      <h2 className="mb-2 text-xl font-semibold">Admin Tools</h2>
 
       <div className="flex flex-wrap items-center gap-4">
         <button
@@ -55,8 +55,8 @@ export const BeforeDashboard: React.FC = () => {
       </div>
 
       <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
-        Click the button above to populate the database with demo data for IntelliTrade, including
-        team members, features, testimonials, and pricing plans.
+        Click the button above to populate the database with demo data, including team members,
+        features, testimonials, pricing plans, and business-specific content.
       </p>
     </div>
   )

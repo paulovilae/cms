@@ -56,6 +56,19 @@ Create additional files/folders within memory-bank/ when they help organize:
 - Testing strategies
 - Deployment procedures
 
+### File Organization Rules
+**CRITICAL**: Never create files in the project root unless they are essential for project operation (package.json, README.md, etc.). Use proper directories:
+- **Completed Tasks**: `.kilocode/completed-tasks/` - Task completion documentation and summaries
+- **Tests**: `.kilocode/tests/` - All test files, scripts, and debugging utilities
+- **Documentation**: `docs/` or `.kilocode/` subdirectories - Project documentation
+- **Temporary Files**: Use `.kilocode/temp/` if needed, but clean up regularly
+
+**Root Directory Policy**: The root directory should only contain:
+- Essential project files (package.json, README.md, .env, etc.)
+- Configuration files required by tools (next.config.js, tailwind.config.mjs, etc.)
+- Build outputs and generated files
+- NO temporary documentation, test files, or task summaries
+
 ## Core workflows
 
 ### Memory Bank Initialization

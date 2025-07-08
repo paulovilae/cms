@@ -33,6 +33,8 @@ The application uses environment-based plugin loading:
   - Testimonials - `src/collections/Testimonials/index.ts`
   - Features - `src/collections/Features/index.ts`
   - PricingPlans - `src/collections/PricingPlans/index.ts`
+  - AFFiNEWorkspaces - `src/collections/AFFiNEWorkspaces/index.ts`
+  - WorkflowDocuments - `src/collections/WorkflowDocuments/index.ts`
 - **Globals**: Configuration settings accessible across the entire application
   - Header - `src/Header/config.ts`
   - Footer - `src/Footer/config.ts`
@@ -55,6 +57,7 @@ The CMS uses a modular block-based system for creating flexible page layouts:
   - StatCounter blocks - Animated statistics display
   - FloatingCTA blocks - Floating call-to-action elements
   - AnimatedTimeline blocks - Animated process timelines
+  - Universal blocks - Advanced collaborative editing and workspace planning system with AFFiNE integration
 
 #### Hero Sections
 Multiple hero section styles defined in `src/heros` directory:

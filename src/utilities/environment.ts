@@ -7,7 +7,8 @@ import path from 'path'
 export type BusinessMode = 'intellitrade' | 'salarium' | 'latinos' | 'all'
 
 /**
- * Get the current business mode from environment variables
+ * Get the current business mode from environment variables (server-side only)
+ * For URL-based business detection, use urlBranding utilities instead
  */
 export const getBusinessMode = (): BusinessMode => {
   return (process.env.BUSINESS_MODE as BusinessMode) || 'all'
@@ -25,8 +26,6 @@ export const isBusinessActive = (business: string): boolean => {
  * Get the database path for the current business mode
  */
 export const getDatabasePath = (): string => {
-  const mode = getBusinessMode()
-
   if (process.env.DATABASE_PATH) {
     return process.env.DATABASE_PATH
   }
@@ -34,17 +33,8 @@ export const getDatabasePath = (): string => {
   // Get absolute path to project root
   const projectRoot = process.cwd()
 
-  // Default database paths based on business mode (using file:// URLs for libsql compatibility)
-  switch (mode) {
-    case 'intellitrade':
-      return `file:${path.join(projectRoot, 'databases', 'intellitrade.db')}`
-    case 'salarium':
-      return `file:${path.join(projectRoot, 'databases', 'salarium.db')}`
-    case 'latinos':
-      return `file:${path.join(projectRoot, 'databases', 'latinos.db')}`
-    default:
-      return `file:${path.join(projectRoot, 'databases', 'dev.db')}`
-  }
+  // Use single database for all businesses - better for multi-tenant architecture
+  return `file:${path.join(projectRoot, 'databases', 'multi-tenant.db')}`
 }
 
 /**

@@ -50,3 +50,19 @@ next-env.d.ts
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+
+# AI model files
+*.safetensors
+
+# Temporary files and documentation
+PHASE1-COMPLETE.md
+setup-ollama-tunnel.md
+test-*.js
+ollama-with-service-token-example.js
+
+# Package lock files (using pnpm)
+package-lock.json
+
+# Generated media files (keep originals only)
+public/media/*-1[4-9].webp
+public/media/*-1[4-9]-*.webp
