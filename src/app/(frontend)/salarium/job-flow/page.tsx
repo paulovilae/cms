@@ -595,7 +595,7 @@ function JobFlowPageContent() {
 
   if (!template) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="text-center max-w-md">
           <div className="text-red-500 text-6xl mb-4">⚠️</div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">Template Not Found</h1>
@@ -620,14 +620,14 @@ function JobFlowPageContent() {
 
   if (isCompleted) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 max-w-4xl bg-background min-h-screen">
         <div className="text-center mb-8">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h1 className="text-3xl font-bold text-green-700 mb-2">Job Description Complete!</h1>
           <p className="text-gray-600">Your job description has been generated successfully.</p>
         </div>
 
-        <Card className="mb-6">
+        <Card className="mb-6 bg-component-bg-elevated border-component-border shadow-component-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Download className="w-5 h-5" />
@@ -635,7 +635,7 @@ function JobFlowPageContent() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-gray-50 p-6 rounded-lg mb-4">
+            <div className="bg-muted p-6 rounded-lg mb-4 border border-component-border">
               <pre className="whitespace-pre-wrap font-mono text-sm">{finalDocument}</pre>
             </div>
             <div className="flex gap-4">
@@ -654,7 +654,7 @@ function JobFlowPageContent() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="container mx-auto px-4 py-8 max-w-4xl bg-background min-h-screen">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
@@ -733,10 +733,10 @@ function JobFlowPageContent() {
               <div
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-colors ${
                   isCurrent
-                    ? 'bg-blue-100 border-2 border-blue-500'
+                    ? 'bg-primary/10 border-2 border-primary shadow-component-sm'
                     : isCompleted
-                      ? 'bg-green-100 border border-green-300'
-                      : 'bg-gray-100 border border-gray-300'
+                      ? 'bg-status-success-bg border border-status-success-border shadow-component-sm'
+                      : 'bg-interactive-bg border border-interactive-border hover:bg-interactive-bg-hover'
                 }`}
                 onClick={() => {
                   // Save current input before switching steps
@@ -758,7 +758,11 @@ function JobFlowPageContent() {
                 )}
                 <span
                   className={`text-sm font-medium ${
-                    isCurrent ? 'text-blue-700' : isCompleted ? 'text-green-700' : 'text-gray-600'
+                    isCurrent
+                      ? 'text-primary'
+                      : isCompleted
+                        ? 'text-status-success-text'
+                        : 'text-component-text-muted'
                   }`}
                 >
                   {step.title}
@@ -773,7 +777,7 @@ function JobFlowPageContent() {
       </div>
 
       {/* Current Step */}
-      <Card className="mb-6">
+      <Card className="mb-6 bg-component-bg border-component-border shadow-component-sm">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             Step {currentStep}: {getCurrentStepData()?.title}
@@ -908,8 +912,8 @@ function JobFlowPageContent() {
             return (
               stepData?.examples &&
               stepData.examples.length > 0 && (
-                <div className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-                  <h4 className="font-medium text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+                <div className="bg-muted border border-component-border rounded-lg p-4">
+                  <h4 className="font-medium text-component-text mb-4 flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-blue-500" />
                     {stepData.examples.length === 1
                       ? 'Example:'
@@ -919,10 +923,10 @@ function JobFlowPageContent() {
                     {stepData.examples?.map((example, index) => (
                       <div
                         key={index}
-                        className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-sm"
+                        className="bg-component-bg border border-component-border rounded-lg p-4 shadow-component-sm"
                       >
                         {stepData.examples && stepData.examples.length > 1 && (
-                          <div className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-3 pb-2 border-b border-slate-200 dark:border-slate-700">
+                          <div className="text-sm font-semibold text-primary mb-3 pb-2 border-b border-component-border">
                             Example {index + 1}
                           </div>
                         )}
@@ -930,7 +934,7 @@ function JobFlowPageContent() {
                         {/* Input Section */}
                         <div className="mb-4">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                            <span className="text-xs font-medium text-component-text-muted uppercase tracking-wide">
                               Input:
                             </span>
                             <Button
@@ -943,8 +947,8 @@ function JobFlowPageContent() {
                               Use This
                             </Button>
                           </div>
-                          <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded p-3">
-                            <p className="text-sm text-slate-800 dark:text-slate-200 font-mono">
+                          <div className="bg-muted border border-component-border rounded p-3">
+                            <p className="text-sm text-component-text font-mono">
                               {example.userInput}
                             </p>
                           </div>
@@ -952,11 +956,11 @@ function JobFlowPageContent() {
 
                         {/* Output Section */}
                         <div>
-                          <span className="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-2 block">
+                          <span className="text-xs font-medium text-component-text-muted uppercase tracking-wide mb-2 block">
                             Expected Output:
                           </span>
-                          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded p-3">
-                            <p className="text-sm text-green-800 dark:text-green-200 whitespace-pre-wrap">
+                          <div className="bg-status-success-bg border border-status-success-border rounded p-3">
+                            <p className="text-sm text-status-success-text whitespace-pre-wrap">
                               {example.expectedOutput}
                             </p>
                           </div>

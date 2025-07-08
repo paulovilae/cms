@@ -64,14 +64,14 @@ export const seedAIProviders = async (payload: Payload): Promise<void> => {
         version: 'v1',
       },
     },
-    // Local Providers
+    // Local Providers - Ollama as primary default
     {
       name: 'Ollama',
       provider: 'ollama' as const,
       baseUrl: 'http://localhost:11434',
       model: 'llama3.2:latest' as AiModelType,
       description:
-        'Run large language models locally with ease. Supports Llama, Mistral, and many other models.',
+        'Run large language models locally with ease. Supports Llama 3.2, Mistral, and many other models. Primary local AI provider.',
       documentation: 'https://ollama.ai/docs',
       metadata: {
         website: 'https://ollama.ai',
@@ -82,8 +82,8 @@ export const seedAIProviders = async (payload: Payload): Promise<void> => {
     {
       name: 'LM Studio',
       provider: 'lmstudio' as const,
-      baseUrl: 'http://localhost:1234',
-      model: 'llama2' as AiModelType, // Changed to a valid model type from the allowed list
+      baseUrl: 'http://localhost:1234/v1',
+      model: 'llama3.2:latest' as AiModelType,
       description:
         'Desktop application for running local LLMs with a user-friendly interface and model discovery.',
       documentation: 'https://lmstudio.ai/docs',

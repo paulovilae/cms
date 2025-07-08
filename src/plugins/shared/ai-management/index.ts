@@ -1,5 +1,6 @@
 import { Plugin } from 'payload'
 import { testConnection } from './endpoints/test-connection'
+import { getAllModelOptions } from './config/models'
 
 /**
  * Enhanced AI Management Plugin
@@ -106,41 +107,16 @@ export const aiManagementPlugin = (): Plugin => (incomingConfig) => {
                     },
                   },
 
-                  // Model Selection - Dropdown with discovered models
+                  // Model Selection - Dropdown with all available models
                   {
                     name: 'model',
                     type: 'select',
                     label: 'Model',
                     required: true,
-                    options: [
-                      // Ollama models (from the database)
-                      { label: 'deepseek-r1:1.5b', value: 'deepseek-r1:1.5b' },
-                      {
-                        label: 'lucasmg/deepseek-r1-8b-0528-qwen3-q4_K_M-tool-true:latest',
-                        value: 'lucasmg/deepseek-r1-8b-0528-qwen3-q4_K_M-tool-true:latest',
-                      },
-                      { label: 'nomic-embed-text:latest', value: 'nomic-embed-text:latest' },
-                      { label: 'qwen2.5:7b-instruct-q4_K_M', value: 'qwen2.5:7b-instruct-q4_K_M' },
-                      {
-                        label: 'mychen76/qwen3_cline_roocode:8b',
-                        value: 'mychen76/qwen3_cline_roocode:8b',
-                      },
-                      { label: 'llama3.2:latest', value: 'llama3.2:latest' },
-                      { label: 'llama2', value: 'llama2' },
-                      // Common OpenAI models
-                      { label: 'gpt-4o', value: 'gpt-4o' },
-                      { label: 'gpt-4o-mini', value: 'gpt-4o-mini' },
-                      { label: 'gpt-3.5-turbo', value: 'gpt-3.5-turbo' },
-                      // Common Anthropic models
-                      { label: 'claude-3-5-sonnet-20241022', value: 'claude-3-5-sonnet-20241022' },
-                      { label: 'claude-3-5-haiku-20241022', value: 'claude-3-5-haiku-20241022' },
-                      // Common Google models
-                      { label: 'gemini-1.5-pro', value: 'gemini-1.5-pro' },
-                      { label: 'gemini-1.5-flash', value: 'gemini-1.5-flash' },
-                    ],
+                    options: getAllModelOptions(),
                     admin: {
                       description:
-                        'Select from available models. Test connection to discover more models automatically.',
+                        'Select from available models. Models are grouped by provider for easy selection.',
                       isClearable: true,
                     },
                   },

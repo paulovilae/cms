@@ -240,8 +240,12 @@ export const updateFlowInstanceEndpoint: Endpoint = {
         existingInstance.user,
       )
 
-      if (existingInstance.user !== user.id) {
-        console.log('Access denied - user:', user.id, 'instance owner:', existingInstance.user)
+      // Handle both string and object user references
+      const instanceUserId =
+        typeof existingInstance.user === 'object' ? existingInstance.user.id : existingInstance.user
+
+      if (instanceUserId !== user.id) {
+        console.log('Access denied - user:', user.id, 'instance owner:', instanceUserId)
         return Response.json({ success: false, error: 'Access denied' }, { status: 403 })
       }
 
@@ -410,10 +414,16 @@ export const getFlowInstanceEndpoint: Endpoint = {
         return Response.json({ success: false, error: 'Instance not found' }, { status: 404 })
       }
 
+      // Handle both string and object user references
+      const instanceUserId = typeof instance.user === 'object' ? instance.user.id : instance.user
+
       // Check access permissions
-      if (instance.user !== user.id) {
+      if (instanceUserId !== user.id) {
         // Check if user is a collaborator
-        const hasAccess = instance.collaborators?.some((collab: any) => collab.user === user.id)
+        const hasAccess = instance.collaborators?.some((collab: any) => {
+          const collabUserId = typeof collab.user === 'object' ? collab.user.id : collab.user
+          return collabUserId === user.id
+        })
 
         if (!hasAccess) {
           return Response.json({ success: false, error: 'Access denied' }, { status: 403 })

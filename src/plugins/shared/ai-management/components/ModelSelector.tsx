@@ -93,6 +93,58 @@ const MODEL_SPECS = {
     outputPriceCents: 30,
   },
 
+  // Ollama Models (Local)
+  'llama3.2:latest': {
+    contextWindow: 131072, // 128K context window
+    maxOutputTokens: 4096,
+    supportsImages: false,
+    supportsVision: false,
+    supportsFunctionCalling: false,
+    supportsComputerUse: false,
+    inputPriceCents: 0, // Free for local models
+    outputPriceCents: 0,
+  },
+  'llama3.1:latest': {
+    contextWindow: 131072, // 128K context window
+    maxOutputTokens: 4096,
+    supportsImages: false,
+    supportsVision: false,
+    supportsFunctionCalling: false,
+    supportsComputerUse: false,
+    inputPriceCents: 0,
+    outputPriceCents: 0,
+  },
+  'llama2:latest': {
+    contextWindow: 4096,
+    maxOutputTokens: 4096,
+    supportsImages: false,
+    supportsVision: false,
+    supportsFunctionCalling: false,
+    supportsComputerUse: false,
+    inputPriceCents: 0,
+    outputPriceCents: 0,
+  },
+  'codellama:latest': {
+    contextWindow: 16384,
+    maxOutputTokens: 4096,
+    supportsImages: false,
+    supportsVision: false,
+    supportsFunctionCalling: false,
+    supportsComputerUse: false,
+    inputPriceCents: 0,
+    outputPriceCents: 0,
+  },
+  'mistral:latest': {
+    contextWindow: 32768,
+    maxOutputTokens: 4096,
+    supportsImages: false,
+    supportsVision: false,
+    supportsFunctionCalling: false,
+    supportsComputerUse: false,
+    inputPriceCents: 0,
+    outputPriceCents: 0,
+  },
+
   // Default for unknown models
   default: {
     contextWindow: 4096,
@@ -186,14 +238,24 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ path, field, value
     }
   }, [value, dispatchFields])
 
-  // Fetch available models when connection details change
+  // Set provider-specific models when provider changes
   useEffect(() => {
-    const fetchModels = async () => {
-      if (!provider || !baseUrl) return
+    if (provider) {
+      const providerModels = getFallbackModels(provider as string)
+      setAvailableModels(providerModels)
+    } else {
+      setAvailableModels([])
+    }
+  }, [provider])
+
+  // Optionally fetch additional models from connection test
+  useEffect(() => {
+    const fetchAdditionalModels = async () => {
+      if (!provider || !baseUrl || connectionStatus !== 'connected') return
 
       setIsLoading(true)
       try {
-        const response = await fetch('/api/ai-providers/discover-models', {
+        const response = await fetch('/api/ai-providers/test-connection', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -205,24 +267,20 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ path, field, value
 
         if (response.ok) {
           const data = await response.json()
-          setAvailableModels(data.models || [])
-        } else {
-          // Fallback to known models for the provider
-          const fallbackModels = getFallbackModels(provider as string)
-          setAvailableModels(fallbackModels)
+          if (data.availableModels && data.availableModels.length > 0) {
+            setAvailableModels(data.availableModels)
+          }
         }
       } catch (error) {
-        console.error('Failed to fetch models:', error)
-        // Fallback to known models for the provider
-        const fallbackModels = getFallbackModels(provider as string)
-        setAvailableModels(fallbackModels)
+        console.error('Failed to fetch additional models:', error)
+        // Keep the fallback models we already set
       } finally {
         setIsLoading(false)
       }
     }
 
-    fetchModels()
-  }, [provider, baseUrl, apiKey])
+    fetchAdditionalModels()
+  }, [provider, baseUrl, apiKey, connectionStatus])
 
   const getFallbackModels = (provider: string): string[] => {
     switch (provider) {
@@ -233,6 +291,16 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ path, field, value
       case 'google':
         return ['gemini-1.5-pro', 'gemini-1.5-flash']
       case 'ollama':
+        return [
+          'llama3.2:latest',
+          'llama3.1:latest',
+          'llama2:latest',
+          'codellama:latest',
+          'mistral:latest',
+          'qwen2.5:7b-instruct-q4_K_M',
+          'deepseek-r1:1.5b',
+        ]
+      case 'lmstudio':
         return ['llama3.2:latest', 'llama3.1:latest', 'codellama:latest', 'mistral:latest']
       default:
         return []

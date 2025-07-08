@@ -1524,23 +1524,37 @@ export interface AiProvider {
    */
   cfAccessClientSecret?: string | null;
   /**
-   * Select from available models. Test connection to discover more models automatically.
+   * Select from available models. Models are grouped by provider for easy selection.
    */
   model:
-    | 'deepseek-r1:1.5b'
-    | 'lucasmg/deepseek-r1-8b-0528-qwen3-q4_K_M-tool-true:latest'
-    | 'nomic-embed-text:latest'
-    | 'qwen2.5:7b-instruct-q4_K_M'
-    | 'mychen76/qwen3_cline_roocode:8b'
+    | ''
     | 'llama3.2:latest'
-    | 'llama2'
+    | 'llama3.1:latest'
+    | 'llama2:latest'
+    | 'codellama:latest'
+    | 'mistral:latest'
+    | 'qwen2.5:7b-instruct-q4_K_M'
+    | 'deepseek-r1:1.5b'
+    | 'phi3:latest'
+    | 'gemma2:latest'
+    | 'neural-chat:latest'
     | 'gpt-4o'
     | 'gpt-4o-mini'
+    | 'gpt-4-turbo'
+    | 'gpt-4'
     | 'gpt-3.5-turbo'
+    | 'gpt-3.5-turbo-16k'
     | 'claude-3-5-sonnet-20241022'
     | 'claude-3-5-haiku-20241022'
+    | 'claude-3-opus-20240229'
+    | 'claude-3-sonnet-20240229'
+    | 'claude-3-haiku-20240307'
     | 'gemini-1.5-pro'
-    | 'gemini-1.5-flash';
+    | 'gemini-1.5-flash'
+    | 'gemini-1.0-pro'
+    | 'gemini-1.0-pro-vision'
+    | 'gpt-35-turbo'
+    | 'gpt-35-turbo-16k';
   /**
    * Maximum tokens that can be generated (auto-updated when model changes)
    */

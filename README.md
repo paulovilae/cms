@@ -57,6 +57,50 @@ An automated trading platform with bot functionality for stock market operations
    - Frontend: http://localhost:3000
    - Admin Panel: http://localhost:3000/admin
 
+## Authentication & Quick Access
+
+The platform supports multiple authentication methods for development and testing:
+
+### URL-Based Authentication
+
+For quick access during development, you can authenticate directly via URL parameters:
+
+#### Auto-Login (Default Test User)
+```
+http://localhost:3000/salarium/job-flow?autoLogin=true
+```
+- Uses default credentials: `test@test.com` / `Test12345%`
+- Automatically logs in and cleans URL parameters
+
+#### Custom Email/Password Login
+```
+http://localhost:3000/salarium/job-flow?email=test@test.com&password=Test12345%
+```
+- Use any valid email/password combination
+- Credentials are removed from URL after successful login
+
+#### Token-Based Authentication
+```
+http://localhost:3000/salarium/job-flow?token=your-jwt-token
+```
+- Use a valid JWT token for authentication
+- Useful for API integrations and automated testing
+
+### Business-Specific Access URLs
+
+Each business product has dedicated access points:
+
+- **Salarium HR Platform**: `http://localhost:3003/salarium/job-flow?autoLogin=true`
+- **IntelliTrade Finance**: `http://localhost:3003/intellitrade?autoLogin=true`
+- **Latinos Trading**: `http://localhost:3003/latinos?autoLogin=true`
+
+### Default Test Credentials
+
+For manual login:
+- **Email**: `test@test.com`
+- **Password**: `Test12345%`
+- **Role**: Admin with full access to all business modules
+
 ## Architecture Overview
 
 ### Plugin-Based Multi-Tenant System

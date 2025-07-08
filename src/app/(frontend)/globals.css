@@ -48,14 +48,14 @@
     --warning: 34 89% 85%;
     --error: 10 100% 86%;
 
-    /* Component-level semantic tokens */
+    /* Component-level semantic tokens - Enhanced for better contrast */
     --component-bg: hsl(var(--card));
-    --component-bg-elevated: hsl(var(--card) / 0.8);
+    --component-bg-elevated: hsl(var(--card) / 0.95);
     --component-border: hsl(var(--border));
     --component-text: hsl(var(--foreground));
-    --component-text-muted: hsl(var(--muted-foreground));
+    --component-text-muted: hsl(215.4 16.3% 25%); /* Darker muted text for better readability */
     --component-text-strong: hsl(var(--foreground));
-    --component-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --component-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     --component-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
     
     /* Button semantic tokens */
@@ -68,16 +68,16 @@
     --button-disabled-bg: hsl(var(--muted));
     --button-disabled-text: hsl(var(--muted-foreground));
     
-    /* Status semantic tokens */
-    --status-success-bg: hsl(var(--success) / 0.1);
-    --status-success-text: hsl(var(--success));
-    --status-success-border: hsl(var(--success));
-    --status-warning-bg: hsl(var(--warning) / 0.1);
-    --status-warning-text: hsl(var(--warning));
-    --status-warning-border: hsl(var(--warning));
-    --status-error-bg: hsl(var(--error) / 0.1);
-    --status-error-text: hsl(var(--error));
-    --status-error-border: hsl(var(--error));
+    /* Status semantic tokens - Enhanced contrast for light theme */
+    --status-success-bg: hsl(196 52% 92%);
+    --status-success-text: hsl(196 52% 25%);
+    --status-success-border: hsl(196 52% 45%);
+    --status-warning-bg: hsl(34 89% 92%);
+    --status-warning-text: hsl(34 89% 25%);
+    --status-warning-border: hsl(34 89% 45%);
+    --status-error-bg: hsl(10 100% 92%);
+    --status-error-text: hsl(10 100% 25%);
+    --status-error-border: hsl(10 100% 45%);
     
     /* Interactive element tokens */
     --interactive-bg: hsl(var(--secondary));
@@ -139,6 +139,28 @@
     /* Override tokens for dark theme */
     --component-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     --component-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+    
+    /* Code block tokens for dark theme - better contrast */
+    --code-bg: hsl(220, 13%, 8%);
+    --code-text: hsl(220, 14%, 85%);
+    
+    /* Enhanced component tokens for dark theme */
+    --component-bg: hsl(var(--card));
+    --component-bg-elevated: hsl(var(--card) / 0.9);
+    --component-text: hsl(var(--foreground));
+    --component-text-muted: hsl(var(--muted-foreground));
+    --component-text-strong: hsl(var(--foreground));
+    
+    /* Status tokens for dark theme - much better contrast */
+    --status-success-bg: hsl(196 100% 8%);
+    --status-success-text: hsl(196 100% 75%);
+    --status-success-border: hsl(196 100% 25%);
+    --status-warning-bg: hsl(34 51% 8%);
+    --status-warning-text: hsl(34 89% 75%);
+    --status-warning-border: hsl(34 51% 25%);
+    --status-error-bg: hsl(10 39% 8%);
+    --status-error-text: hsl(10 100% 75%);
+    --status-error-border: hsl(10 39% 25%);
   }
 }
 
