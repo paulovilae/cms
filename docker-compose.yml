@@ -1,78 +1,108 @@
 services:
-  # IntelliTrade - Trade Finance Platform
-  intellitrade:
-    build: .
-    ports:
-      - "3001:3000"
-    environment:
-      - BUSINESS_MODE=intellitrade
-      - ENABLED_FEATURES=aiManagement
-      - DATABASE_PATH=/app/databases/intellitrade.db
-      - FRONTEND_THEME=intellitrade
-      - PAYLOAD_SECRET=${PAYLOAD_SECRET:-your-secret-key}
-      - NEXT_PUBLIC_SERVER_URL=http://localhost:3001
-    volumes:
-      - ./databases:/app/databases
-      - ./public:/app/public
-    restart: unless-stopped
-    networks:
-      - cms-network
-
-  # Salarium - HR Document Flow Platform  
-  salarium:
-    build: .
-    ports:
-      - "3002:3000"
-    environment:
-      - BUSINESS_MODE=salarium
-      - ENABLED_FEATURES=aiManagement
-      - DATABASE_PATH=/app/databases/salarium.db
-      - FRONTEND_THEME=salarium
-      - PAYLOAD_SECRET=${PAYLOAD_SECRET:-your-secret-key}
-      - NEXT_PUBLIC_SERVER_URL=http://localhost:3002
-    volumes:
-      - ./databases:/app/databases
-      - ./public:/app/public
-    restart: unless-stopped
-    networks:
-      - cms-network
-
-  # Latinos - Trading Stocks Bot Platform
+  # Latinos - Trading Stocks Bot Platform (Primary - Port 3003)
   latinos:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
       - "3003:3000"
     environment:
       - BUSINESS_MODE=latinos
       - ENABLED_FEATURES=aiManagement
-      - DATABASE_PATH=/app/databases/latinos.db
+      - DATABASE_PATH=file:/app/databases/multi-tenant.db
       - FRONTEND_THEME=latinos
       - PAYLOAD_SECRET=${PAYLOAD_SECRET:-your-secret-key}
       - NEXT_PUBLIC_SERVER_URL=http://localhost:3003
     volumes:
-      - ./databases:/app/databases
+      - ./src:/app/src
       - ./public:/app/public
+      - ./databases:/app/databases
+      - /app/node_modules
+      - /app/.next
     restart: unless-stopped
     networks:
       - cms-network
+    profiles:
+      - dev
 
-  # Development Mode - All Plugins Active
-  dev-all:
-    build: .
+  # IntelliTrade - Trade Finance Platform (Port 3004)
+  intellitrade:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
-      - "3000:3000"
+      - "3004:3000"
+    environment:
+      - BUSINESS_MODE=intellitrade
+      - ENABLED_FEATURES=aiManagement
+      - DATABASE_PATH=file:/app/databases/multi-tenant.db
+      - FRONTEND_THEME=intellitrade
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:-your-secret-key}
+      - NEXT_PUBLIC_SERVER_URL=http://localhost:3004
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./databases:/app/databases
+      - /app/node_modules
+      - /app/.next
+    restart: unless-stopped
+    networks:
+      - cms-network
+    profiles:
+      - dev
+
+  # Salarium - HR Document Flow Platform (Port 3005)
+  salarium:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3005:3000"
+    environment:
+      - BUSINESS_MODE=salarium
+      - ENABLED_FEATURES=aiManagement
+      - DATABASE_PATH=file:/app/databases/multi-tenant.db
+      - FRONTEND_THEME=salarium
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET:-your-secret-key}
+      - NEXT_PUBLIC_SERVER_URL=http://localhost:3005
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./databases:/app/databases
+      - /app/node_modules
+      - /app/.next
+    restart: unless-stopped
+    networks:
+      - cms-network
+    profiles:
+      - dev
+
+  # Development Mode - All Plugins Active (Port 3006)
+  dev-all:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3006:3000"
     environment:
       - BUSINESS_MODE=all
       - ENABLED_FEATURES=aiManagement
-      - DATABASE_PATH=/app/databases/dev.db
+      - DATABASE_PATH=file:/app/databases/multi-tenant.db
       - FRONTEND_THEME=all
       - PAYLOAD_SECRET=${PAYLOAD_SECRET:-your-secret-key}
-      - NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+      - NEXT_PUBLIC_SERVER_URL=http://localhost:3006
     volumes:
-      - ./databases:/app/databases
+      - ./src:/app/src
       - ./public:/app/public
-      - .:/app
+      - ./databases:/app/databases
+      - ./package.json:/app/package.json
+      - ./pnpm-lock.yaml:/app/pnpm-lock.yaml
+      - ./next.config.js:/app/next.config.js
+      - ./tailwind.config.mjs:/app/tailwind.config.mjs
+      - ./postcss.config.js:/app/postcss.config.js
+      - ./components.json:/app/components.json
       - /app/node_modules
+      - /app/.next
     restart: unless-stopped
     networks:
       - cms-network

@@ -48,18 +48,15 @@ const dirname = path.dirname(filename)
 
 /**
  * Get active business plugins based on environment
+ * For shared schema architecture, always load all business plugins
+ * but collections will be filtered by business mode in access control
  */
 const getBusinessPlugins = () => {
   const businessMode = getBusinessMode()
 
-  const businessPlugins = {
-    intellitrade: [intellitradePlugin()],
-    salarium: [salariumPlugin()],
-    latinos: [latinosPlugin()],
-    all: [intellitradePlugin(), salariumPlugin(), latinosPlugin()],
-  }
-
-  return businessPlugins[businessMode] || []
+  // Always load all business plugins to maintain shared schema
+  // Individual services will filter collections through access control
+  return [intellitradePlugin(), salariumPlugin(), latinosPlugin()]
 }
 
 /**
@@ -69,30 +66,39 @@ const getSharedFeaturePlugins = () => {
   const enabledFeatures = getEnabledFeatures()
   const businessMode = getBusinessMode()
 
-  const sharedPlugins: { [key: string]: any } = {
-    aiManagement: aiManagementPlugin(),
-    // affineIntegration: affineIntegrationPlugin(), // Disabled - causing import errors
-    // Add more shared plugins here as they're created
-    // gamification: gamificationPlugin(),
-    // digitalPayments: digitalPaymentsPlugin(),
-  }
+  // Track which plugins should be included to avoid duplicates
+  const pluginsToInclude = new Set<string>()
 
   // Always include AI Management if Salarium is active (since it has AI provider relationships)
-  const requiredPlugins = []
   if (businessMode === 'salarium' || businessMode === 'all') {
-    requiredPlugins.push(aiManagementPlugin())
+    pluginsToInclude.add('aiManagement')
   }
 
+  // Add enabled features
+  enabledFeatures.forEach((feature) => {
+    pluginsToInclude.add(feature)
+  })
+
   // Always include AFFiNE Integration for Universal Block System
-  // requiredPlugins.push(affineIntegrationPlugin()) // Disabled - causing import errors
+  // pluginsToInclude.add('affineIntegration') // Disabled - causing import errors
 
-  const featurePlugins = enabledFeatures
-    .filter((feature) => sharedPlugins[feature])
-    .map((feature) => sharedPlugins[feature])
+  // Create plugin instances only once per unique plugin
+  const plugins = []
+  if (pluginsToInclude.has('aiManagement')) {
+    plugins.push(aiManagementPlugin())
+  }
+  // if (pluginsToInclude.has('affineIntegration')) {
+  //   plugins.push(affineIntegrationPlugin())
+  // }
+  // Add more shared plugins here as they're created
+  // if (pluginsToInclude.has('gamification')) {
+  //   plugins.push(gamificationPlugin())
+  // }
+  // if (pluginsToInclude.has('digitalPayments')) {
+  //   plugins.push(digitalPaymentsPlugin())
+  // }
 
-  // Combine required plugins with feature plugins, avoiding duplicates
-  const allPlugins = [...requiredPlugins, ...featurePlugins]
-  return allPlugins.filter((plugin, index, self) => index === self.findIndex((p) => p === plugin))
+  return plugins
 }
 
 /**
