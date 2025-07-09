@@ -10,6 +10,8 @@
 - **COMPLETED: AFFiNE Integration Layer (Phase 2D) - Production-ready implementation with comprehensive testing**
 - **COMPLETED: Business-Specific Routing System - Multi-tenant URL routing with business-specific content**
 - **COMPLETED: URL-Based Authentication System - Quick access authentication via URL parameters**
+- **NEW: Capacita Business Unit Planning - AI-powered training platform with Avatar Arena and RPG gamification**
+- **CRITICAL: Frontend Architecture Issues Identified - Shared content and broken links need immediate fixes**
 
 ## Recent Changes
 - Added IntelliTrade branding elements (logo, admin UI)
@@ -26,6 +28,125 @@
 - **NEW: Implemented complete Latinos Trading Bot System with four-phase architecture**
 - **NEW: Designed AFFiNE Integration Layer (Phase 2) for collaborative document editing and workspace planning**
 - **NEW: Implemented Business-Specific Routing System for multi-tenant URL access**
+- **NEW: Planned Capacita Business Unit with Avatar Arena and RPG-style training system**
+- **CRITICAL: Identified major frontend issues requiring immediate attention**
+
+## Critical Frontend Issues Identified
+
+### 1. Shared Content Problem (MAJOR ISSUE)
+- **Problem**: All businesses currently share the same team members, pricing plans, features, and testimonials
+- **Impact**: Users see incorrect information when visiting different business routes
+- **Solution**: Add business field to collections and implement business-scoped queries
+- **Priority**: CRITICAL - Must be fixed before any new development
+
+### 2. Broken Salarium Frontend
+- **Problem**: Links in Salarium are not working properly, components are messy
+- **Impact**: Salarium functionality is compromised
+- **Solution**: Audit and fix all Salarium routes and components
+- **Priority**: HIGH - Affects existing functionality
+
+### 3. Missing Universal Frontend Template
+- **Problem**: No consistent structure across businesses for public pages
+- **Impact**: Inconsistent user experience and missing essential pages
+- **Solution**: Create universal template with: Home, About, Features, Pricing, Team, Contact
+- **Priority**: HIGH - Required for professional presentation
+
+### 4. Authentication Pattern Inconsistency
+- **Problem**: Capacita training interface needs authentication like Salarium job-flow
+- **Impact**: Training functionality won't be properly protected
+- **Solution**: Follow Salarium authentication pattern for Capacita
+- **Priority**: MEDIUM - Required for Capacita implementation
+
+## Capacita Business Unit Planning
+
+### Implementation Summary
+Successfully designed a comprehensive AI-powered training platform that revolutionizes professional training through gamified learning with real-time evaluation and feedback.
+
+### Key Innovation: Avatar Arena System
+
+#### Complex Character Personas
+- **Psychological Profiles**: Detailed personality traits including agreeableness, patience, hostility, intelligence, emotional stability, and trustworthiness
+- **Behavioral Patterns**: Dynamic emotional states, escalation triggers, de-escalation responses, and manipulation tactics
+- **Progressive Difficulty**: From friendly beginners to hostile experts and treacherous manipulators
+- **Hidden Agendas**: Complex characters with secret motivations and testing behaviors
+
+#### RPG-Style Gamification
+- **Multiple Storylines**: Corporate scenarios, fantasy RPG adventures, sci-fi contexts, and historical settings
+- **Character Progression**: User skill development, level advancement, and achievement unlocking
+- **Narrative Contexts**: Rich backstories and immersive environments for training scenarios
+- **Branching Paths**: User choices affect story progression and character relationships
+
+### Architecture: Core vs Business-Specific
+
+#### Shared Training Engine Plugin (Universal)
+- **Multi-Stage Evaluation**: Text sentiment, voice tone, and visual posture analysis
+- **Avatar Interaction Engine**: Complex persona simulation with emotional state management
+- **Gamification Engine**: Achievement system, progress tracking, and skill trees
+- **Scenario Generator**: Dynamic content creation for any industry
+
+#### Capacita Plugin (Customer Service Specialization)
+- **Customer Service Personas**: Industry-specific character types and scenarios
+- **Service-Specific Evaluation**: Customer satisfaction metrics and communication effectiveness
+- **Corporate Training Contexts**: Business-appropriate storylines and challenges
+
+### Technical Highlights
+
+#### Advanced Persona Behavior Engine
+- **Emotional State Management**: Dynamic mood tracking with personality-based modifiers
+- **Response Generation**: AI-powered character responses with voice, facial, and body language cues
+- **Consistency Tracking**: Maintains character authenticity across extended interactions
+- **Difficulty Adaptation**: Adjusts challenge level based on user performance
+
+#### Multi-Modal Evaluation System
+- **Stage 1 - Text Analysis**: Sentiment analysis, professionalism scoring, empathy detection
+- **Stage 2 - Voice Evaluation**: Tone analysis, pace assessment, emotional intelligence measurement
+- **Stage 3 - Visual Assessment**: Posture analysis, gesture recognition, engagement scoring
+- **Comprehensive Feedback**: KPIs, highlights, conclusions, and actionable recommendations
+
+### Frontend Architecture Requirements
+
+#### Authentication-Enabled Training Interface
+- **Public Route**: `/capacita` - Marketing and information pages
+- **Authenticated Routes**: 
+  - `/capacita/avatar-arena` - Main training interface (auth required)
+  - `/capacita/training-dashboard` - Progress tracking (auth required)
+  - `/capacita/evaluation-results` - Performance analysis (auth required)
+
+#### Universal Business Template
+Each business needs consistent public pages:
+- **Home**: Business overview and value proposition
+- **About**: Business background and mission
+- **Features**: Product capabilities and benefits
+- **Pricing**: Pricing plans specific to the business
+- **Team**: Team members specific to the business
+- **Contact**: Business contact information
+- **Testimonials**: Customer testimonials specific to the business
+
+## Implementation Priority (Updated)
+
+### Phase 1: Critical Frontend Fixes (Week 1) - IMMEDIATE
+1. **Fix Shared Content Issue**: Add business field to TeamMembers, PricingPlans, Features, Testimonials collections
+2. **Repair Salarium Frontend**: Fix broken links and components
+3. **Implement Business-Scoped Queries**: Update all frontend queries to filter by business
+4. **Test All Business Routes**: Ensure no content leakage between businesses
+
+### Phase 2: Universal Frontend Template (Week 2)
+1. **Create Universal Template Structure**: Implement consistent page structure for all businesses
+2. **Business-Specific Content**: Create unique content for each business (team, pricing, features)
+3. **Navigation and Branding**: Implement business-specific navigation and branding
+4. **SEO and Metadata**: Business-specific meta tags and SEO optimization
+
+### Phase 3: Capacita Implementation (Week 3-4)
+1. **Capacita Plugin Development**: Create business plugin with collections and blocks
+2. **Public Pages**: Implement Capacita marketing pages
+3. **Authenticated Interface**: Create Avatar Arena and training dashboard
+4. **Integration Testing**: Test complete Capacita workflow
+
+### Phase 4: Training Engine Core (Week 5-8)
+1. **Shared Training Engine Plugin**: Universal training and evaluation system
+2. **Avatar Persona System**: Complex character personalities and behaviors
+3. **Multi-Stage Evaluation**: Text, voice, and visual analysis pipeline
+4. **RPG Gamification**: Storylines, character progression, achievements
 
 ## Latinos Trading Bot System Implementation
 
@@ -155,6 +276,8 @@ The system addresses common connectivity issues between the Payload CMS and Pyth
 - **Latinos collections verified with expected record counts (6 strategies, 8 bots, 8 formulas, 17 trades, 12 market data)**
 - **Database documentation created and memory bank updated**
 - **AFFiNE Integration Layer (Phase 2) technical specification completed**
+- **Capacita Business Unit comprehensive planning completed with detailed technical specifications**
+- **CRITICAL ISSUES IDENTIFIED: Shared content and broken Salarium frontend require immediate attention**
 
 ## AFFiNE Integration Layer (Phase 2) Implementation
 
@@ -222,6 +345,7 @@ Successfully implemented a comprehensive business-specific routing system that e
 - **Salarium Route**: `http://localhost:3003/salarium` - HR document workflow platform
 - **IntelliTrade Route**: `http://localhost:3003/intellitrade` - Blockchain trade finance platform
 - **Latinos Route**: `http://localhost:3003/latinos` - Automated trading bot platform
+- **Capacita Route**: `http://localhost:3003/capacita` - AI-powered training platform (planned)
 
 #### Business-Specific Page Components
 Each business route displays tailored content with:
@@ -236,10 +360,11 @@ Each business route displays tailored content with:
    - `src/app/(frontend)/salarium/page.tsx`
    - `src/app/(frontend)/intellitrade/page.tsx`
    - `src/app/(frontend)/latinos/page.tsx`
+   - `src/app/(frontend)/capacita/page.tsx` (planned)
 
 2. **Content Fallback System**: Each route attempts to load CMS content first, then falls back to business-specific homepage components:
-   - Looks for business-specific pages (e.g., `salarium-home`, `intellitrade-home`, `latinos-home`)
-   - Falls back to React components (`SalariumHomepage`, `IntelliTradeHomepage`, `LatinosHomepage`)
+   - Looks for business-specific pages (e.g., `salarium-home`, `intellitrade-home`, `latinos-home`, `capacita-home`)
+   - Falls back to React components (`SalariumHomepage`, `IntelliTradeHomepage`, `LatinosHomepage`, `CapacitaHomepage`)
 
 3. **Dynamic Rendering**: All routes use `export const dynamic = 'force-dynamic'` to ensure proper business mode detection
 
@@ -267,6 +392,13 @@ Each business route displays tailored content with:
 - ✅ **Features**: Trading Bots, Real-time Analytics, Strategy Builder, Fast Execution
 - ✅ **Color Scheme**: Orange branding
 - ✅ **CTA**: "Try Demo" for trading bot platform
+
+#### Capacita (`/capacita`) - Planned
+- 🔄 **Badge**: "AI-Powered Training Platform"
+- 🔄 **Content**: "Revolutionary Training Experience" with Avatar Arena features
+- 🔄 **Features**: Avatar Arena, RPG Gamification, Real-time Evaluation, Multi-Industry
+- 🔄 **Color Scheme**: Green branding (planned)
+- 🔄 **CTA**: "Enter Avatar Arena" for training platform
 
 ### Architecture Benefits
 
@@ -352,11 +484,15 @@ Successfully implemented a comprehensive URL-based authentication system that en
 - **Auto-login**: `http://localhost:3003/latinos?autoLogin=true`
 - **Custom login**: `http://localhost:3003/latinos?email=test@test.com&password=Test12345%`
 
+#### Capacita Training Platform (Planned)
+- **Auto-login**: `http://localhost:3003/capacita?autoLogin=true`
+- **Custom login**: `http://localhost:3003/capacita?email=test@test.com&password=Test12345%`
+
 ### Default Test Credentials
 - **Email**: `test@test.com`
 - **Password**: `Test12345%`
 - **Role**: Admin with full access to all business modules
-- **Business Access**: All businesses (intellitrade, salarium, latinos)
+- **Business Access**: All businesses (intellitrade, salarium, latinos, capacita)
 
 ### Developer Experience Features
 - **QuickAccessLinks Component**: Development-only component showing quick access options
@@ -370,17 +506,29 @@ Successfully implemented a comprehensive URL-based authentication system that en
 - **Multi-tenant Support**: Works across all business-specific routes
 - **Development/Production**: Environment-aware features for security
 
-## Next Steps
+## Next Steps (Updated Priority)
+
+### IMMEDIATE (Week 1) - CRITICAL
+- **Fix Shared Content Issue**: Add business field to collections and implement business-scoped queries
+- **Repair Salarium Frontend**: Fix broken links and components
+- **Test All Business Routes**: Ensure no content leakage between businesses
+
+### HIGH PRIORITY (Week 2)
+- **Universal Frontend Template**: Create consistent page structure for all businesses
+- **Business-Specific Content**: Create unique content for each business
+- **Navigation and Branding**: Implement business-specific navigation
+
+### MEDIUM PRIORITY (Week 3-4)
+- **Capacita Implementation**: Create business plugin and authenticated interface
+- **Avatar Arena Interface**: Implement training interface following Salarium pattern
+- **Integration Testing**: Test complete Capacita workflow
+
+### FUTURE (Week 5+)
+- **Training Engine Core**: Universal training and evaluation system
+- **Avatar Persona System**: Complex character personalities and behaviors
+- **Multi-Stage Evaluation**: Text, voice, and visual analysis pipeline
+- **RPG Gamification**: Storylines, character progression, achievements
 - **Phase 2A Implementation**: Install AFFiNE/BlockSuite dependencies and set up Yjs integration
 - **Document Context Enhancement**: Integrate AFFiNE Editor with existing Universal Blocks
 - **Real-time Collaboration**: Implement WebSocket server and synchronization
 - **Workspace Context**: Create visual canvas interface for block manipulation
-- Implement educational content sections
-- Develop interactive demo components using the new data model
-- Create gamification elements for registered users
-- Add authentication flow for demo access
-- Design and implement trade finance-specific visualizations
-- Develop smart contract demo functionality with oracle verification
-- Create user interface for exploring trade transactions and verification status
-- **Consider implementing similar debugging systems for other microservice integrations**
-- **Explore advanced trading features like backtesting and strategy optimization**

@@ -79,6 +79,7 @@ export interface Config {
     testimonials: Testimonial;
     features: Feature;
     'pricing-plans': PricingPlan;
+    businesses: Business;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -114,6 +115,7 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     features: FeaturesSelect<false> | FeaturesSelect<true>;
     'pricing-plans': PricingPlansSelect<false> | PricingPlansSelect<true>;
+    businesses: BusinessesSelect<false> | BusinessesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1246,6 +1248,10 @@ export interface FeatureGridBlock {
  */
 export interface Feature {
   id: number;
+  /**
+   * Which business this feature belongs to
+   */
+  business: 'intellitrade' | 'salarium' | 'latinos' | 'capacita';
   title: string;
   description: string;
   longDescription?: {
@@ -1269,8 +1275,40 @@ export interface Feature {
    * Display order (lower numbers appear first)
    */
   order?: number | null;
-  category: 'escrow' | 'blockchain' | 'oracle' | 'kyc' | 'payments';
-  userType: 'exporter' | 'importer' | 'both';
+  category:
+    | 'escrow'
+    | 'blockchain'
+    | 'oracle'
+    | 'kyc'
+    | 'payments'
+    | 'ai-assistance'
+    | 'compensation'
+    | 'market-data'
+    | 'benefits'
+    | 'automation'
+    | 'analytics'
+    | 'trading-bots'
+    | 'strategy'
+    | 'risk-management'
+    | 'execution'
+    | 'portfolio'
+    | 'avatar-training'
+    | 'gamification'
+    | 'evaluation'
+    | 'training-engine'
+    | 'scalability';
+  userType:
+    | 'exporter'
+    | 'importer'
+    | 'both'
+    | 'hr'
+    | 'manager'
+    | 'employee'
+    | 'trader'
+    | 'investor'
+    | 'trainee'
+    | 'admin'
+    | 'instructor';
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1329,6 +1367,10 @@ export interface FloatingCTABlock {
  */
 export interface TeamMember {
   id: number;
+  /**
+   * Which business this team member belongs to
+   */
+  business: 'intellitrade' | 'salarium' | 'latinos' | 'capacita';
   name: string;
   position: string;
   photo: number | Media;
@@ -1370,6 +1412,10 @@ export interface TeamMember {
  */
 export interface Testimonial {
   id: number;
+  /**
+   * Which business this testimonial belongs to
+   */
+  business: 'intellitrade' | 'salarium' | 'latinos' | 'capacita';
   name: string;
   position: string;
   company: string;
@@ -1390,6 +1436,10 @@ export interface Testimonial {
  */
 export interface PricingPlan {
   id: number;
+  /**
+   * Which business this pricing plan belongs to
+   */
+  business: 'intellitrade' | 'salarium' | 'latinos' | 'capacita';
   name: string;
   description: string;
   priceMonthly: number;
@@ -1410,6 +1460,57 @@ export interface PricingPlan {
    */
   order?: number | null;
   planType: 'starter' | 'professional' | 'enterprise';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "businesses".
+ */
+export interface Business {
+  id: number;
+  displayName: string;
+  description: string;
+  tagline: string;
+  badge: string;
+  colors: {
+    /**
+     * Hex color code for primary brand color
+     */
+    primary: string;
+    secondary: string;
+    accent: string;
+  };
+  contact: {
+    email: string;
+    phone?: string | null;
+    address?: string | null;
+  };
+  social?: {
+    twitter?: string | null;
+    linkedin?: string | null;
+    github?: string | null;
+  };
+  features?: {
+    hasMarketingPages?: boolean | null;
+    hasDemo?: boolean | null;
+    hasAuth?: boolean | null;
+    hasBlog?: boolean | null;
+  };
+  /**
+   * URL for the Try Demo button
+   */
+  demoUrl?: string | null;
+  /**
+   * Whether this business is currently active
+   */
+  isActive?: boolean | null;
+  /**
+   * Order for displaying businesses (lower numbers first)
+   */
+  order?: number | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -3258,6 +3359,10 @@ export interface PayloadLockedDocument {
         value: number | PricingPlan;
       } | null)
     | ({
+        relationTo: 'businesses';
+        value: number | Business;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -3794,6 +3899,7 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "team-members_select".
  */
 export interface TeamMembersSelect<T extends boolean = true> {
+  business?: T;
   name?: T;
   position?: T;
   photo?: T;
@@ -3817,6 +3923,7 @@ export interface TeamMembersSelect<T extends boolean = true> {
  * via the `definition` "testimonials_select".
  */
 export interface TestimonialsSelect<T extends boolean = true> {
+  business?: T;
   name?: T;
   position?: T;
   company?: T;
@@ -3833,6 +3940,7 @@ export interface TestimonialsSelect<T extends boolean = true> {
  * via the `definition` "features_select".
  */
 export interface FeaturesSelect<T extends boolean = true> {
+  business?: T;
   title?: T;
   description?: T;
   longDescription?: T;
@@ -3851,6 +3959,7 @@ export interface FeaturesSelect<T extends boolean = true> {
  * via the `definition` "pricing-plans_select".
  */
 export interface PricingPlansSelect<T extends boolean = true> {
+  business?: T;
   name?: T;
   description?: T;
   priceMonthly?: T;
@@ -3865,6 +3974,52 @@ export interface PricingPlansSelect<T extends boolean = true> {
   featured?: T;
   order?: T;
   planType?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "businesses_select".
+ */
+export interface BusinessesSelect<T extends boolean = true> {
+  displayName?: T;
+  description?: T;
+  tagline?: T;
+  badge?: T;
+  colors?:
+    | T
+    | {
+        primary?: T;
+        secondary?: T;
+        accent?: T;
+      };
+  contact?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        address?: T;
+      };
+  social?:
+    | T
+    | {
+        twitter?: T;
+        linkedin?: T;
+        github?: T;
+      };
+  features?:
+    | T
+    | {
+        hasMarketingPages?: T;
+        hasDemo?: T;
+        hasAuth?: T;
+        hasBlog?: T;
+      };
+  demoUrl?: T;
+  isActive?: T;
+  order?: T;
+  slug?: T;
+  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }

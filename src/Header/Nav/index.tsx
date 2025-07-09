@@ -25,23 +25,29 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       if (businessMode === 'salarium') {
         return [
           { title: 'Home', path: '/salarium' },
-          { title: 'Features', path: '/features' },
-          { title: 'Pricing', path: '/pricing' },
-          { title: 'Team', path: '/team' },
+          { title: 'Features', path: '/salarium/features' },
+          { title: 'Pricing', path: '/salarium/pricing' },
+          { title: 'Team', path: '/salarium/team' },
+          { title: 'About', path: '/salarium/about' },
+          { title: 'Contact', path: '/salarium/contact' },
         ]
       } else if (businessMode === 'intellitrade') {
         return [
           { title: 'Home', path: '/intellitrade' },
-          { title: 'Features', path: '/features' },
-          { title: 'Pricing', path: '/pricing' },
-          { title: 'Team', path: '/team' },
+          { title: 'Features', path: '/intellitrade/features' },
+          { title: 'Pricing', path: '/intellitrade/pricing' },
+          { title: 'Team', path: '/intellitrade/team' },
+          { title: 'About', path: '/intellitrade/about' },
+          { title: 'Contact', path: '/intellitrade/contact' },
         ]
       } else if (businessMode === 'latinos') {
         return [
           { title: 'Home', path: '/latinos' },
-          { title: 'Features', path: '/features' },
-          { title: 'Pricing', path: '/pricing' },
-          { title: 'Team', path: '/team' },
+          { title: 'Features', path: '/latinos/features' },
+          { title: 'Pricing', path: '/latinos/pricing' },
+          { title: 'Team', path: '/latinos/team' },
+          { title: 'About', path: '/latinos/about' },
+          { title: 'Contact', path: '/latinos/contact' },
         ]
       } else {
         // Default 'all' mode navigation

@@ -30,6 +30,22 @@ export const FeatureGrid: Block = {
       admin: {
         description: 'Select features to display in the grid',
       },
+      filterOptions: ({ data, siblingData, user }) => {
+        // Get the current business context from the page or environment
+        const business = process.env.BUSINESS_MODE || 'all'
+
+        // If we're in a specific business mode, filter features by business
+        if (business !== 'all') {
+          return {
+            business: {
+              equals: business,
+            },
+          }
+        }
+
+        // In development mode (all), show all features
+        return true
+      },
     },
     {
       name: 'showNumbers',

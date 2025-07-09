@@ -80,7 +80,7 @@ export const seedBusinessHomepages = async (
             link: {
               type: 'custom',
               label: 'Try Live Demo',
-              url: '/salarium/demo',
+              url: '/salarium/job-flow?autoLogin=true',
             },
           },
         ],
@@ -103,23 +103,23 @@ export const seedBusinessHomepages = async (
           heading: 'Salarium Performance',
           stats: [
             {
-              value: 75,
-              label: 'Time Saved on Document Processing',
+              value: 85,
+              label: 'Faster Job Description Creation',
               suffix: '%',
             },
             {
-              value: 24,
-              label: 'Hours Faster Document Generation',
+              value: 2,
+              label: 'Hours Average Job Description Time',
               suffix: 'hrs',
             },
             {
-              value: 99,
-              label: 'Document Accuracy Rate',
+              value: 95,
+              label: 'Job Description Accuracy Rate',
               suffix: '%',
             },
             {
-              value: 50,
-              label: 'Reduction in Manual Tasks',
+              value: 60,
+              label: 'Reduction in HR Manual Work',
               suffix: '%',
             },
           ],

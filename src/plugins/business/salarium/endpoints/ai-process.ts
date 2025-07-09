@@ -1,10 +1,18 @@
 import { PayloadRequest, PayloadHandler, Endpoint } from 'payload'
 
+interface StepContext {
+  stepNumber: number
+  stepTitle: string
+  content: string
+  relevanceWeight: number
+}
+
 interface AIProcessRequest {
   userInput: string
   systemPrompt: string
   stepNumber: number
   stepType: string
+  previousStepsContext?: StepContext[]
 }
 
 interface AIProcessResponse {
@@ -52,9 +60,15 @@ export const aiProcessEndpoint: Endpoint = {
         )
       }
 
-      const { userInput, systemPrompt, stepNumber, stepType } = body
+      const { userInput, systemPrompt, stepNumber, stepType, previousStepsContext = [] } = body
 
-      console.log('AI Process Request:', { userInput, systemPrompt, stepNumber, stepType })
+      console.log('AI Process Request:', {
+        userInput,
+        systemPrompt,
+        stepNumber,
+        stepType,
+        contextSteps: previousStepsContext.length,
+      })
 
       if (!userInput || !systemPrompt) {
         console.log('Missing required fields:', {
@@ -78,7 +92,13 @@ export const aiProcessEndpoint: Endpoint = {
       console.log(`Connecting to Ollama at ${baseUrl} with model ${model}`)
 
       // Prepare the prompt based on step type and context
-      const enhancedPrompt = buildEnhancedPrompt(systemPrompt, userInput, stepNumber, stepType)
+      const enhancedPrompt = buildEnhancedPrompt(
+        systemPrompt,
+        userInput,
+        stepNumber,
+        stepType,
+        previousStepsContext,
+      )
 
       // Make request to Ollama
       const ollamaResponse = await fetch(`${baseUrl}/api/generate`, {
@@ -137,6 +157,7 @@ function buildEnhancedPrompt(
   userInput: string,
   stepNumber: number,
   stepType: string,
+  previousStepsContext: StepContext[] = [],
 ): string {
   const contextMap: Record<number, string> = {
     1: 'You are helping create a professional job title. Make it clear, concise, and industry-standard.',
@@ -154,7 +175,12 @@ function buildEnhancedPrompt(
     5: 'Format with clear section headers: **Required Qualifications:** and **Preferred Qualifications:** with bullet points under each.',
   }
 
+  // Build context from previous steps
+  const contextSection = buildContextSection(previousStepsContext, stepNumber)
+
   return `${contextMap[stepNumber] || systemPrompt}
+
+${contextSection}
 
 ${formatInstructions[stepNumber] || ''}
 
@@ -162,7 +188,54 @@ User Input: "${userInput}"
 
 Instructions: ${systemPrompt}
 
+IMPORTANT: Use the context from previous steps to create a cohesive response that aligns with the overall job description being created. Reference specific details from previous steps when relevant.
+
 Response:`
+}
+
+/**
+ * Build context section from previous steps
+ */
+function buildContextSection(previousStepsContext: StepContext[], currentStep: number): string {
+  if (!previousStepsContext || previousStepsContext.length === 0) {
+    return ''
+  }
+
+  // Filter and sort context by relevance
+  const relevantContext = previousStepsContext
+    .filter((ctx) => ctx.relevanceWeight > 0.3)
+    .sort((a, b) => b.relevanceWeight - a.relevanceWeight)
+
+  if (relevantContext.length === 0) {
+    return ''
+  }
+
+  const contextLines = relevantContext.map((ctx) => `${ctx.stepTitle}: ${ctx.content}`).join('\n')
+
+  return `
+CONTEXT FROM PREVIOUS STEPS:
+${contextLines}
+
+Please use this context to ensure your response is consistent and builds upon the information already provided.
+`
+}
+
+/**
+ * Calculate relevance weight between steps
+ */
+function calculateRelevance(sourceStep: number, targetStep: number): number {
+  const relevanceMatrix: Record<number, Record<number, number>> = {
+    // Job Title is highly relevant to all steps
+    1: { 2: 0.9, 3: 0.8, 4: 0.7, 5: 0.8 },
+    // Mission is very relevant to scope and responsibilities
+    2: { 3: 0.9, 4: 0.8, 5: 0.6 },
+    // Scope influences responsibilities and qualifications
+    3: { 4: 0.9, 5: 0.7 },
+    // Responsibilities directly influence qualifications
+    4: { 5: 0.9 },
+  }
+
+  return relevanceMatrix[sourceStep]?.[targetStep] || 0.3
 }
 
 /**

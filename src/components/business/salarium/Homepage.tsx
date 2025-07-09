@@ -99,7 +99,7 @@ export function SalariumHomepage() {
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link href="/features">Learn More</Link>
+                <Link href="/salarium/features">Learn More</Link>
               </Button>
             </div>
           </div>
@@ -198,7 +198,7 @@ export function SalariumHomepage() {
               variant="outline"
               className="border-white text-white hover:bg-white hover:text-violet-600"
             >
-              <Link href="/contact">Contact Sales</Link>
+              <Link href="/salarium/contact">Contact Sales</Link>
             </Button>
           </div>
         </div>

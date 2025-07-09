@@ -8,10 +8,12 @@ import React from 'react'
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
+import { BusinessHeader } from '@/components/business/universal/BusinessHeader'
+import { BusinessFooter } from '@/components/business/universal/BusinessFooter'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { draftMode } from 'next/headers'
+import { draftMode, headers } from 'next/headers'
 import { getCurrentBranding, getBrandingCSSVars } from '@/utilities/branding'
 
 import './globals.css'
@@ -21,6 +23,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { isEnabled } = await draftMode()
   const branding = getCurrentBranding()
   const brandingVars = getBrandingCSSVars()
+
+  // Check if we're on a business route - ONLY for specific business paths
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') || ''
+
+  // Only match exact business routes, not admin, api, posts, etc.
+  const businessMatch = pathname.match(/^\/(intellitrade|salarium|latinos|capacita)(?:\/|$)/)
+  const business = businessMatch?.[1]
+  const isBusinessRoute = !!business
 
   return (
     <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
@@ -44,9 +55,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
 
-          <Header />
+          {isBusinessRoute ? <BusinessHeader business={business} /> : <Header />}
           {children}
-          <Footer />
+          {isBusinessRoute ? <BusinessFooter business={business} /> : <Footer />}
         </Providers>
       </body>
     </html>

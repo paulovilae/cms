@@ -1,3 +1,6 @@
+/* Import high-contrast accessibility styles */
+@import '../../styles/high-contrast.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

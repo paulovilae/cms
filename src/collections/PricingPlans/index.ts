@@ -11,9 +11,24 @@ export const PricingPlans: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'priceMonthly', 'featured', 'updatedAt'],
+    defaultColumns: ['name', 'priceMonthly', 'business', 'featured', 'updatedAt'],
   },
   fields: [
+    {
+      name: 'business',
+      type: 'select',
+      options: [
+        { label: 'IntelliTrade', value: 'intellitrade' },
+        { label: 'Salarium', value: 'salarium' },
+        { label: 'Latinos', value: 'latinos' },
+        { label: 'Capacita', value: 'capacita' },
+      ],
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Which business this pricing plan belongs to',
+      },
+    },
     {
       name: 'name',
       type: 'text',

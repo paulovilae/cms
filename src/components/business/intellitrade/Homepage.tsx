@@ -65,7 +65,7 @@ export function IntelliTradeHomepage() {
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">{branding.description}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700">
-                <Link href="/demo/trade-finance">
+                <Link href="/intellitrade/trade-flow?autoLogin=true">
                   Try Demo
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
@@ -112,7 +112,7 @@ export function IntelliTradeHomepage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" variant="secondary">
-              <Link href="/demo/trade-finance">
+              <Link href="/intellitrade/trade-flow?autoLogin=true">
                 Start Demo
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>

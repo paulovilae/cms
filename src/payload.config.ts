@@ -20,6 +20,7 @@ import { TeamMembers } from './collections/TeamMembers'
 import { Testimonials } from './collections/Testimonials'
 import { Features } from './collections/Features'
 import { PricingPlans } from './collections/PricingPlans'
+import { Businesses } from './collections/Businesses'
 
 // Globals
 import { Footer } from './Footer/config'
@@ -167,6 +168,7 @@ export default buildConfig({
     Testimonials,
     Features,
     PricingPlans,
+    Businesses,
 
     // Business-specific collections are added via plugins
     // AFFiNE Integration collections are added via affineIntegrationPlugin (currently disabled)

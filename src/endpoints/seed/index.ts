@@ -3,6 +3,7 @@ import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from '
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
 import { features } from './features'
+import { getBusinessFeatures } from './business-features'
 import { home } from './home'
 import { image1 } from './image-1'
 import { image2 } from './image-2'
@@ -22,6 +23,7 @@ import { seedAIProviders } from './ai-providers'
 import { seedSalariumCollections } from './salarium-seed'
 import { seedLatinosData } from '@/plugins/business/latinos/seed'
 import { seedBusinessHomepages } from './business-homepages'
+import { businessesData } from './businesses'
 import type { ExportTransaction } from '@/payload-types'
 
 // Define the collections as a standard CollectionSlug array for type safety
@@ -373,109 +375,140 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding custom collections...`)
 
-  // Seed team members
+  // Seed businesses first (required for dynamic business configuration)
   await Promise.all(
-    teamMembers.map((member) =>
+    businessesData.map((business) =>
       payload.create({
-        collection: 'team-members',
-        data: {
-          ...member,
-          // For now, use a placeholder media ID that will be replaced later
-          photo: image1Doc.id,
-          // Add rich text bio
-          bio: {
-            root: {
-              children: [
-                {
-                  children: [
-                    {
-                      text: `Bio for ${member.name} - ${member.position}. This is a placeholder biography that will be replaced with real content.`,
-                      type: 'text',
-                    },
-                  ],
-                  type: 'paragraph',
-                  version: 1,
-                },
-              ],
-              direction: 'ltr',
-              format: '',
-              indent: 0,
-              type: 'root',
-              version: 1,
+        collection: 'businesses',
+        data: business,
+      }),
+    ),
+  )
+
+  // Seed team members for each business
+  const businesses = ['intellitrade', 'salarium', 'latinos', 'capacita']
+
+  for (const business of businesses) {
+    await Promise.all(
+      teamMembers.map((member, index) =>
+        payload.create({
+          collection: 'team-members',
+          data: {
+            ...member,
+            name: `${member.name} (${business.charAt(0).toUpperCase() + business.slice(1)})`,
+            business: business as 'intellitrade' | 'salarium' | 'latinos' | 'capacita',
+            order: index + 1,
+            // For now, use a placeholder media ID that will be replaced later
+            photo: image1Doc.id,
+            // Add rich text bio
+            bio: {
+              root: {
+                children: [
+                  {
+                    children: [
+                      {
+                        text: `Bio for ${member.name} - ${member.position} at ${business.charAt(0).toUpperCase() + business.slice(1)}. This is a placeholder biography that will be replaced with real content.`,
+                        type: 'text',
+                      },
+                    ],
+                    type: 'paragraph',
+                    version: 1,
+                  },
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                type: 'root',
+                version: 1,
+              },
             },
           },
-        },
-      }),
-    ),
-  )
+        }),
+      ),
+    )
+  }
 
-  // Seed features
-  await Promise.all(
-    features.map((feature) =>
-      payload.create({
-        collection: 'features',
-        data: {
-          ...feature,
-          // Convert string to proper enum value for category
-          category: feature.category as any,
-          // Assign icon ID for all features
-          icon: image1Doc.id,
-          // Add rich text longDescription
-          longDescription: {
-            root: {
-              children: [
-                {
-                  children: [
-                    {
-                      text: `Extended description for ${feature.title}. This is a placeholder that will be replaced with real content.`,
-                      type: 'text',
-                    },
-                  ],
-                  type: 'paragraph',
-                  version: 1,
-                },
-              ],
-              direction: 'ltr',
-              format: '',
-              indent: 0,
-              type: 'root',
-              version: 1,
+  // Seed features for each business with business-specific features
+  for (const business of businesses) {
+    const businessFeatures = getBusinessFeatures(business)
+    await Promise.all(
+      businessFeatures.map((feature, index) =>
+        payload.create({
+          collection: 'features',
+          data: {
+            ...feature,
+            business: business as 'intellitrade' | 'salarium' | 'latinos' | 'capacita',
+            order: index + 1,
+            // Convert string to proper enum value for category
+            category: feature.category as any,
+            // Assign icon ID for all features
+            icon: image1Doc.id,
+            // Add rich text longDescription
+            longDescription: {
+              root: {
+                children: [
+                  {
+                    children: [
+                      {
+                        text: `${feature.description} This feature is specifically designed for ${business.charAt(0).toUpperCase() + business.slice(1)} users to enhance their workflow and productivity.`,
+                        type: 'text',
+                      },
+                    ],
+                    type: 'paragraph',
+                    version: 1,
+                  },
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                type: 'root',
+                version: 1,
+              },
             },
           },
-        },
-      }),
-    ),
-  )
+        }),
+      ),
+    )
+  }
 
-  // Seed testimonials
-  await Promise.all(
-    testimonials.map((testimonial) =>
-      payload.create({
-        collection: 'testimonials',
-        data: {
-          ...testimonial,
-          // TypeScript needs help with these enum values
-          rating: testimonial.rating as '3' | '4' | '5',
-          // Optional photo field can use the same placeholder
-          photo: image1Doc.id,
-        },
-      }),
-    ),
-  )
+  // Seed testimonials for each business
+  for (const business of businesses) {
+    await Promise.all(
+      testimonials.map((testimonial, index) =>
+        payload.create({
+          collection: 'testimonials',
+          data: {
+            ...testimonial,
+            name: `${testimonial.name} (${business.charAt(0).toUpperCase() + business.slice(1)} Client)`,
+            business: business as 'intellitrade' | 'salarium' | 'latinos' | 'capacita',
+            // TypeScript needs help with these enum values
+            rating: testimonial.rating as '3' | '4' | '5',
+            // Optional photo field can use the same placeholder
+            photo: image1Doc.id,
+          },
+        }),
+      ),
+    )
+  }
 
-  // Seed pricing plans
-  await Promise.all(
-    pricingPlans.map((plan) =>
-      payload.create({
-        collection: 'pricing-plans',
-        data: {
-          ...plan,
-          // Ensure planType is properly typed
-          planType: plan.planType as 'starter' | 'professional' | 'enterprise',
-        },
-      }),
-    ),
-  )
+  // Seed pricing plans for each business
+  for (const business of businesses) {
+    await Promise.all(
+      pricingPlans.map((plan, index) =>
+        payload.create({
+          collection: 'pricing-plans',
+          data: {
+            ...plan,
+            name: `${plan.name} (${business.charAt(0).toUpperCase() + business.slice(1)})`,
+            business: business as 'intellitrade' | 'salarium' | 'latinos' | 'capacita',
+            order: index + 1,
+            // Ensure planType is properly typed
+            planType: plan.planType as 'starter' | 'professional' | 'enterprise',
+          },
+        }),
+      ),
+    )
+  }
 
   // Seed the business data collections in the correct order
   // (1) Companies first
@@ -1044,6 +1077,9 @@ export const seed = async ({
   // Seed business-specific homepage pages
   await seedBusinessHomepages(payload, imageHomeDoc, image2Doc)
 
+  // Seed comprehensive business pages (features, pricing, team, about, contact)
+  await seedComprehensiveBusinessPages(payload, imageHomeDoc, image2Doc)
+
   payload.logger.info(`— Seeding globals...`)
 
   await Promise.all([
@@ -1124,6 +1160,232 @@ export const seed = async ({
   ])
 
   payload.logger.info('Seeded database successfully!')
+}
+
+// Seed comprehensive business pages (features, pricing, team, about, contact)
+async function seedComprehensiveBusinessPages(
+  payload: Payload,
+  imageHomeDoc: any,
+  image2Doc: any,
+): Promise<void> {
+  payload.logger.info('— Seeding comprehensive business pages...')
+
+  const businesses = ['salarium', 'intellitrade', 'latinos']
+  const pageTypes = ['features', 'pricing', 'team', 'about', 'contact']
+
+  // Create pages for each business
+  for (const business of businesses) {
+    for (const pageType of pageTypes) {
+      const businessInfo = getBusinessInfo(business)
+      const pageInfo = getPageInfo(business, pageType, businessInfo)
+
+      await payload.create({
+        collection: 'pages',
+        depth: 0,
+        data: {
+          _status: 'published',
+          title: `${businessInfo.name} - ${pageInfo.title}`,
+          slug: `${business}-${pageType}`,
+          business: business as any,
+          pageType: 'standard',
+          meta: {
+            title: `${businessInfo.name} ${pageInfo.title} - ${businessInfo.tagline}`,
+            description: pageInfo.description,
+            image: image2Doc.id,
+          },
+          hero: {
+            type: 'mediumImpact',
+            media: imageHomeDoc.id,
+            richText: {
+              root: {
+                type: 'root',
+                children: [
+                  {
+                    type: 'heading',
+                    children: [
+                      {
+                        type: 'text',
+                        detail: 0,
+                        format: 0,
+                        mode: 'normal',
+                        style: '',
+                        text: pageInfo.heroTitle,
+                        version: 1,
+                      },
+                    ],
+                    direction: 'ltr',
+                    format: '',
+                    indent: 0,
+                    tag: 'h1',
+                    version: 1,
+                  },
+                  {
+                    type: 'paragraph',
+                    children: [
+                      {
+                        type: 'text',
+                        detail: 0,
+                        format: 0,
+                        mode: 'normal',
+                        style: '',
+                        text: pageInfo.heroDescription,
+                        version: 1,
+                      },
+                    ],
+                    direction: 'ltr',
+                    format: '',
+                    indent: 0,
+                    textFormat: 0,
+                    version: 1,
+                  },
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                version: 1,
+              },
+            },
+            links: [
+              {
+                link: {
+                  type: 'custom',
+                  label: 'Try Demo',
+                  url: `/${business}?autoLogin=true`,
+                },
+              },
+            ],
+          },
+          layout: [
+            {
+              blockName: `${pageInfo.title} Overview`,
+              blockType: 'content',
+              columns: [
+                {
+                  size: 'full',
+                  richText: {
+                    root: {
+                      type: 'root',
+                      children: [
+                        {
+                          type: 'heading',
+                          children: [
+                            {
+                              type: 'text',
+                              detail: 0,
+                              format: 0,
+                              mode: 'normal',
+                              style: '',
+                              text: `${businessInfo.name} ${pageInfo.title}`,
+                              version: 1,
+                            },
+                          ],
+                          direction: 'ltr',
+                          format: '',
+                          indent: 0,
+                          tag: 'h2',
+                          version: 1,
+                        },
+                        {
+                          type: 'paragraph',
+                          children: [
+                            {
+                              type: 'text',
+                              detail: 0,
+                              format: 0,
+                              mode: 'normal',
+                              style: '',
+                              text: pageInfo.content,
+                              version: 1,
+                            },
+                          ],
+                          direction: 'ltr',
+                          format: '',
+                          indent: 0,
+                          textFormat: 0,
+                          version: 1,
+                        },
+                      ],
+                      direction: 'ltr',
+                      format: '',
+                      indent: 0,
+                      version: 1,
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      })
+
+      payload.logger.info(`— Created ${business} ${pageType} page`)
+    }
+  }
+
+  payload.logger.info('— Comprehensive business pages seeded successfully!')
+}
+
+function getBusinessInfo(business: string): { name: string; tagline: string; color: string } {
+  const businessData: Record<string, { name: string; tagline: string; color: string }> = {
+    salarium: {
+      name: 'Salarium',
+      tagline: 'AI-Powered HR Solutions',
+      color: 'violet',
+    },
+    intellitrade: {
+      name: 'IntelliTrade',
+      tagline: 'Blockchain-Powered Trade Finance',
+      color: 'blue',
+    },
+    latinos: {
+      name: 'Latinos',
+      tagline: 'AI-Powered Trading Platform',
+      color: 'orange',
+    },
+  }
+  return businessData[business] || businessData.salarium
+}
+
+function getPageInfo(business: string, pageType: string, businessInfo: any) {
+  const pageData: Record<string, any> = {
+    features: {
+      title: 'Features',
+      heroTitle: `${businessInfo.name} Features`,
+      heroDescription: `Discover the powerful features that make ${businessInfo.name} the perfect solution for your needs.`,
+      description: `Explore the comprehensive features and capabilities of ${businessInfo.name}.`,
+      content: `${businessInfo.name} offers a comprehensive suite of features designed to streamline your workflow and improve efficiency. Our platform combines cutting-edge technology with user-friendly design to deliver exceptional results.`,
+    },
+    pricing: {
+      title: 'Pricing',
+      heroTitle: `${businessInfo.name} Pricing`,
+      heroDescription: `Choose the perfect plan for your ${businessInfo.name} needs. Transparent pricing with no hidden fees.`,
+      description: `Explore ${businessInfo.name} pricing plans and find the perfect fit for your organization.`,
+      content: `${businessInfo.name} offers flexible pricing plans designed to grow with your business. Choose from our range of options to find the perfect fit for your needs and budget.`,
+    },
+    team: {
+      title: 'Team',
+      heroTitle: `Meet the ${businessInfo.name} Team`,
+      heroDescription: `Get to know the talented professionals behind ${businessInfo.name} who are dedicated to your success.`,
+      description: `Meet the expert team behind ${businessInfo.name} and learn about their experience and expertise.`,
+      content: `The ${businessInfo.name} team brings together decades of experience in technology, business, and innovation. We're passionate about delivering exceptional solutions and supporting our clients' success.`,
+    },
+    about: {
+      title: 'About',
+      heroTitle: `About ${businessInfo.name}`,
+      heroDescription: `Learn about our mission, vision, and the story behind ${businessInfo.name}.`,
+      description: `Discover the story behind ${businessInfo.name}, our mission, and our commitment to excellence.`,
+      content: `${businessInfo.name} was founded with a vision to revolutionize the industry through innovative technology and exceptional service. Our team is committed to delivering solutions that make a real difference for our clients.`,
+    },
+    contact: {
+      title: 'Contact',
+      heroTitle: `Contact ${businessInfo.name}`,
+      heroDescription: `Get in touch with our team. We're here to help you succeed with ${businessInfo.name}.`,
+      description: `Contact the ${businessInfo.name} team for support, sales inquiries, or partnership opportunities.`,
+      content: `We'd love to hear from you! Whether you have questions about ${businessInfo.name}, need support, or want to explore partnership opportunities, our team is ready to help.`,
+    },
+  }
+
+  return pageData[pageType] || pageData.features
 }
 
 async function fetchFileByURL(url: string): Promise<File> {

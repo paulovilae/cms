@@ -1,28 +1,26 @@
 import * as React from 'react'
-import { cn } from '../../utilities/ui'
+import clsx from 'clsx'
 
 interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: number
-  max?: number
 }
 
 const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
-  ({ className, value = 0, max = 100, ...props }, ref) => {
-    const percentage = Math.min(Math.max((value / max) * 100, 0), 100)
-
-    return (
+  ({ className, value = 0, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={clsx(
+        'relative h-4 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700',
+        className,
+      )}
+      {...props}
+    >
       <div
-        ref={ref}
-        className={cn('relative h-4 w-full overflow-hidden rounded-full bg-gray-200', className)}
-        {...props}
-      >
-        <div
-          className="h-full bg-blue-600 transition-all duration-300 ease-in-out"
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
-    )
-  },
+        className="h-full bg-violet-600 transition-all duration-300 ease-in-out"
+        style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
+      />
+    </div>
+  ),
 )
 Progress.displayName = 'Progress'
 

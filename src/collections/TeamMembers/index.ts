@@ -23,13 +23,59 @@ export const TeamMembers: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'position', 'order', 'updatedAt'],
+    defaultColumns: ['name', 'position', 'business', 'order', 'updatedAt'],
     group: {
       en: 'Content',
       es: 'Contenido',
     },
   },
   fields: [
+    {
+      name: 'business',
+      type: 'select',
+      options: [
+        {
+          label: {
+            en: 'IntelliTrade',
+            es: 'IntelliTrade',
+          },
+          value: 'intellitrade',
+        },
+        {
+          label: {
+            en: 'Salarium',
+            es: 'Salarium',
+          },
+          value: 'salarium',
+        },
+        {
+          label: {
+            en: 'Latinos',
+            es: 'Latinos',
+          },
+          value: 'latinos',
+        },
+        {
+          label: {
+            en: 'Capacita',
+            es: 'Capacita',
+          },
+          value: 'capacita',
+        },
+      ],
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: {
+          en: 'Which business this team member belongs to',
+          es: 'A qué negocio pertenece este miembro del equipo',
+        },
+      },
+      label: {
+        en: 'Business',
+        es: 'Negocio',
+      },
+    },
     {
       name: 'name',
       type: 'text',

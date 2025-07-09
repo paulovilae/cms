@@ -11,9 +11,24 @@ export const Testimonials: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'company', 'featured', 'updatedAt'],
+    defaultColumns: ['name', 'company', 'business', 'featured', 'updatedAt'],
   },
   fields: [
+    {
+      name: 'business',
+      type: 'select',
+      options: [
+        { label: 'IntelliTrade', value: 'intellitrade' },
+        { label: 'Salarium', value: 'salarium' },
+        { label: 'Latinos', value: 'latinos' },
+        { label: 'Capacita', value: 'capacita' },
+      ],
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Which business this testimonial belongs to',
+      },
+    },
     {
       name: 'name',
       type: 'text',
