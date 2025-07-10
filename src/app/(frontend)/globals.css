@@ -60,7 +60,7 @@
     --component-text-strong: hsl(var(--foreground));
     --component-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     --component-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
+
     /* Button semantic tokens */
     --button-primary-bg: hsl(var(--primary));
     --button-primary-text: hsl(var(--primary-foreground));
@@ -70,7 +70,7 @@
     --button-secondary-hover: hsl(var(--secondary) / 0.8);
     --button-disabled-bg: hsl(var(--muted));
     --button-disabled-text: hsl(var(--muted-foreground));
-    
+
     /* Status semantic tokens - Enhanced contrast for light theme */
     --status-success-bg: hsl(196 52% 92%);
     --status-success-text: hsl(196 52% 25%);
@@ -81,24 +81,24 @@
     --status-error-bg: hsl(10 100% 92%);
     --status-error-text: hsl(10 100% 25%);
     --status-error-border: hsl(10 100% 45%);
-    
+
     /* Interactive element tokens */
     --interactive-bg: hsl(var(--secondary));
     --interactive-bg-hover: hsl(var(--secondary) / 0.8);
     --interactive-text: hsl(var(--secondary-foreground));
     --interactive-border: hsl(var(--border));
-    
+
     /* Code block tokens */
     --code-bg: hsl(220, 13%, 18%);
     --code-text: hsl(220, 14%, 71%);
-    
+
     /* Spacing tokens */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
-    
+
     /* Border radius tokens */
     --radius-sm: 4px;
     --radius-md: 8px;
@@ -142,18 +142,18 @@
     /* Override tokens for dark theme */
     --component-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     --component-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-    
+
     /* Code block tokens for dark theme - better contrast */
     --code-bg: hsl(220, 13%, 8%);
     --code-text: hsl(220, 14%, 85%);
-    
+
     /* Enhanced component tokens for dark theme */
     --component-bg: hsl(var(--card));
     --component-bg-elevated: hsl(var(--card) / 0.9);
     --component-text: hsl(var(--foreground));
     --component-text-muted: hsl(var(--muted-foreground));
     --component-text-strong: hsl(var(--foreground));
-    
+
     /* Status tokens for dark theme - much better contrast */
     --status-success-bg: hsl(196 100% 8%);
     --status-success-text: hsl(196 100% 75%);

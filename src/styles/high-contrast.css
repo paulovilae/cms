@@ -2,30 +2,30 @@
 
 :root {
   /* High-contrast text colors */
-  --text-primary: #000000;        /* Black on white: 21:1 ratio */
-  --text-secondary: #374151;      /* Dark gray: 12.6:1 ratio */
-  --text-muted: #4B5563;          /* Medium gray: 9.2:1 ratio */
-  --text-accent: #1D4ED8;         /* Blue: 8.6:1 ratio */
-  
+  --text-primary: #000000; /* Black on white: 21:1 ratio */
+  --text-secondary: #374151; /* Dark gray: 12.6:1 ratio */
+  --text-muted: #4b5563; /* Medium gray: 9.2:1 ratio */
+  --text-accent: #1d4ed8; /* Blue: 8.6:1 ratio */
+
   /* Background colors */
-  --bg-primary: #FFFFFF;
-  --bg-secondary: #F9FAFB;
-  --bg-accent: #F3F4F6;
-  
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-accent: #f3f4f6;
+
   /* Interactive elements */
-  --link-color: #1D4ED8;          /* Blue: 8.6:1 ratio */
-  --link-hover: #1E40AF;          /* Darker blue: 10.2:1 ratio */
-  --button-text: #FFFFFF;
-  --button-bg: #1F2937;           /* Dark: 16.8:1 ratio */
-  --button-hover: #111827;        /* Darker: 19.3:1 ratio */
-  
+  --link-color: #1d4ed8; /* Blue: 8.6:1 ratio */
+  --link-hover: #1e40af; /* Darker blue: 10.2:1 ratio */
+  --button-text: #ffffff;
+  --button-bg: #1f2937; /* Dark: 16.8:1 ratio */
+  --button-hover: #111827; /* Darker: 19.3:1 ratio */
+
   /* Status colors with high contrast */
-  --success-text: #065F46;        /* Dark green: 8.9:1 ratio */
-  --success-bg: #D1FAE5;
-  --warning-text: #92400E;        /* Dark amber: 7.1:1 ratio */
-  --warning-bg: #FEF3C7;
-  --error-text: #991B1B;          /* Dark red: 8.2:1 ratio */
-  --error-bg: #FEE2E2;
+  --success-text: #065f46; /* Dark green: 8.9:1 ratio */
+  --success-bg: #d1fae5;
+  --warning-text: #92400e; /* Dark amber: 7.1:1 ratio */
+  --warning-bg: #fef3c7;
+  --error-text: #991b1b; /* Dark red: 8.2:1 ratio */
+  --error-bg: #fee2e2;
 }
 
 /* High-contrast utility classes */
@@ -62,28 +62,33 @@
 }
 
 .text-gray-500 {
-  color: #4B5563 !important; /* Medium gray with good contrast */
+  color: #4b5563 !important; /* Medium gray with good contrast */
 }
 
 .text-gray-400 {
-  color: #6B7280 !important; /* Lighter gray but still readable */
+  color: #6b7280 !important; /* Lighter gray but still readable */
 }
 
 /* Dark mode overrides */
 [data-theme='dark'] .text-gray-600 {
-  color: #D1D5DB !important; /* Light gray for dark backgrounds */
+  color: #d1d5db !important; /* Light gray for dark backgrounds */
 }
 
 [data-theme='dark'] .text-gray-500 {
-  color: #E5E7EB !important; /* Very light gray for dark backgrounds */
+  color: #e5e7eb !important; /* Very light gray for dark backgrounds */
 }
 
 [data-theme='dark'] .text-gray-400 {
-  color: #F3F4F6 !important; /* Almost white for dark backgrounds */
+  color: #f3f4f6 !important; /* Almost white for dark backgrounds */
 }
 
 /* Ensure headings have good contrast */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 700;
 }
 
@@ -93,17 +98,20 @@ p {
 }
 
 /* Navigation and menu items */
-nav a, .nav-link {
+nav a,
+.nav-link {
   color: var(--text-secondary) !important;
   font-weight: 500;
 }
 
-nav a:hover, .nav-link:hover {
+nav a:hover,
+.nav-link:hover {
   color: var(--text-primary) !important;
 }
 
 /* Button accessibility */
-.btn, button {
+.btn,
+button {
   font-weight: 600;
 }
 
@@ -119,12 +127,15 @@ nav a:hover, .nav-link:hover {
 }
 
 /* Form elements */
-input, textarea, select {
+input,
+textarea,
+select {
   color: var(--text-primary) !important;
   border-color: var(--text-muted) !important;
 }
 
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: var(--text-muted) !important;
 }
 
@@ -139,7 +150,8 @@ input::placeholder, textarea::placeholder {
   background-color: var(--warning-bg) !important;
 }
 
-.alert-error, .alert-danger {
+.alert-error,
+.alert-danger {
   color: var(--error-text) !important;
   background-color: var(--error-bg) !important;
 }
@@ -152,19 +164,19 @@ input::placeholder, textarea::placeholder {
 
 /* Business-specific high contrast overrides */
 .business-salarium {
-  --text-accent: #7C3AED;         /* Purple with sufficient contrast */
+  --text-accent: #7c3aed; /* Purple with sufficient contrast */
 }
 
 .business-intellitrade {
-  --text-accent: #2563EB;         /* Blue with sufficient contrast */
+  --text-accent: #2563eb; /* Blue with sufficient contrast */
 }
 
 .business-latinos {
-  --text-accent: #EA580C;         /* Orange with sufficient contrast */
+  --text-accent: #ea580c; /* Orange with sufficient contrast */
 }
 
 .business-capacita {
-  --text-accent: #16A34A;         /* Green with sufficient contrast */
+  --text-accent: #16a34a; /* Green with sufficient contrast */
 }
 
 /* Accessibility focus indicators */
@@ -174,7 +186,11 @@ input::placeholder, textarea::placeholder {
 }
 
 /* Ensure sufficient contrast for all interactive elements */
-a, button, input, select, textarea {
+a,
+button,
+input,
+select,
+textarea {
   transition: all 0.2s ease-in-out;
 }
 
@@ -182,7 +198,7 @@ a, button, input, select, textarea {
 @media print {
   * {
     color: #000000 !important;
-    background: #FFFFFF !important;
+    background: #ffffff !important;
   }
 }
 
@@ -192,8 +208,8 @@ a, button, input, select, textarea {
     --text-primary: #000000;
     --text-secondary: #000000;
     --text-muted: #333333;
-    --bg-primary: #FFFFFF;
-    --bg-secondary: #FFFFFF;
+    --bg-primary: #ffffff;
+    --bg-secondary: #ffffff;
   }
 }
 

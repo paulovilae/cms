@@ -9,65 +9,49 @@ When I start a task, I will include `[Memory Bank: Active]` at the beginning of 
 The Memory Bank consists of core files and optional context files, all in Markdown format.
 
 ### Core Files (Required)
-1. `brief.md`
+1. `PROJECT.md`
    This file is created and maintained manually by the developer. Don't edit this file directly but suggest to user to update it if it can be improved.
    - Foundation document that shapes all other files
-   - Created at project start if it doesn't exist
+   - Business units, value propositions, and success metrics
    - Defines core requirements and goals
    - Source of truth for project scope
 
-2. `product.md`
-   - Why this project exists
-   - Problems it solves
-   - How it should work
-   - User experience goals
-
-3. `context.md`
-   This file should be short and factual, not creative or speculative.
-   - Current work focus
-   - Recent changes
-   - Next steps
-
-4. `architecture.md`
-   - System architecture
-   - Source Code paths
-   - Key technical decisions
-   - Design patterns in use
-   - Component relationships
+2. `SYSTEM.md`
+   - Technology stack and multi-tenant architecture
+   - Core components and data architecture
    - Critical implementation paths
+   - System design patterns
 
-5. `tech.md`
-   - Technologies used
-   - Development setup
-   - Technical constraints
-   - Dependencies
-   - Tool usage patterns
+3. `CONTEXT.md`
+   This file should be short and factual, not creative or speculative.
+   - Current work focus and Docker configuration
+   - Recent changes and status
+   - Next steps and priorities
+
+4. `DEVELOPMENT.md`
+   - Setup, environment, and Payload CMS patterns
+   - Hooks, access control, and styling guidelines
+   - Common development patterns and best practices
+   - Database seeding and troubleshooting
+
+5. `STANDARDS.md`
+   - Clean code principles and debugging methodology
+   - Code quality standards and safe deletion policy
+   - Development best practices and patterns
+
+6. `WORKFLOWS.md`
+   - Common tasks, testing procedures, and troubleshooting
+   - Task management guidelines and status tracking
+   - Development workflows and templates
 
 ### Additional Files
-Create additional files/folders within memory-bank/ when they help organize:
-- `tasks.md` - Documentation of repetitive tasks and their workflows
-- `payload-guide.md` - Comprehensive Payload CMS development guide
-- `plugin-ecosystem.md` - Plugin architecture and extensibility framework
-- `database.md` - Database architecture, seeding, and management guide
-- `seed.md` - Seeding system architecture and workflows
+Optional specialized files may include:
+- `universal-search-architecture.md` - Current initiative architecture
 - Complex feature documentation
 - Integration specifications
 - API documentation
 - Testing strategies
 - Deployment procedures
-
-### File Organization Rules
-**CRITICAL**: Never create files in the project root unless they are essential for project operation (package.json, README.md, etc.). Use proper directories:
-- **Completed Tasks**: `.kilocode/completed-tasks/` - Task completion documentation and summaries
-- **Tests**: `.kilocode/tests/` - All test files, scripts, and debugging utilities
-- **Documentation**: `docs/` or `.kilocode/` subdirectories - Project documentation
-- **Temporary Files**: Use `.kilocode/temp/` if needed, but clean up regularly
-
-**Root Directory Policy**: The root directory should only contain:
-- Essential project files (package.json, README.md, .env, etc.)
-- Configuration files required by tools (next.config.js, tailwind.config.mjs, etc.)
-- Build outputs and generated files
-- NO temporary documentation, test files, or task summaries
 
 ## Core workflows
 
@@ -106,50 +90,6 @@ To execute Memory Bank update, I will:
 
 Note: When triggered by **update memory bank**, I MUST review every memory bank file, even if some don't require updates. Focus particularly on context.md as it tracks current state.
 
-### Add Task
-
-When user completes a repetitive task (like adding support for a new model version) and wants to document it for future reference, they can request: **add task** or **store this as a task**.
-
-This workflow is designed for repetitive tasks that follow similar patterns and require editing the same files. Examples include:
-- Adding support for new AI model versions
-- Implementing new API endpoints following established patterns
-- Adding new features that follow existing architecture
-
-Tasks are stored in the file `tasks.md` in the memory bank folder. The file is optional an can be empty. The file can store many tasks. 
-
-To execute Add Task workflow:
-
-1. Create or update `tasks.md` in the memory bank folder
-2. Document the task with:
-   - Task name and description
-   - Files that need to be modified
-   - Step-by-step workflow followed
-   - Important considerations or gotchas
-   - Example of the completed implementation
-3. Include any context that was discovered during task execution but wasn't previously documented
-
-Example task entry:
-```markdown
-## Add New Model Support
-**Last performed:** [date]
-**Files to modify:**
-- `/providers/gemini.md` - Add model to documentation
-- `/src/providers/gemini-config.ts` - Add model configuration
-- `/src/constants/models.ts` - Add to model list
-- `/tests/providers/gemini.test.ts` - Add test cases
-
-**Steps:**
-1. Add model configuration with proper token limits
-2. Update documentation with model capabilities
-3. Add to constants file for UI display
-4. Write tests for new model configuration
-
-**Important notes:**
-- Check Google's documentation for exact token limits
-- Ensure backward compatibility with existing configurations
-- Test with actual API calls before committing
-```
-
 ### Regular Task Execution
 
 In the beginning of EVERY task I MUST read ALL memory bank files - this is not optional. 
@@ -158,11 +98,11 @@ The memory bank files are located in `.kilocode/rules/memory-bank` folder. If th
 
 "[Memory Bank: Active] I understand we're building a React inventory system with barcode scanning. Currently implementing the scanner component that needs to work with the backend API."
 
-When starting a task that matches a documented task in `tasks.md`, I should mention this and follow the documented workflow to ensure no steps are missed.
+When starting a task that matches a documented task in `WORKFLOWS.md`, I should mention this and follow the documented workflow to ensure no steps are missed.
 
 If the task was repetitive and might be needed again, I should suggest: "Would you like me to add this task to the memory bank for future reference?"
 
-In the end of the task, when it seems to be completed, I will update `context.md` accordingly. If the change seems significant, I will suggest to the user: "Would you like me to update memory bank to reflect these changes?" I will not suggest updates for minor changes.
+In the end of the task, when it seems to be completed, I will update `CONTEXT.md` accordingly. If the change seems significant, I will suggest to the user: "Would you like me to update memory bank to reflect these changes?" I will not suggest updates for minor changes.
 
 ## Context Window Management
 
@@ -171,14 +111,10 @@ When the context window fills up during an extended session:
 2. Recommend starting a fresh conversation/task
 3. In the new conversation, I will automatically load the memory bank files to maintain continuity
 
-## Technical Implementation
-
-Memory Bank is built on Kilo Code's Custom Rules feature, with files stored as standard markdown documents that both the user and I can access.
-
 ## Important Notes
 
 REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is my only link to previous work. It must be maintained with precision and clarity, as my effectiveness depends entirely on its accuracy.
 
-If I detect inconsistencies between memory bank files, I should prioritize brief.md and note any discrepancies to the user.
+If I detect inconsistencies between memory bank files, I should prioritize PROJECT.md and note any discrepancies to the user.
 
 IMPORTANT: I MUST read ALL memory bank files at the start of EVERY task - this is not optional. The memory bank files are located in `.kilocode/rules/memory-bank` folder.

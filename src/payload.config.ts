@@ -179,7 +179,24 @@ export default buildConfig({
     // Business-specific collections are added via plugins
     // AFFiNE Integration collections are added via affineIntegrationPlugin (currently disabled)
   ],
-  cors: [getServerSideURL()].filter(Boolean),
+  cors: [
+    getServerSideURL(),
+    // Production domains for Salarium
+    'https://salarium.paulovila.org',
+    'http://salarium.paulovila.org',
+    // Production domains for other businesses
+    'https://intellitrade.paulovila.org',
+    'http://intellitrade.paulovila.org',
+    'https://latinos.paulovila.org',
+    'http://latinos.paulovila.org',
+    'https://trade.paulovila.org',
+    'http://trade.paulovila.org',
+    // Development domains
+    'http://localhost:3003',
+    'http://localhost:3004',
+    'http://localhost:3005',
+    'http://localhost:3006',
+  ].filter(Boolean),
   globals: [Header, Footer],
   plugins: getActivePlugins(),
   secret: process.env.PAYLOAD_SECRET,

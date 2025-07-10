@@ -1,0 +1,64 @@
+{
+  "summary": {
+    "totalTests": 50,
+    "passed": 27,
+    "failed": 23,
+    "successRate": "54.00%",
+    "timestamp": "2025-07-10T11:44:52.734Z"
+  },
+  "errors": [
+    "Search endpoint failed for salarium: 404",
+    "Search endpoint failed for intellitrade: 404",
+    "Search endpoint failed for latinos: 404",
+    "Suggestions endpoint failed for salarium: 404",
+    "Suggestions endpoint failed for salarium: 404",
+    "Suggestions endpoint failed for intellitrade: 404",
+    "Suggestions endpoint failed for intellitrade: 404",
+    "Suggestions endpoint failed for latinos: 404",
+    "Suggestions endpoint failed for latinos: 404",
+    "End-to-end search failed for salarium query \"senior developer\": 404",
+    "End-to-end search failed for salarium query \"marketing manager\": 404",
+    "End-to-end search failed for salarium query \"incomplete job descriptions\": 404",
+    "End-to-end search failed for salarium query \"show me all engineering roles\": 404",
+    "End-to-end search failed for intellitrade query \"blockchain verification\": 404",
+    "End-to-end search failed for intellitrade query \"pending contracts\": 404",
+    "End-to-end search failed for intellitrade query \"FOB shipping terms\": 404",
+    "End-to-end search failed for intellitrade query \"show me all verified transactions\": 404",
+    "End-to-end search failed for latinos query \"high performance trading bots\": 404",
+    "End-to-end search failed for latinos query \"momentum strategy\": 404",
+    "End-to-end search failed for latinos query \"active bots\": 404",
+    "End-to-end search failed for latinos query \"show me profitable algorithms\": 404",
+    "Invalid business context handled gracefully",
+    "Empty query handled gracefully"
+  ],
+  "details": [
+    {
+      "type": "fail",
+      "message": "Search endpoint failed for salarium: 404",
+      "details": {
+        "status": 404,
+        "statusText": "Not Found"
+      }
+    },
+    {
+      "type": "fail",
+      "message": "Search endpoint failed for intellitrade: 404",
+      "details": {
+        "status": 404,
+        "statusText": "Not Found"
+      }
+    },
+    {
+      "type": "fail",
+      "message": "Search endpoint failed for latinos: 404",
+      "details": {
+        "status": 404,
+        "statusText": "Not Found"
+      }
+    }
+  ],
+  "recommendations": [
+    "Review failed tests and fix underlying issues",
+    "Verify business-specific configurations are properly loaded"
+  ]
+}

@@ -5,6 +5,7 @@ An automated trading platform with bot functionality for stock market operations
 ## Overview
 
 The Latinos plugin provides:
+
 - Trading bot management and configuration
 - Real-time market data integration
 - Automated trading strategy execution
@@ -27,32 +28,37 @@ The Latinos Trading Bot System relies on a stable connection to the Python FastA
 #### 1. Connection Refused (ECONNREFUSED)
 
 **Symptoms:**
+
 - Error: "Connection refused" or "ECONNREFUSED"
 - Debug panel shows "Disconnected" status
 - All endpoint tests fail
 
 **Possible Causes:**
+
 - Python FastAPI microservice is not running
 - Wrong port number configured
 - Microservice crashed or failed to start
 - Port is blocked by firewall
 
 **Troubleshooting Steps:**
+
 1. **Check if the microservice is running:**
+
    ```bash
    # Check if process is running
    ps aux | grep python
-   
+
    # Check if port is in use
    netstat -tlnp | grep 8000
    lsof -i :8000
    ```
 
 2. **Start the Python FastAPI microservice:**
+
    ```bash
    # Navigate to your microservice directory
    cd /path/to/your/trading-microservice
-   
+
    # Start the service (example commands)
    python main.py
    # or
@@ -73,27 +79,32 @@ The Latinos Trading Bot System relies on a stable connection to the Python FastA
 #### 2. Connection Timeout
 
 **Symptoms:**
+
 - Error: "Request timeout after Xms"
 - Slow response times in debug panel
 - Intermittent connection failures
 
 **Possible Causes:**
+
 - Microservice is overloaded
 - Network latency issues
 - Timeout setting too low
 - Microservice is processing heavy operations
 
 **Troubleshooting Steps:**
+
 1. **Increase timeout setting:**
+
    ```env
    BOT_MICROSERVICE_TIMEOUT=30000  # 30 seconds
    ```
 
 2. **Check microservice performance:**
+
    ```bash
    # Monitor CPU and memory usage
    top -p $(pgrep -f "python.*main")
-   
+
    # Check microservice logs
    tail -f /path/to/microservice/logs/app.log
    ```
@@ -107,21 +118,26 @@ The Latinos Trading Bot System relies on a stable connection to the Python FastA
 #### 3. DNS Resolution Failed (ENOTFOUND)
 
 **Symptoms:**
+
 - Error: "getaddrinfo ENOTFOUND" or "ENOTFOUND"
 - Cannot resolve hostname
 
 **Possible Causes:**
+
 - Invalid hostname in configuration
 - DNS server issues
 - Network connectivity problems
 
 **Troubleshooting Steps:**
+
 1. **Use IP address instead of hostname:**
+
    ```env
    BOT_MICROSERVICE_URL=http://127.0.0.1:8000
    ```
 
 2. **Test DNS resolution:**
+
    ```bash
    nslookup localhost
    dig localhost
@@ -135,20 +151,24 @@ The Latinos Trading Bot System relies on a stable connection to the Python FastA
 #### 4. HTTP 404 - Health Endpoint Not Found
 
 **Symptoms:**
+
 - Error: "HTTP 404: Not Found"
 - Microservice is running but health endpoint fails
 
 **Possible Causes:**
+
 - Health endpoint not implemented in microservice
 - Wrong API path configuration
 - Microservice version mismatch
 
 **Troubleshooting Steps:**
+
 1. **Check microservice API documentation:**
    - Visit `http://localhost:8000/docs` for FastAPI auto-generated docs
    - Verify the health endpoint exists at `/api/health`
 
 2. **Test other endpoints:**
+
    ```bash
    curl http://localhost:8000/
    curl http://localhost:8000/api/
@@ -166,20 +186,24 @@ The Latinos Trading Bot System relies on a stable connection to the Python FastA
 #### 5. HTTP 500 - Internal Server Error
 
 **Symptoms:**
+
 - Error: "HTTP 500: Internal Server Error"
 - Microservice responds but with errors
 
 **Possible Causes:**
+
 - Database connection issues in microservice
 - Configuration errors
 - Runtime errors in microservice code
 
 **Troubleshooting Steps:**
+
 1. **Check microservice logs:**
+
    ```bash
    # Check application logs
    tail -f /path/to/microservice/logs/error.log
-   
+
    # Check system logs
    journalctl -u your-microservice-name -f
    ```
@@ -190,10 +214,11 @@ The Latinos Trading Bot System relies on a stable connection to the Python FastA
    - Environment variables
 
 3. **Restart the microservice:**
+
    ```bash
    # Stop the service
    pkill -f "python.*main"
-   
+
    # Start it again
    python main.py
    ```
@@ -211,23 +236,27 @@ The Latinos plugin includes a comprehensive debug panel accessible through the a
 #### Debug Panel Features
 
 **Overview Tab:**
+
 - Connection status indicator
 - Response time metrics
 - Network reachability status
 - Microservice information
 
 **Endpoints Tab:**
+
 - Individual endpoint test results
 - Response times for each endpoint
 - Detailed error messages
 
 **Diagnostics Tab:**
+
 - Automated issue detection
 - Severity levels (Critical, High, Medium, Low)
 - Possible causes and solutions
 - Auto-fix suggestions where available
 
 **Configuration Tab:**
+
 - Current environment variables
 - Connection settings
 - Required configuration examples
@@ -280,6 +309,7 @@ NODE_ENV=development
 ```
 
 This will log:
+
 - Connection attempts and retries
 - Request/response details
 - Error messages and stack traces
@@ -288,6 +318,7 @@ This will log:
 #### Connection Statistics
 
 The system tracks connection statistics including:
+
 - Success/failure rates
 - Average response times
 - Consecutive failure counts
@@ -300,15 +331,17 @@ Access these through the debug panel or programmatically via the API.
 For network-related issues:
 
 1. **Check firewall settings:**
+
    ```bash
    # Ubuntu/Debian
    sudo ufw status
-   
+
    # CentOS/RHEL
    sudo firewall-cmd --list-all
    ```
 
 2. **Test port connectivity:**
+
    ```bash
    telnet localhost 8000
    nc -zv localhost 8000
@@ -344,12 +377,14 @@ For optimal performance:
 ### Running in Development Mode
 
 1. **Start the microservice:**
+
    ```bash
    cd /path/to/trading-microservice
    python main.py
    ```
 
 2. **Start the CMS:**
+
    ```bash
    npm run dev
    # or
@@ -390,6 +425,7 @@ wscat -c ws://localhost:8000/ws/trades
 ### Monitoring
 
 Set up monitoring for:
+
 - Connection health and uptime
 - Response times and performance
 - Error rates and failure patterns
@@ -398,6 +434,7 @@ Set up monitoring for:
 ### Backup and Recovery
 
 Ensure you have:
+
 - Database backups for bot configurations
 - Configuration backups for environment settings
 - Monitoring and alerting for service failures

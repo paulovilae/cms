@@ -45,7 +45,7 @@ export const BotsList: React.FC<BotsListProps> = ({
 
   // Filter and sort bots
   const filteredAndSortedBots = useMemo(() => {
-    let filtered = bots.filter((bot) => {
+    const filtered = bots.filter((bot) => {
       const matchesSearch =
         bot.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         bot.symbol.toLowerCase().includes(searchTerm.toLowerCase())

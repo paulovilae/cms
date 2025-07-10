@@ -24,16 +24,7 @@ export const salariumPlugin = (): Plugin => (incomingConfig) => {
     collections: [
       ...(incomingConfig.collections || []),
       FlowTemplates,
-      {
-        ...FlowInstances,
-        hooks: {
-          ...FlowInstances.hooks,
-          beforeChange: [
-            ...(FlowInstances.hooks?.beforeChange || []),
-            aiProcessingHook, // AI processing hook restored
-          ],
-        },
-      },
+      FlowInstances, // Use the collection as-is, it already has the hook
       Organizations,
       JobFamilies,
       Departments,

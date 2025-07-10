@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { createBusinessHeaders } from '../../../../utilities/businessContext'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -18,7 +18,11 @@ import {
   Printer,
   Eye,
   X,
+  Search,
 } from 'lucide-react'
+// Import QuickSearch components
+import { QuickSearch } from './JobDescriptionWorkflow/components/QuickSearch'
+import { ReferencePanel } from './JobDescriptionWorkflow/components/QuickSearch/ReferencePanel'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -187,9 +191,38 @@ export default function JobDescriptionWorkflow() {
   const [openAccordions, setOpenAccordions] = useState<Record<number, boolean>>({})
   const [showContextPreview, setShowContextPreview] = useState(false)
 
+  // Reference search states
+  const [referenceJob, setReferenceJob] = useState<any>(null)
+  const [showReferencePanel, setShowReferencePanel] = useState(false)
+
+  // Ref to prevent double execution in React StrictMode
+  const hasInitialized = useRef(false)
+
   // Load the job description template on component mount
   useEffect(() => {
+    // Prevent double execution in React StrictMode (development)
+    if (hasInitialized.current) {
+      console.log('🔍 useEffect skipped - already initialized (StrictMode protection)')
+      return
+    }
+    hasInitialized.current = true
+
+    console.log('🔍 useEffect triggered - loadTemplate called')
     loadTemplate()
+
+    // Check if we have a reference job in localStorage
+    try {
+      const storedReference = localStorage.getItem('jobDescriptionReference')
+      if (storedReference) {
+        const parsedReference = JSON.parse(storedReference)
+        setReferenceJob(parsedReference)
+        setShowReferencePanel(true)
+        // Clear storage after loading
+        localStorage.removeItem('jobDescriptionReference')
+      }
+    } catch (error) {
+      console.error('Failed to load reference job:', error)
+    }
   }, [])
 
   // Initialize current step accordion as open
@@ -203,6 +236,7 @@ export default function JobDescriptionWorkflow() {
   }, [currentStep, template])
 
   const loadTemplate = async () => {
+    console.log('🔍 loadTemplate called')
     try {
       setIsLoading(true)
       setError(null)
@@ -248,6 +282,7 @@ export default function JobDescriptionWorkflow() {
   }
 
   const loadOrCreateInstance = async (template: FlowTemplate) => {
+    console.log('🔍 loadOrCreateInstance called for template:', template.id)
     try {
       // First, try to find an existing draft instance for this user and template
       let existingResponse = await fetch(
@@ -279,6 +314,7 @@ export default function JobDescriptionWorkflow() {
 
       if (existingData.docs && existingData.docs.length > 0) {
         // Use existing instance
+        console.log('🔍 Found existing instance:', existingData.docs[0].id)
         const existingInstance = existingData.docs[0]
         setInstance(existingInstance)
         setCurrentStep(existingInstance.currentStep || 1)
@@ -296,17 +332,27 @@ export default function JobDescriptionWorkflow() {
           setHasProcessed(!!currentStepResponse.aiGeneratedContent)
         }
       } else {
-        // Create a new instance
+        // No existing instance found - create a new one
+        console.log('🔍 No existing instance found, creating new one')
         await createNewInstance(template)
       }
     } catch (error) {
-      console.error('Error loading or creating instance:', error)
-      // Fallback to creating new instance
-      await createNewInstance(template)
+      console.error('Error loading instance:', error)
+      // Only create new instance if we haven't already set one
+      if (!instance) {
+        console.log('🔍 Error fallback: creating new instance because instance is null')
+        await createNewInstance(template)
+      } else {
+        console.log(
+          '🔍 Error fallback: NOT creating instance because instance already exists:',
+          instance.id,
+        )
+      }
     }
   }
 
   const createNewInstance = async (template: FlowTemplate) => {
+    console.log('🔍 createNewInstance called for template:', template.id)
     try {
       // First get the current user info
       const userResponse = await fetch('/api/users/me', {
@@ -319,11 +365,17 @@ export default function JobDescriptionWorkflow() {
 
       const userData = await userResponse.json()
 
+      // Generate title with proper format: "Job title - date - time"
+      const now = new Date()
+      const dateStr = now.toLocaleDateString()
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      const instanceTitle = `New Position - ${dateStr} - ${timeStr}`
+
       const response = await fetch('/api/flow-instances', {
         method: 'POST',
         headers: createBusinessHeaders('salarium'),
         body: JSON.stringify({
-          title: `Job Description - New Position - ${new Date().toLocaleDateString()}`,
+          title: instanceTitle,
           template: template.id,
           user: userData.user.id, // ✅ Include user ID
           currentStep: 1,
@@ -451,7 +503,10 @@ export default function JobDescriptionWorkflow() {
       console.log('Looking for step response for step:', currentStep)
       console.log(
         'Available step responses:',
-        stepResponses.map((r) => ({ stepNumber: r.stepNumber, hasAI: !!r.aiGeneratedContent })),
+        stepResponses.map((r: StepResponse) => ({
+          stepNumber: r.stepNumber,
+          hasAI: !!r.aiGeneratedContent,
+        })),
       )
       console.log('Found current step response:', currentStepResponse)
 
@@ -462,6 +517,11 @@ export default function JobDescriptionWorkflow() {
           '✅ AI content updated successfully:',
           currentStepResponse.aiGeneratedContent.substring(0, 100) + '...',
         )
+
+        // Auto-save step 1 (Job Title) to update the instance title immediately
+        if (currentStep === 1) {
+          await saveCurrentStep(currentStepResponse.aiGeneratedContent)
+        }
       } else {
         console.log('❌ No AI content found in response:', {
           stepResponses,
@@ -515,10 +575,23 @@ export default function JobDescriptionWorkflow() {
         }
       }
 
+      // If this is step 1 (Job Title) and we have AI content, update the instance title
+      let updatedTitle = instance.title
+      if (currentStep === 1 && (generatedContent || aiContent)) {
+        const jobTitle = (generatedContent || aiContent).trim()
+        if (jobTitle) {
+          const now = new Date()
+          const dateStr = now.toLocaleDateString()
+          const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          updatedTitle = `${jobTitle} - ${dateStr} - ${timeStr}`
+        }
+      }
+
       const response = await fetch(`/api/flow-instances/${instance.id}`, {
         method: 'PATCH',
         headers: createBusinessHeaders('salarium'),
         body: JSON.stringify({
+          title: updatedTitle,
           stepResponses: updatedStepResponses,
           currentStep: currentStep,
         }),
@@ -1078,12 +1151,112 @@ This document was generated on ${new Date().toLocaleDateString()} at ${new Date(
     )
   }
 
-  if (!template || !instance) {
+  if (!template) {
     return (
       <div className="max-w-2xl mx-auto p-6">
         <Card>
           <CardContent className="pt-6">
-            <p className="text-center text-gray-600 dark:text-gray-300">Workflow not available</p>
+            <p className="text-center text-gray-600 dark:text-gray-300">Template not available</p>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  // Handle selecting a reference job
+  const handleReferenceSelection = (jobDescription: any) => {
+    setReferenceJob(jobDescription)
+    setShowReferencePanel(true)
+
+    // Optional: Pre-populate some fields based on the reference
+    if (currentStep === 1 && !userInput && !hasProcessed) {
+      // Suggest the title as a starting point but don't auto-fill
+      if (jobDescription.title) {
+        setUserInput(`Similar to: ${jobDescription.title}`)
+      }
+    }
+  }
+
+  // If no instance exists, show a start screen
+  if (!instance) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
+        {/* Header */}
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            AI Job Description Creator
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
+            Create professional job descriptions in minutes with AI assistance
+          </p>
+        </div>
+
+        {/* Start Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-center">Ready to Create a Job Description?</CardTitle>
+            <CardDescription className="text-center">
+              Enter the job title to get started. The AI will help you create a comprehensive job
+              description.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              {/* Add QuickSearch at the top of step 1 */}
+              <QuickSearch onSelectReference={handleReferenceSelection} />
+
+              <Label htmlFor="job-title-input" className="text-base font-medium">
+                Job Title
+              </Label>
+              <Input
+                id="job-title-input"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                placeholder="e.g., Senior Software Engineer, Marketing Manager, Sales Director"
+                className="mt-2"
+              />
+              <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">
+                💡 Be specific about the role level and department for better results
+              </p>
+            </div>
+
+            <Button
+              onClick={processWithAI}
+              disabled={!userInput.trim() || isProcessing}
+              className="w-full bg-violet-600 hover:bg-violet-700"
+              size="lg"
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Creating Job Description...
+                </>
+              ) : (
+                'Start Creating Job Description'
+              )}
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Process Overview */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-center">How It Works</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-5 gap-4">
+              {template.steps.map((step, index) => (
+                <div key={step.stepNumber} className="text-center">
+                  <div className="w-10 h-10 bg-violet-100 dark:bg-violet-900 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <span className="text-sm font-bold text-violet-600 dark:text-violet-300">
+                      {step.stepNumber}
+                    </span>
+                  </div>
+                  <h4 className="font-medium text-sm mb-1">{step.title}</h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-300">{step.description}</p>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -1437,6 +1610,15 @@ This document was generated on ${new Date().toLocaleDateString()} at ${new Date(
                         {step.isRequired && <span className="text-red-500 ml-1">*</span>}
                       </div>
 
+                      {/* Reference Panel - show if reference is selected */}
+                      {step.stepNumber === currentStep && showReferencePanel && referenceJob && (
+                        <ReferencePanel
+                          reference={referenceJob}
+                          onClose={() => setShowReferencePanel(false)}
+                          currentStep={currentStep}
+                        />
+                      )}
+
                       {/* Context Indicator */}
                       {step.stepNumber === currentStep && (
                         <ContextIndicator
@@ -1719,15 +1901,19 @@ Please use this context to ensure your response is consistent and builds upon th
       }
     }
 
-    return `${contextMap[currentStep] || currentStepData.systemPrompt}
+    // Use database systemPrompt as primary, contextMap as fallback
+    const primaryPrompt =
+      currentStepData.systemPrompt ||
+      contextMap[currentStep] ||
+      'Process the user input professionally.'
+
+    return `${primaryPrompt}
 
 ${contextSection}
 
 ${formatInstructions[currentStep] || ''}
 
 User Input: "${userInput}"
-
-Instructions: ${currentStepData.systemPrompt}
 
 IMPORTANT: Use the context from previous steps to create a cohesive response that aligns with the overall job description being created. Reference specific details from previous steps when relevant.
 

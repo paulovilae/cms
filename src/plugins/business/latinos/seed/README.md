@@ -68,11 +68,13 @@ if (process.env.BUSINESS_MODE === 'latinos' || process.env.BUSINESS_MODE === 'al
 ## Sample Data Details
 
 ### Market Data (12 entries)
+
 - **Stocks**: AAPL, GOOGL, MSFT, TSLA, AMZN, NVDA, META, NFLX, AMD, INTC
 - **Crypto**: BTC-USD, ETH-USD
 - Includes realistic price data, volume, 24h changes, market cap
 
 ### Trading Strategies (6 strategies)
+
 1. **RSI Oversold/Overbought**: Conservative RSI-based strategy
 2. **Golden Cross MA Strategy**: Moving average crossover strategy
 3. **MACD Momentum**: MACD-based momentum strategy
@@ -81,17 +83,20 @@ if (process.env.BUSINESS_MODE === 'latinos' || process.env.BUSINESS_MODE === 'al
 6. **Scalping Quick Profits**: High-frequency scalping strategy
 
 ### Trading Bots (8 bots)
+
 - **Active Bots**: Apple RSI, Google MA, NVIDIA Bollinger, Microsoft Multi-timeframe, Bitcoin RSI
 - **Paused Bots**: Tesla MACD
 - **Stopped Bots**: Amazon Scalper
 - **Error Bots**: Meta MACD (for testing error scenarios)
 
 ### Trading Formulas (8 formulas)
+
 - Each bot has a corresponding formula with specific parameters
 - Includes buy/sell conditions based on technical indicators
 - Mix of active and inactive formulas for testing
 
 ### Trading Trades (17 trades)
+
 - **Successful Trades**: Profitable trades with realistic profit amounts
 - **Failed Trades**: Loss-making trades for realistic scenarios
 - **Open Trades**: Current positions for live testing
@@ -111,17 +116,20 @@ Trading Bots ← Trading Trades (bot relationship)
 ## Realistic Features
 
 ### Profit/Loss Scenarios
+
 - **Profitable Bots**: Apple RSI (+$1,247), NVIDIA Bollinger (+$2,156), Microsoft (+$1,834)
 - **Loss-Making Bots**: Tesla MACD (-$234), Meta MACD (-$89)
 - **Mixed Results**: Various win rates and performance metrics
 
 ### Bot Status Variety
+
 - **Active**: Currently running bots with recent execution times
 - **Paused**: Temporarily stopped bots
 - **Stopped**: Manually stopped bots
 - **Error**: Bots with technical issues
 
 ### Trading Patterns
+
 - **Day Trading**: Short-term trades with quick profits
 - **Swing Trading**: Medium-term positions
 - **Scalping**: High-frequency micro-profits
@@ -130,6 +138,7 @@ Trading Bots ← Trading Trades (bot relationship)
 ## Development Tips
 
 ### Testing Scenarios
+
 The seed data provides various scenarios for testing:
 
 1. **Performance Analytics**: Mix of profitable and losing bots
@@ -139,6 +148,7 @@ The seed data provides various scenarios for testing:
 5. **Multi-asset Trading**: Stocks and crypto for diverse testing
 
 ### Customization
+
 To customize the seed data:
 
 1. **Edit Individual Files**: Modify specific seed files for your needs
@@ -147,6 +157,7 @@ To customize the seed data:
 4. **Update Parameters**: Modify trading parameters for different strategies
 
 ### Database Considerations
+
 - **Order Matters**: Collections are seeded in dependency order
 - **ID Handling**: String IDs are converted to numbers for relationships
 - **Error Recovery**: Individual creation failures don't stop the entire process
@@ -162,7 +173,9 @@ To customize the seed data:
 4. **Missing Dependencies**: Ensure all prerequisite collections are seeded first
 
 ### Debug Information
+
 The seed process provides detailed logging:
+
 - Collection-by-collection progress
 - Individual creation success/failure
 - Total counts and timing information
@@ -171,6 +184,7 @@ The seed process provides detailed logging:
 ## Integration with Microservices
 
 The seed data includes microservice integration fields:
+
 - `microserviceId`: Links to Python FastAPI trading service
 - `microserviceTradeId`: References for trade synchronization
 - Realistic IDs for testing microservice communication

@@ -390,7 +390,7 @@ export async function getConnectionStatus(
   const connectionTest = await testConnection(baseUrl, timeout)
 
   // Get network info
-  let networkInfo = {
+  const networkInfo = {
     canReachHost: false,
     dnsResolution: false,
     portOpen: false,

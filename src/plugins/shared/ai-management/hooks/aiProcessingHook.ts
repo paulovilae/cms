@@ -45,16 +45,17 @@ Please use this context to ensure your response is consistent and builds upon th
     }
   }
 
-  // Build the complete prompt
-  return `${contextMap[stepNumber] || systemPrompt}
+  // Build the complete prompt - Use database systemPrompt as primary, contextMap as fallback
+  const primaryPrompt =
+    systemPrompt || contextMap[stepNumber] || 'Process the user input professionally.'
+
+  return `${primaryPrompt}
 
 ${contextSection}
 
 ${formatInstructions[stepNumber] || ''}
 
 User Input: "${userInput}"
-
-Instructions: ${systemPrompt}
 
 IMPORTANT: Use the context from previous steps to create a cohesive response that aligns with the overall job description being created. Reference specific details from previous steps when relevant.
 
@@ -197,7 +198,7 @@ export const aiProcessingHook: CollectionBeforeChangeHook = async ({
       // Build the API URL and request body based on provider type
       let apiUrl = ''
       let requestBody: any = {}
-      let headers: any = { 'Content-Type': 'application/json' }
+      const headers: any = { 'Content-Type': 'application/json' }
 
       if (provider.provider === 'ollama' || provider.provider === 'lmstudio') {
         // Both Ollama and LM Studio use the same API format
