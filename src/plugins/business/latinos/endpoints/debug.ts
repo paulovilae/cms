@@ -5,15 +5,30 @@ import {
   diagnoseMicroserviceIssue,
   attemptAutoFix,
 } from '../utils/connectionDebug'
+import { getBusinessContext, isValidBusinessMode } from '../../../../utilities/businessContext'
 
 /**
  * Test connection and return detailed status
  */
 export const connectionDebugEndpoint = {
-  path: '/latinos/debug/connection',
+  path: '/debug/connection',
   method: 'get',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Debug connection request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Debug endpoints not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -84,10 +99,24 @@ export const connectionDebugEndpoint = {
  * Force reconnection attempt
  */
 export const retryConnectionEndpoint = {
-  path: '/latinos/debug/retry-connection',
+  path: '/debug/retry-connection',
   method: 'post',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Retry connection request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Debug endpoints not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -190,10 +219,24 @@ export const retryConnectionEndpoint = {
  * Get microservice health and detailed information
  */
 export const microserviceHealthEndpoint = {
-  path: '/latinos/debug/microservice-health',
+  path: '/debug/microservice-health',
   method: 'get',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Microservice health request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Debug endpoints not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })

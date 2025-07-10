@@ -7,6 +7,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react'
+import { createBusinessHeaders } from '../../../../utilities/businessContext'
 
 export interface Bot {
   id: string
@@ -100,7 +101,9 @@ export const useBotData = (options: UseBotDataOptions = {}): UseBotDataReturn =>
   const fetchBots = useCallback(async () => {
     try {
       setError(null)
-      const response = await fetch('/api/latinos/bots')
+      const response = await fetch('/api/bots', {
+        headers: createBusinessHeaders('latinos'),
+      })
 
       if (!response.ok) {
         throw new Error(`Failed to fetch bots: ${response.statusText}`)
@@ -148,11 +151,9 @@ export const useBotData = (options: UseBotDataOptions = {}): UseBotDataReturn =>
       setCreating(true)
       setError(null)
 
-      const response = await fetch('/api/latinos/bots', {
+      const response = await fetch('/api/bots', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: createBusinessHeaders('latinos'),
         body: JSON.stringify(botData),
       })
 
@@ -180,11 +181,9 @@ export const useBotData = (options: UseBotDataOptions = {}): UseBotDataReturn =>
         setUpdating(true)
         setError(null)
 
-        const response = await fetch(`/api/latinos/bots/${botId}`, {
+        const response = await fetch(`/api/bots/${botId}`, {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: createBusinessHeaders('latinos'),
           body: JSON.stringify(updates),
         })
 
@@ -219,8 +218,9 @@ export const useBotData = (options: UseBotDataOptions = {}): UseBotDataReturn =>
         setDeleting(true)
         setError(null)
 
-        const response = await fetch(`/api/latinos/bots/${botId}`, {
+        const response = await fetch(`/api/bots/${botId}`, {
           method: 'DELETE',
+          headers: createBusinessHeaders('latinos'),
         })
 
         if (!response.ok) {

@@ -1,13 +1,28 @@
 import { botMicroservice } from '../services/botMicroservice'
+import { getBusinessContext, isValidBusinessMode } from '../../../../utilities/businessContext'
 
 /**
  * Get all trading bots
  */
 export const getBotsEndpoint = {
-  path: '/latinos/bots',
+  path: '/bots',
   method: 'get',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Get bots request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Trading bots not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -45,10 +60,24 @@ export const getBotsEndpoint = {
  * Create a new trading bot
  */
 export const createBotEndpoint = {
-  path: '/latinos/bots',
+  path: '/bots',
   method: 'post',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Create bot request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Trading bots not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -131,10 +160,24 @@ export const createBotEndpoint = {
  * Get a specific trading bot
  */
 export const getBotEndpoint = {
-  path: '/latinos/bots/:id',
+  path: '/bots/:id',
   method: 'get',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Get bot request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Trading bots not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -189,10 +232,24 @@ export const getBotEndpoint = {
  * Update a trading bot
  */
 export const updateBotEndpoint = {
-  path: '/latinos/bots/:id',
+  path: '/bots/:id',
   method: 'patch',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Update bot request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Trading bots not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -263,10 +320,24 @@ export const updateBotEndpoint = {
  * Delete a trading bot
  */
 export const deleteBotEndpoint = {
-  path: '/latinos/bots/:id',
+  path: '/bots/:id',
   method: 'delete',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Delete bot request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Trading bots not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -322,10 +393,24 @@ export const deleteBotEndpoint = {
  * Start a trading bot
  */
 export const startBotEndpoint = {
-  path: '/latinos/bots/:id/start',
+  path: '/bots/:id/start',
   method: 'post',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Start bot request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Trading bots not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -391,10 +476,24 @@ export const startBotEndpoint = {
  * Stop a trading bot
  */
 export const stopBotEndpoint = {
-  path: '/latinos/bots/:id/stop',
+  path: '/bots/:id/stop',
   method: 'post',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Stop bot request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Trading bots not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })

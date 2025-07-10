@@ -7,22 +7,16 @@ import { Organizations } from './collections/Organizations'
 import { JobFamilies } from './collections/JobFamilies'
 import { Departments } from './collections/Departments'
 
-// Import Salarium endpoints
-import { aiProcessEndpoint } from './endpoints/ai-process'
-import { flowTemplatesEndpoint, flowTemplateBySlugEndpoint } from './endpoints/flow-templates'
-import {
-  flowInstancesEndpoint,
-  createFlowInstanceEndpoint,
-  updateFlowInstanceEndpoint,
-  getFlowInstanceEndpoint,
-  deleteFlowInstanceEndpoint,
-} from './endpoints/flow-instances'
+// Import AI processing hook from shared plugin
+import { aiProcessingHook } from '../../shared/ai-management/hooks/aiProcessingHook'
 
 /**
  * Salarium Plugin
  *
  * Human resources management system focused on document workflows,
  * employee management, and organizational processes.
+ *
+ * MIGRATED: Now uses standard Payload APIs with AI processing hook
  */
 export const salariumPlugin = (): Plugin => (incomingConfig) => {
   return {
@@ -30,22 +24,21 @@ export const salariumPlugin = (): Plugin => (incomingConfig) => {
     collections: [
       ...(incomingConfig.collections || []),
       FlowTemplates,
-      FlowInstances,
+      {
+        ...FlowInstances,
+        hooks: {
+          ...FlowInstances.hooks,
+          beforeChange: [
+            ...(FlowInstances.hooks?.beforeChange || []),
+            aiProcessingHook, // AI processing hook restored
+          ],
+        },
+      },
       Organizations,
       JobFamilies,
       Departments,
     ],
-    endpoints: [
-      ...(incomingConfig.endpoints || []),
-      aiProcessEndpoint,
-      flowTemplatesEndpoint,
-      flowTemplateBySlugEndpoint,
-      flowInstancesEndpoint,
-      createFlowInstanceEndpoint,
-      updateFlowInstanceEndpoint,
-      getFlowInstanceEndpoint,
-      deleteFlowInstanceEndpoint,
-    ],
+    // endpoints: [...] // REMOVED - using standard Payload APIs
   }
 }
 

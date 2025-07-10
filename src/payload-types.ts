@@ -2566,6 +2566,26 @@ export interface FlowInstance {
      */
     allowComments?: boolean | null;
   };
+  /**
+   * Trigger AI processing for this instance
+   */
+  triggerAI?: boolean | null;
+  /**
+   * User input for AI processing
+   */
+  aiPrompt?: string | null;
+  /**
+   * System prompt for AI processing
+   */
+  systemPrompt?: string | null;
+  /**
+   * Step number for AI processing
+   */
+  stepNumber?: number | null;
+  /**
+   * Type of step for AI processing
+   */
+  stepType?: ('text' | 'textarea' | 'richtext') | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -4699,6 +4719,11 @@ export interface FlowInstancesSelect<T extends boolean = true> {
         isPublic?: T;
         allowComments?: T;
       };
+  triggerAI?: T;
+  aiPrompt?: T;
+  systemPrompt?: T;
+  stepNumber?: T;
+  stepType?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;

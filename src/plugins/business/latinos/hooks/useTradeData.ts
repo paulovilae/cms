@@ -7,6 +7,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react'
+import { createBusinessHeaders } from '../../../../utilities/businessContext'
 
 export interface Trade {
   id: string
@@ -107,7 +108,9 @@ export const useTradeData = (options: UseTradeDataOptions = {}): UseTradeDataRet
   const fetchTrades = useCallback(async () => {
     try {
       setError(null)
-      const response = await fetch('/api/latinos/trades')
+      const response = await fetch('/api/trades', {
+        headers: createBusinessHeaders('latinos'),
+      })
 
       if (!response.ok) {
         throw new Error(`Failed to fetch trades: ${response.statusText}`)
@@ -125,7 +128,9 @@ export const useTradeData = (options: UseTradeDataOptions = {}): UseTradeDataRet
   const fetchActiveTrades = useCallback(async () => {
     try {
       setError(null)
-      const response = await fetch('/api/latinos/trades/active')
+      const response = await fetch('/api/trades/active', {
+        headers: createBusinessHeaders('latinos'),
+      })
 
       if (!response.ok) {
         throw new Error(`Failed to fetch active trades: ${response.statusText}`)
@@ -143,7 +148,9 @@ export const useTradeData = (options: UseTradeDataOptions = {}): UseTradeDataRet
   const fetchRecentTrades = useCallback(async () => {
     try {
       setError(null)
-      const response = await fetch('/api/latinos/trades/recent')
+      const response = await fetch('/api/trades/recent', {
+        headers: createBusinessHeaders('latinos'),
+      })
 
       if (!response.ok) {
         throw new Error(`Failed to fetch recent trades: ${response.statusText}`)
@@ -161,7 +168,9 @@ export const useTradeData = (options: UseTradeDataOptions = {}): UseTradeDataRet
   const fetchTradesByBot = useCallback(async (botId: string) => {
     try {
       setError(null)
-      const response = await fetch(`/api/latinos/trades?botId=${botId}`)
+      const response = await fetch(`/api/trades?botId=${botId}`, {
+        headers: createBusinessHeaders('latinos'),
+      })
 
       if (!response.ok) {
         throw new Error(`Failed to fetch bot trades: ${response.statusText}`)

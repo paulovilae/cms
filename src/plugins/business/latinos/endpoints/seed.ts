@@ -1,4 +1,5 @@
 import { seedLatinosData, clearLatinosData } from '../seed'
+import { getBusinessContext, isValidBusinessMode } from '../../../../utilities/businessContext'
 
 /**
  * Seed endpoint for Latinos Trading Bot System
@@ -7,10 +8,24 @@ import { seedLatinosData, clearLatinosData } from '../seed'
  * Accessible at /api/latinos/seed
  */
 export const seedEndpoint = {
-  path: '/latinos/seed',
+  path: '/seed',
   method: 'post',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Seed request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Seeding not available for business: ${businessContext.business}`,
+        })
+      }
+
       const { action = 'seed' } = req.body || {}
 
       // Check if user is authenticated (optional - remove if you want public access)

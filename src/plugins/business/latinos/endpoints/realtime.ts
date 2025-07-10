@@ -1,13 +1,28 @@
 import { botMicroservice } from '../services/botMicroservice'
+import { getBusinessContext, isValidBusinessMode } from '../../../../utilities/businessContext'
 
 /**
  * Get live trading data (system status, active trades, market data)
  */
 export const liveDataEndpoint = {
-  path: '/latinos/live-data',
+  path: '/live-data',
   method: 'get',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Live data request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Live trading data not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -77,10 +92,24 @@ export const liveDataEndpoint = {
  * Get system status
  */
 export const systemStatusEndpoint = {
-  path: '/latinos/system/status',
+  path: '/system/status',
   method: 'get',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `System status request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `System status not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -115,10 +144,24 @@ export const systemStatusEndpoint = {
  * Start the trading system
  */
 export const startSystemEndpoint = {
-  path: '/latinos/system/start',
+  path: '/system/start',
   method: 'post',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Start system request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `System control not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -153,10 +196,24 @@ export const startSystemEndpoint = {
  * Stop the trading system
  */
 export const stopSystemEndpoint = {
-  path: '/latinos/system/stop',
+  path: '/system/stop',
   method: 'post',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Stop system request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `System control not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -191,10 +248,24 @@ export const stopSystemEndpoint = {
  * Get active trades
  */
 export const activeTradesEndpoint = {
-  path: '/latinos/trades/active',
+  path: '/trades/active',
   method: 'get',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Active trades request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Trading data not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -232,10 +303,24 @@ export const activeTradesEndpoint = {
  * Get recent trades
  */
 export const recentTradesEndpoint = {
-  path: '/latinos/trades/recent',
+  path: '/trades/recent',
   method: 'get',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Recent trades request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Trading data not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -274,10 +359,24 @@ export const recentTradesEndpoint = {
  * Get market data
  */
 export const marketDataEndpoint = {
-  path: '/latinos/market-data',
+  path: '/market-data',
   method: 'get',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Market data request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Market data not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })
@@ -318,10 +417,24 @@ export const marketDataEndpoint = {
  * Test microservice connection
  */
 export const testConnectionEndpoint = {
-  path: '/latinos/test-connection',
+  path: '/test-connection',
   method: 'get',
   handler: async (req: any, res: any) => {
     try {
+      // Extract business context from request
+      const businessContext = getBusinessContext(req)
+      console.log(
+        `Test connection request for business: ${businessContext.business} (source: ${businessContext.source})`,
+      )
+
+      // Validate business context for Latinos-specific processing
+      if (businessContext.business !== 'latinos' && businessContext.business !== 'default') {
+        return res.status(400).json({
+          success: false,
+          error: `Connection testing not available for business: ${businessContext.business}`,
+        })
+      }
+
       // Check authentication
       if (!req.user) {
         return res.status(401).json({ error: 'Authentication required' })

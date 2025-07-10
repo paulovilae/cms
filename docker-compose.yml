@@ -21,7 +21,7 @@ services:
       - /app/.next
     restart: unless-stopped
     networks:
-      - cms-network
+      - localai_default
     profiles:
       - dev
 
@@ -47,7 +47,7 @@ services:
       - /app/.next
     restart: unless-stopped
     networks:
-      - cms-network
+      - localai_default
     profiles:
       - dev
 
@@ -73,7 +73,7 @@ services:
       - /app/.next
     restart: unless-stopped
     networks:
-      - cms-network
+      - localai_default
     profiles:
       - dev
 
@@ -105,13 +105,13 @@ services:
       - /app/.next
     restart: unless-stopped
     networks:
-      - cms-network
+      - localai_default
     profiles:
       - dev
 
 networks:
-  cms-network:
-    driver: bridge
+  localai_default:
+    external: true
 
 volumes:
   databases:

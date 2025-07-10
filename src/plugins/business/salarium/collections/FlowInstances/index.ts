@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '@/access/authenticated'
 import { slugField } from '@/fields/slug'
+import { aiProcessingHook } from '@/plugins/shared/ai-management/hooks/aiProcessingHook'
 
 export const FlowInstances: CollectionConfig = {
   slug: 'flow-instances',
@@ -412,9 +413,57 @@ export const FlowInstances: CollectionConfig = {
         },
       ],
     },
+    // AI Processing Fields
+    {
+      name: 'triggerAI',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Trigger AI processing for this instance',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'aiPrompt',
+      type: 'text',
+      admin: {
+        description: 'User input for AI processing',
+        condition: (data) => data.triggerAI,
+      },
+    },
+    {
+      name: 'systemPrompt',
+      type: 'textarea',
+      admin: {
+        description: 'System prompt for AI processing',
+        condition: (data) => data.triggerAI,
+      },
+    },
+    {
+      name: 'stepNumber',
+      type: 'number',
+      admin: {
+        description: 'Step number for AI processing',
+        condition: (data) => data.triggerAI,
+      },
+    },
+    {
+      name: 'stepType',
+      type: 'select',
+      options: [
+        { label: 'Text', value: 'text' },
+        { label: 'Textarea', value: 'textarea' },
+        { label: 'Rich Text', value: 'richtext' },
+      ],
+      admin: {
+        description: 'Type of step for AI processing',
+        condition: (data) => data.triggerAI,
+      },
+    },
     ...slugField(),
   ],
   hooks: {
+    beforeChange: [aiProcessingHook],
     beforeValidate: [
       ({ data }) => {
         // Auto-generate slug from title if not provided

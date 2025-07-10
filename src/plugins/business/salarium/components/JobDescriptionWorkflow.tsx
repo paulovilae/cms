@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { createBusinessHeaders } from '../../../../utilities/businessContext'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -103,6 +104,10 @@ const calculateRelevance = (sourceStep: number, targetStep: number): number => {
 
 // Helper function to build context from previous steps
 const buildPreviousStepsContext = (instance: FlowInstance, currentStep: number) => {
+  if (!instance?.stepResponses || !Array.isArray(instance.stepResponses)) {
+    return []
+  }
+
   return instance.stepResponses
     .filter(
       (response) =>
@@ -202,16 +207,27 @@ export default function JobDescriptionWorkflow() {
       setIsLoading(true)
       setError(null)
 
-      // Load the job description creation template
-      const response = await fetch('/api/salarium/flow-templates?category=hr&active=true')
+      // Load the job description creation template using standard Payload API
+      const response = await fetch(
+        '/api/flow-templates?where[category][equals]=hr&where[isActive][equals]=true',
+        {
+          headers: createBusinessHeaders('salarium'),
+        },
+      )
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
       const data = await response.json()
 
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to load template')
+      // Handle Payload's default response format
+      if (!data.docs || data.docs.length === 0) {
+        throw new Error('No templates found')
       }
 
       // Find the job description template
-      const jobDescTemplate = data.templates.find((t: any) =>
+      const jobDescTemplate = data.docs.find((t: any) =>
         t.name.toLowerCase().includes('job description'),
       )
 
@@ -235,31 +251,48 @@ export default function JobDescriptionWorkflow() {
     try {
       // First, try to find an existing draft instance for this user and template
       let existingResponse = await fetch(
-        `/api/salarium/flow-instances?template=${template.id}&status=draft&limit=1`,
+        `/api/flow-instances?where[template][equals]=${template.id}&where[status][equals]=draft&limit=1`,
+        {
+          headers: createBusinessHeaders('salarium'),
+        },
       )
+
+      if (!existingResponse.ok) {
+        throw new Error(`HTTP error! status: ${existingResponse.status}`)
+      }
+
       let existingData = await existingResponse.json()
 
       // If no draft found, try in-progress
-      if (!existingData.success || !existingData.instances || existingData.instances.length === 0) {
+      if (!existingData.docs || existingData.docs.length === 0) {
         existingResponse = await fetch(
-          `/api/salarium/flow-instances?template=${template.id}&status=in-progress&limit=1`,
+          `/api/flow-instances?where[template][equals]=${template.id}&where[status][equals]=in-progress&limit=1`,
+          {
+            headers: createBusinessHeaders('salarium'),
+          },
         )
-        existingData = await existingResponse.json()
+
+        if (existingResponse.ok) {
+          existingData = await existingResponse.json()
+        }
       }
 
-      if (existingData.success && existingData.instances && existingData.instances.length > 0) {
+      if (existingData.docs && existingData.docs.length > 0) {
         // Use existing instance
-        const existingInstance = existingData.instances[0]
+        const existingInstance = existingData.docs[0]
         setInstance(existingInstance)
         setCurrentStep(existingInstance.currentStep || 1)
 
         // Load existing response for current step if any
-        const currentStepResponse = existingInstance.stepResponses.find(
+        const stepResponses = Array.isArray(existingInstance.stepResponses)
+          ? existingInstance.stepResponses
+          : []
+        const currentStepResponse = stepResponses.find(
           (r: StepResponse) => r.stepNumber === (existingInstance.currentStep || 1),
         )
         if (currentStepResponse) {
-          setUserInput(currentStepResponse.userInput)
-          setAiContent(currentStepResponse.aiGeneratedContent)
+          setUserInput(currentStepResponse.userInput || '')
+          setAiContent(currentStepResponse.aiGeneratedContent || '')
           setHasProcessed(!!currentStepResponse.aiGeneratedContent)
         }
       } else {
@@ -275,15 +308,26 @@ export default function JobDescriptionWorkflow() {
 
   const createNewInstance = async (template: FlowTemplate) => {
     try {
-      const response = await fetch('/api/salarium/flow-instances', {
+      // First get the current user info
+      const userResponse = await fetch('/api/users/me', {
+        headers: createBusinessHeaders('salarium'),
+      })
+
+      if (!userResponse.ok) {
+        throw new Error('Failed to get user information')
+      }
+
+      const userData = await userResponse.json()
+
+      const response = await fetch('/api/flow-instances', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: createBusinessHeaders('salarium'),
         body: JSON.stringify({
           title: `Job Description - New Position - ${new Date().toLocaleDateString()}`,
-          templateId: template.id,
+          template: template.id,
+          user: userData.user.id, // ✅ Include user ID
           currentStep: 1,
+          totalSteps: template.steps.length,
           stepResponses: template.steps.map((step, index) => ({
             stepNumber: step.stepNumber,
             stepTitle: step.title,
@@ -294,22 +338,26 @@ export default function JobDescriptionWorkflow() {
         }),
       })
 
-      const data = await response.json()
-
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to create workflow instance')
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.errors?.[0]?.message || `HTTP error! status: ${response.status}`)
       }
 
-      setInstance(data.instance)
+      const data = await response.json()
+
+      // Handle Payload's response format - the document is in data.doc
+      const instanceData = data.doc || data
+      setInstance(instanceData)
       setCurrentStep(1)
 
       // Load existing response for current step if any
-      const currentStepResponse = data.instance.stepResponses.find(
-        (r: StepResponse) => r.stepNumber === 1,
-      )
+      const stepResponses = Array.isArray(instanceData.stepResponses)
+        ? instanceData.stepResponses
+        : []
+      const currentStepResponse = stepResponses.find((r: StepResponse) => r.stepNumber === 1)
       if (currentStepResponse) {
-        setUserInput(currentStepResponse.userInput)
-        setAiContent(currentStepResponse.aiGeneratedContent)
+        setUserInput(currentStepResponse.userInput || '')
+        setAiContent(currentStepResponse.aiGeneratedContent || '')
         setHasProcessed(!!currentStepResponse.aiGeneratedContent)
       }
     } catch (error) {
@@ -319,10 +367,35 @@ export default function JobDescriptionWorkflow() {
   }
 
   const processWithAI = async () => {
-    if (!template || !instance || !userInput.trim()) return
+    console.log('processWithAI called for step:', currentStep)
+    console.log('Current state:', {
+      userInput,
+      hasProcessed,
+      template: !!template,
+      instance: !!instance,
+    })
+
+    if (!template || !instance || !userInput.trim()) {
+      console.log('Early return - missing requirements:', {
+        template: !!template,
+        instance: !!instance,
+        userInput: userInput.trim(),
+      })
+      return
+    }
 
     const currentStepData = template.steps.find((s) => s.stepNumber === currentStep)
-    if (!currentStepData) return
+    console.log('Current step data:', currentStepData)
+
+    if (!currentStepData) {
+      console.log('No step data found for step:', currentStep)
+      return
+    }
+
+    // Check if instance has an ID
+    if (!instance.id) {
+      throw new Error('Missing ID of document to update.')
+    }
 
     try {
       setIsProcessing(true)
@@ -330,48 +403,100 @@ export default function JobDescriptionWorkflow() {
 
       // Build context from previous completed steps
       const previousStepsContext = buildPreviousStepsContext(instance, currentStep)
+      console.log('Previous steps context:', previousStepsContext)
 
-      const response = await fetch('/api/salarium/ai-process', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userInput: userInput.trim(),
-          systemPrompt: currentStepData.systemPrompt,
-          stepNumber: currentStep,
-          stepType: currentStepData.stepType,
-          previousStepsContext,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (!data.success) {
-        throw new Error(data.error || 'AI processing failed')
+      const requestBody = {
+        triggerAI: true,
+        aiPrompt: userInput.trim(),
+        systemPrompt: currentStepData.systemPrompt,
+        stepNumber: currentStep,
+        stepType: currentStepData.stepType,
+        previousStepsContext,
       }
 
-      setAiContent(data.content)
-      setHasProcessed(true)
+      console.log('Sending AI request:', requestBody)
+
+      // Create AbortController for timeout handling
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 120000) // 2 minute timeout
+
+      // Use standard Payload API for flow instances with AI processing trigger
+      const response = await fetch(`/api/flow-instances/${instance.id}`, {
+        method: 'PATCH',
+        headers: createBusinessHeaders('salarium'),
+        body: JSON.stringify(requestBody),
+        signal: controller.signal,
+      })
+
+      clearTimeout(timeoutId)
+
+      const data = await response.json()
+      console.log('AI response received:', data)
+
+      if (!response.ok) {
+        console.error('AI request failed:', data)
+        throw new Error(data.errors?.[0]?.message || 'AI processing failed')
+      }
+
+      // Extract AI generated content from the updated instance
+      const updatedInstance = data.doc || data
+      setInstance(updatedInstance)
+
+      // Find the current step response with AI content
+      const stepResponses = Array.isArray(updatedInstance.stepResponses)
+        ? updatedInstance.stepResponses
+        : []
+
+      const currentStepResponse = stepResponses.find((r: any) => r.stepNumber === currentStep)
+      console.log('Looking for step response for step:', currentStep)
+      console.log(
+        'Available step responses:',
+        stepResponses.map((r) => ({ stepNumber: r.stepNumber, hasAI: !!r.aiGeneratedContent })),
+      )
+      console.log('Found current step response:', currentStepResponse)
+
+      if (currentStepResponse?.aiGeneratedContent) {
+        setAiContent(currentStepResponse.aiGeneratedContent)
+        setHasProcessed(true)
+        console.log(
+          '✅ AI content updated successfully:',
+          currentStepResponse.aiGeneratedContent.substring(0, 100) + '...',
+        )
+      } else {
+        console.log('❌ No AI content found in response:', {
+          stepResponses,
+          currentStep,
+          currentStepResponse,
+        })
+      }
 
       // Note: User can manually save when ready
     } catch (error) {
       console.error('AI processing error:', error)
-      setError(error instanceof Error ? error.message : 'AI processing failed')
+      if (error instanceof Error && error.name === 'AbortError') {
+        setError('AI processing timed out. The model may be slow to respond. Please try again.')
+      } else {
+        setError(error instanceof Error ? error.message : 'AI processing failed')
+      }
     } finally {
       setIsProcessing(false)
     }
   }
 
   const saveCurrentStep = async (generatedContent?: string) => {
-    if (!instance || !template) return
+    if (!instance || !template || !instance.id) {
+      console.error('Cannot save: missing instance, template, or instance ID')
+      return
+    }
 
     try {
       setIsSaving(true)
       setError(null)
 
-      // Update the step response
-      const updatedStepResponses = [...instance.stepResponses]
+      // Update the step response - ensure stepResponses exists and is an array
+      const updatedStepResponses = Array.isArray(instance.stepResponses)
+        ? [...instance.stepResponses]
+        : []
       const stepIndex = updatedStepResponses.findIndex((r) => r.stepNumber === currentStep)
 
       if (stepIndex >= 0) {
@@ -390,24 +515,24 @@ export default function JobDescriptionWorkflow() {
         }
       }
 
-      const response = await fetch(`/api/salarium/flow-instances/${instance.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch(`/api/flow-instances/${instance.id}`, {
+        method: 'PATCH',
+        headers: createBusinessHeaders('salarium'),
         body: JSON.stringify({
           stepResponses: updatedStepResponses,
           currentStep: currentStep,
         }),
       })
 
-      const data = await response.json()
-
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to save step')
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.errors?.[0]?.message || `HTTP error! status: ${response.status}`)
       }
 
-      setInstance(data.instance)
+      const data = await response.json()
+      // Handle Payload's response format - the document is in data.doc
+      const instanceData = data.doc || data
+      setInstance(instanceData)
     } catch (error) {
       console.error('Save error:', error)
       setError(error instanceof Error ? error.message : 'Failed to save progress')
@@ -427,8 +552,10 @@ export default function JobDescriptionWorkflow() {
     const totalSteps = template ? template.steps.length + 1 : 0
     if (!template || stepNumber < 1 || stepNumber > totalSteps) return
 
+    console.log('Navigating to step:', stepNumber, 'from step:', currentStep)
+
     // Save current step before navigating
-    if (userInput.trim() || aiContent) {
+    if ((userInput.trim() || aiContent) && instance?.id) {
       saveCurrentStep()
     }
 
@@ -442,13 +569,24 @@ export default function JobDescriptionWorkflow() {
       return
     }
 
-    // Load data for the new step
-    const stepResponse = instance?.stepResponses.find((r) => r.stepNumber === stepNumber)
+    // Load data for the new step - ensure stepResponses is an array
+    const stepResponses = Array.isArray(instance?.stepResponses) ? instance.stepResponses : []
+    const stepResponse = stepResponses.find((r) => r.stepNumber === stepNumber)
+
+    console.log('Step responses:', stepResponses)
+    console.log('Found step response for step', stepNumber, ':', stepResponse)
+
     if (stepResponse) {
-      setUserInput(stepResponse.userInput)
-      setAiContent(stepResponse.aiGeneratedContent)
+      console.log('Loading existing step data:', {
+        userInput: stepResponse.userInput,
+        aiContent: stepResponse.aiGeneratedContent,
+        hasProcessed: !!stepResponse.aiGeneratedContent,
+      })
+      setUserInput(stepResponse.userInput || '')
+      setAiContent(stepResponse.aiGeneratedContent || '')
       setHasProcessed(!!stepResponse.aiGeneratedContent)
     } else {
+      console.log('No existing step data, clearing form')
       setUserInput('')
       setAiContent('')
       setHasProcessed(false)
@@ -485,7 +623,8 @@ export default function JobDescriptionWorkflow() {
 *Generated by IntelliTrade Salarium on {{generationDate}}*`
 
       // Replace placeholders with actual content
-      instance.stepResponses.forEach((response, index) => {
+      const stepResponses = Array.isArray(instance.stepResponses) ? instance.stepResponses : []
+      stepResponses.forEach((response, index) => {
         const stepData = template.steps[index]
         if (stepData && response.aiGeneratedContent) {
           const placeholder = getPlaceholderForStep(stepData.title)
@@ -502,21 +641,20 @@ export default function JobDescriptionWorkflow() {
       )
 
       // Save the final document
-      const response = await fetch(`/api/salarium/flow-instances/${instance.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch(`/api/flow-instances/${instance.id}`, {
+        method: 'PATCH',
+        headers: createBusinessHeaders('salarium'),
         body: JSON.stringify({
           finalDocument: finalDoc,
           status: 'completed',
         }),
       })
 
-      const data = await response.json()
-
-      if (data.success) {
-        setInstance(data.instance)
+      if (response.ok) {
+        const data = await response.json()
+        // Handle Payload's response format - the document is in data.doc
+        const instanceData = data.doc || data
+        setInstance(instanceData)
       }
     } catch (error) {
       console.error('Document generation error:', error)
@@ -883,19 +1021,19 @@ This document was generated on ${new Date().toLocaleDateString()} at ${new Date(
 
     try {
       setIsSaving(true)
-      const response = await fetch(`/api/salarium/flow-instances/${instance.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch(`/api/flow-instances/${instance.id}`, {
+        method: 'PATCH',
+        headers: createBusinessHeaders('salarium'),
         body: JSON.stringify({
           finalDocument: editableFinalDocument,
         }),
       })
 
-      const data = await response.json()
-      if (data.success) {
-        setInstance(data.instance)
+      if (response.ok) {
+        const data = await response.json()
+        // Handle Payload's response format - the document is in data.doc
+        const instanceData = data.doc || data
+        setInstance(instanceData)
       }
     } catch (error) {
       console.error('Save final document error:', error)
@@ -1006,7 +1144,7 @@ This document was generated on ${new Date().toLocaleDateString()} at ${new Date(
           {/* Step Navigation */}
           <div className="flex space-x-2 overflow-x-auto">
             {template.steps.map((step) => {
-              const stepResponse = instance.stepResponses.find(
+              const stepResponse = instance.stepResponses?.find(
                 (r) => r.stepNumber === step.stepNumber,
               )
               const isCompleted = stepResponse?.isCompleted || false
@@ -1249,7 +1387,7 @@ This document was generated on ${new Date().toLocaleDateString()} at ${new Date(
         /* Steps 1-5 in Accordion */
         <Accordion>
           {template.steps.map((step) => {
-            const stepResponse = instance.stepResponses.find(
+            const stepResponse = instance.stepResponses?.find(
               (r) => r.stepNumber === step.stepNumber,
             )
             const isCompleted = stepResponse?.isCompleted || false
@@ -1406,7 +1544,7 @@ This document was generated on ${new Date().toLocaleDateString()} at ${new Date(
                         </>
                       )}
 
-                      {/* Examples */}
+                      {/* Examples - Show in both states */}
                       {step.examples && step.examples.length > 0 && (
                         <div className="border-t pt-4">
                           <Label className="text-sm font-medium text-gray-900 dark:text-white">
@@ -1417,7 +1555,14 @@ This document was generated on ${new Date().toLocaleDateString()} at ${new Date(
                               <div
                                 key={index}
                                 className="text-xs bg-gray-100 dark:bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-transparent hover:border-violet-300 dark:hover:border-violet-500"
-                                onClick={() => setUserInput(example.userInput)}
+                                onClick={() => {
+                                  setUserInput(example.userInput)
+                                  // If we're in processed state, also clear the AI content to allow regeneration
+                                  if (hasProcessed) {
+                                    setAiContent('')
+                                    setHasProcessed(false)
+                                  }
+                                }}
                                 title="Click to use this example"
                               >
                                 <div className="font-medium text-gray-900 dark:text-white">
