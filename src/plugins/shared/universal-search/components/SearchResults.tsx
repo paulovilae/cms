@@ -40,8 +40,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   }
 
   // Format date
-  const formatDate = (date: string) => {
-    if (!date) return ''
+  const formatDate = (date: string | undefined) => {
+    if (!date) return 'N/A'
 
     try {
       const dateObj = new Date(date)
@@ -64,10 +64,13 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   }
 
   // Get collection display name
-  const getCollectionName = (collection: string) => {
+  const getCollectionName = (collection: string | undefined) => {
+    // Handle undefined collection
+    if (!collection) return 'Unknown Collection'
+
     // Use config display name if available, otherwise format collection slug
     if (collection === config.collection) {
-      return config.displayName
+      return config.displayName || 'Content'
     }
 
     // Format the collection slug
@@ -80,7 +83,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       // If no highlights, show a truncated version of the content
       return (
         <p className="result-content">
-          {result.content.length > 200 ? `${result.content.substring(0, 200)}...` : result.content}
+          {result.content && result.content.length > 200
+            ? `${result.content.substring(0, 200)}...`
+            : result.content || 'No content available'}
         </p>
       )
     }
@@ -90,11 +95,18 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       <div className="result-highlights">
         {result.highlights.map((highlight, index) => (
           <p key={index} className="highlight-fragment">
-            {highlight.fragments.map((fragment, fragIndex) => {
-              // Simple highlight rendering - in a real implementation,
-              // we would parse the fragments and highlight the matches
-              return <span key={fragIndex}>...{fragment}...</span>
-            })}
+            {/* Check if fragments exists */}
+            {highlight.fragments && highlight.fragments.length > 0 ? (
+              highlight.fragments.map((fragment, fragIndex) => (
+                <span key={fragIndex}>...{fragment}...</span>
+              ))
+            ) : (
+              // Fallback if no fragments
+              <span>
+                Matched: {highlight.matchedTerms?.join(', ') || 'search term'} in{' '}
+                {highlight.field || 'content'}
+              </span>
+            )}
           </p>
         ))}
       </div>
@@ -109,7 +121,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       <div className="result-tags">
         {tags.slice(0, 5).map((tag, index) => (
           <span key={index} className="tag">
-            {tag}
+            {tag || 'Unnamed'}
           </span>
         ))}
         {tags.length > 5 && <span className="more-tags">+{tags.length - 5}</span>}
@@ -128,19 +140,19 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
         <span className="metadata-item">{getCollectionName(result.collection)}</span>
 
         {/* Status badge if available */}
-        {metadata.status && (
+        {metadata?.status && (
           <span className={`status-badge status-${metadata.status.toLowerCase()}`}>
             {metadata.status}
           </span>
         )}
 
         {/* Last updated */}
-        {metadata.updatedAt && (
+        {metadata?.updatedAt && (
           <span className="metadata-item">Updated {formatDate(metadata.updatedAt)}</span>
         )}
 
         {/* Progress if available */}
-        {metadata.progress !== undefined && typeof metadata.progress === 'number' && (
+        {metadata?.progress !== undefined && typeof metadata.progress === 'number' && (
           <span className="metadata-item">
             <span className="progress-bar">
               <span className="progress-fill" style={{ width: `${metadata.progress}%` }}></span>
@@ -157,7 +169,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     // Use provided result actions or get from config
     const actions = result.actions?.length
       ? result.actions
-      : config.actions.filter((action) => {
+      : (config.actions || []).filter((action) => {
           // If action has a condition, evaluate it
           if (action.condition) {
             // Simple condition parsing - in a real implementation,
@@ -165,10 +177,14 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
             const statusCheck = action.condition.includes('status')
             if (statusCheck && result.metadata) {
               if (action.condition.includes('!=')) {
-                const statusValue = action.condition.split('!=')[1].trim()
+                const parts = action.condition.split('!=')
+                // Use non-null assertion to handle TypeScript error
+                const statusValue = parts.length > 1 ? parts[1]?.trim() || '' : ''
                 return result.metadata.status !== statusValue
               } else if (action.condition.includes('==')) {
-                const statusValue = action.condition.split('==')[1].trim()
+                const parts = action.condition.split('==')
+                // Use non-null assertion to handle TypeScript error
+                const statusValue = parts.length > 1 ? parts[1]?.trim() || '' : ''
                 return result.metadata.status === statusValue
               }
             }
@@ -220,9 +236,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   return (
     <div className={`search-results ${className}`}>
       <ul className="results-list">
-        {results.map((result) => (
+        {results.map((result, index) => (
           <li
-            key={`${result.collection}-${result.id}`}
+            key={`${result.collection || 'unknown'}-${result.id || index}`}
             className="result-item"
             onClick={() => handleResultClick(result)}
           >
@@ -239,7 +255,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
             {renderTags(result.metadata?.tags)}
 
             {/* Actions */}
-            {renderActions(result)}
+            {result && renderActions(result)}
           </li>
         ))}
       </ul>

@@ -1,6 +1,4 @@
-'use client'
-
-import HRUniversalSearch from '@/plugins/business/salarium/components/HRUniversalSearch'
+import HRSearchClient from './Client'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -9,9 +7,9 @@ export const metadata: Metadata = {
 }
 
 /**
- * Standalone HR Search page
- * This provides a dedicated interface for searching job descriptions
+ * Standalone HR Search page (server component)
+ * This is a server component that exports metadata and renders the client component
  */
 export default function HRSearchPage() {
-  return <HRUniversalSearch />
+  return <HRSearchClient />
 }

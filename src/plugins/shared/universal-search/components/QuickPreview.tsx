@@ -52,7 +52,8 @@ export const QuickPreview: React.FC<QuickPreviewProps> = ({
   }
 
   // Get collection display name
-  const getCollectionName = (collection: string) => {
+  const getCollectionName = (collection: string | undefined) => {
+    if (!collection) return 'Unknown Collection'
     return collection.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
   }
 
@@ -63,7 +64,7 @@ export const QuickPreview: React.FC<QuickPreviewProps> = ({
         <div className="header-content">
           <div className="collection-badge">{getCollectionName(result.collection)}</div>
 
-          {result.metadata.status && (
+          {result.metadata?.status && (
             <div className={`status-badge status-${result.metadata.status.toLowerCase()}`}>
               {result.metadata.status}
             </div>
@@ -80,35 +81,35 @@ export const QuickPreview: React.FC<QuickPreviewProps> = ({
 
       {/* Metadata Grid */}
       <div className="metadata-grid">
-        {result.metadata.author && (
+        {result.metadata?.author && (
           <div className="metadata-item">
             <span className="metadata-label">Author</span>
             <span className="metadata-value">{result.metadata.author}</span>
           </div>
         )}
 
-        {result.metadata.createdAt && (
+        {result.metadata?.createdAt && (
           <div className="metadata-item">
             <span className="metadata-label">Created</span>
             <span className="metadata-value">{formatDate(result.metadata.createdAt)}</span>
           </div>
         )}
 
-        {result.metadata.updatedAt && (
+        {result.metadata?.updatedAt && (
           <div className="metadata-item">
             <span className="metadata-label">Updated</span>
             <span className="metadata-value">{formatDate(result.metadata.updatedAt)}</span>
           </div>
         )}
 
-        {result.metadata.category && (
+        {result.metadata?.category && (
           <div className="metadata-item">
             <span className="metadata-label">Category</span>
             <span className="metadata-value">{result.metadata.category}</span>
           </div>
         )}
 
-        {typeof result.metadata.progress === 'number' && (
+        {result.metadata && typeof result.metadata.progress === 'number' && (
           <div className="metadata-item">
             <span className="metadata-label">Progress</span>
             <span className="metadata-value progress-display">
@@ -125,7 +126,7 @@ export const QuickPreview: React.FC<QuickPreviewProps> = ({
       </div>
 
       {/* Tags */}
-      {result.metadata.tags && result.metadata.tags.length > 0 && (
+      {result.metadata?.tags && result.metadata.tags.length > 0 && (
         <div className="preview-tags">
           <h3 className="section-title">Tags</h3>
           <div className="tags-list">
@@ -142,7 +143,9 @@ export const QuickPreview: React.FC<QuickPreviewProps> = ({
       <div className="preview-content">
         <h3 className="section-title">Content</h3>
         <div className="content-text">
-          {result.content.length > 500 ? `${result.content.substring(0, 500)}...` : result.content}
+          {result.content && result.content.length > 500
+            ? `${result.content.substring(0, 500)}...`
+            : result.content || 'No content available'}
         </div>
       </div>
 
@@ -153,13 +156,19 @@ export const QuickPreview: React.FC<QuickPreviewProps> = ({
           <div className="highlights-list">
             {result.highlights.map((highlight, index) => (
               <div key={index} className="highlight-item">
-                <span className="highlight-field">{highlight.field}:</span>
+                <span className="highlight-field">{highlight.field || 'Content'}:</span>
                 <div className="highlight-fragments">
-                  {highlight.fragments.map((fragment, fragIndex) => (
-                    <p key={fragIndex} className="fragment-text">
-                      ...{fragment}...
+                  {highlight.fragments && highlight.fragments.length > 0 ? (
+                    highlight.fragments.map((fragment, fragIndex) => (
+                      <p key={fragIndex} className="fragment-text">
+                        ...{fragment}...
+                      </p>
+                    ))
+                  ) : (
+                    <p className="fragment-text">
+                      Matched with: {highlight.matchedTerms?.join(', ') || 'search terms'}
                     </p>
-                  ))}
+                  )}
                 </div>
               </div>
             ))}

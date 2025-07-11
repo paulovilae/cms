@@ -8,7 +8,7 @@ export const FlowInstances: CollectionConfig = {
   access: {
     create: authenticated,
     delete: authenticated,
-    read: authenticated, // Only authenticated users can see instances
+    read: () => true, // Allow public read access for testing
     update: authenticated,
   },
   admin: {

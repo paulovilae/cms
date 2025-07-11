@@ -56,7 +56,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
     onFilterChange(filterId, newValues)
   }
 
-  // Render filter options
+  // Render filter options with improved contrast
   const renderFilterOptions = (filter: SearchFilter) => {
     return (
       <div className="filter-options">
@@ -69,7 +69,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                 onChange={(e) =>
                   handleFilterOptionChange(filter.id, option.value, e.target.checked)
                 }
-                className="option-checkbox"
+                className="option-checkbox checkbox-visible"
               />
               <span className="option-text">{option.label}</span>
               {option.count !== undefined && <span className="option-count">{option.count}</span>}
@@ -80,7 +80,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
     )
   }
 
-  // Render a date range filter
+  // Render a date range filter with improved contrast
   const renderDateRangeFilter = (filter: SearchFilter) => {
     // For simplicity, we'll render this as predefined options
     // In a real implementation, this would be a date picker
@@ -103,7 +103,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                 onChange={(e) =>
                   handleFilterOptionChange(filter.id, option.value, e.target.checked)
                 }
-                className="option-checkbox"
+                className="option-checkbox checkbox-visible"
               />
               <span className="option-text">{option.label}</span>
             </label>
@@ -123,18 +123,18 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           <input
             type="number"
             placeholder="Min"
-            className="range-input"
+            className="range-input border-visible"
             // This would need proper state management in a real implementation
           />
           <span className="range-separator">to</span>
           <input
             type="number"
             placeholder="Max"
-            className="range-input"
+            className="range-input border-visible"
             // This would need proper state management in a real implementation
           />
         </div>
-        <button className="range-apply-button">Apply</button>
+        <button className="range-apply-button border-visible">Apply</button>
       </div>
     )
   }
@@ -180,7 +180,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         ))}
       </div>
 
-      {/* Clear all filters button */}
+      {/* Clear all filters button with improved contrast */}
       <button
         className="clear-filters-button"
         onClick={() => {
@@ -193,13 +193,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         Clear All Filters
       </button>
 
-      {/* This would be replaced with proper CSS in a real implementation */}
+      {/* CSS variables-based styles for improved contrast */}
       <style jsx>{`
         .search-filters {
           width: 100%;
-          border: 1px solid #e2e8f0;
+          border: 1px solid var(--border-light);
           border-radius: 0.375rem;
-          background-color: white;
+          background-color: var(--background-secondary);
           padding: 1rem;
         }
 
@@ -207,7 +207,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           font-size: 1rem;
           font-weight: 600;
           margin: 0 0 1rem 0;
-          color: #2d3748;
+          color: var(--filter-title-text);
         }
 
         .filters-list {
@@ -217,7 +217,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         }
 
         .filter-section {
-          border-bottom: 1px solid #edf2f7;
+          border-bottom: 1px solid var(--border-light);
           padding-bottom: 0.5rem;
         }
 
@@ -235,7 +235,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           padding: 0.5rem 0;
           text-align: left;
           cursor: pointer;
-          color: #4a5568;
+          color: var(--filter-title-text);
           font-weight: 500;
         }
 
@@ -245,7 +245,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
 
         .filter-toggle-icon {
           font-size: 1rem;
-          color: #a0aec0;
+          color: var(--text-tertiary);
         }
 
         .filter-content {
@@ -267,12 +267,14 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
           display: flex;
           align-items: center;
           font-size: 0.875rem;
-          color: #4a5568;
+          color: var(--filter-label-text);
           cursor: pointer;
         }
 
         .option-checkbox {
           margin-right: 0.5rem;
+          border: 2px solid var(--checkbox-border);
+          background-color: var(--checkbox-bg);
         }
 
         .option-text {
@@ -280,7 +282,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         }
 
         .option-count {
-          color: #a0aec0;
+          color: var(--filter-count-text);
           font-size: 0.75rem;
           margin-left: 0.5rem;
         }
@@ -299,44 +301,47 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
         .range-input {
           width: 4rem;
           padding: 0.25rem 0.5rem;
-          border: 1px solid #e2e8f0;
+          border: 1px solid var(--border-input);
           border-radius: 0.25rem;
           font-size: 0.875rem;
+          background-color: var(--input-bg);
+          color: var(--input-text);
         }
 
         .range-separator {
-          color: #a0aec0;
+          color: var(--text-tertiary);
         }
 
         .range-apply-button {
-          background-color: #f7fafc;
-          border: 1px solid #e2e8f0;
+          background-color: var(--secondary-button-bg);
+          border: 1px solid var(--secondary-button-border);
           border-radius: 0.25rem;
           padding: 0.25rem 0.75rem;
           font-size: 0.75rem;
-          color: #4a5568;
+          color: var(--secondary-button-text);
           cursor: pointer;
         }
 
         .range-apply-button:hover {
-          background-color: #edf2f7;
+          background-color: var(--secondary-button-hover);
         }
 
         .clear-filters-button {
           width: 100%;
-          background-color: #f7fafc;
-          border: 1px solid #e2e8f0;
+          background-color: var(--clear-button-bg);
+          border: 1px solid var(--clear-button-border);
           border-radius: 0.25rem;
           padding: 0.5rem;
           margin-top: 1rem;
           font-size: 0.875rem;
-          color: #4a5568;
+          color: var(--clear-button-text);
           cursor: pointer;
           transition: all 0.2s;
+          font-weight: 500;
         }
 
         .clear-filters-button:hover {
-          background-color: #edf2f7;
+          background-color: var(--clear-button-hover);
         }
       `}</style>
     </div>
