@@ -29,14 +29,15 @@ import { Header } from './Header/config'
 // Core plugins
 import { plugins } from './plugins'
 
-// Business plugins
-import { intellitradePlugin } from './plugins/business/intellitrade'
-import { salariumPlugin } from './plugins/business/salarium'
-import { latinosPlugin } from './plugins/business/latinos'
+// Business plugins - imported dynamically to avoid build-time dependency issues
+// import { intellitradePlugin } from './plugins/business/intellitrade'
+// import { salariumPlugin } from './plugins/business/salarium'
+// import { latinosPlugin } from './plugins/business/latinos'
 
-// Shared feature plugins
-import { aiManagementPlugin } from './plugins/shared/ai-management'
+// Shared feature plugins - imported dynamically to avoid build-time dependency issues
+// import { aiManagementPlugin } from './plugins/shared/ai-management'
 // import { affineIntegrationPlugin } from './plugins/shared/affine-integration' // Disabled - causing import errors
+// import jobFlowCascadePlugin from './plugins/job-flow-cascade'
 
 // Utilities
 import { defaultLexical } from '@/fields/defaultLexical'
@@ -48,21 +49,50 @@ const dirname = path.dirname(filename)
 
 /**
  * Get active business plugins based on environment
- * For shared schema architecture, always load all business plugins
- * but collections will be filtered by business mode in access control
+ * Dynamic import to avoid build-time dependency issues
  */
-const getBusinessPlugins = () => {
+const getBusinessPlugins = async () => {
   const businessMode = getBusinessMode()
 
-  // Always load all business plugins to maintain shared schema
-  // Individual services will filter collections through access control
-  return [intellitradePlugin(), salariumPlugin(), latinosPlugin()]
+  const plugins = []
+
+  // Only import and load plugins for the current business mode
+  // This prevents build-time dependency conflicts
+  if (businessMode === 'intellitrade' || businessMode === 'all') {
+    try {
+      const { intellitradePlugin } = await import('./plugins/business/intellitrade')
+      plugins.push(intellitradePlugin())
+    } catch (error) {
+      console.warn('Failed to load intellitrade plugin:', error.message)
+    }
+  }
+
+  if (businessMode === 'salarium' || businessMode === 'all') {
+    try {
+      const { salariumPlugin } = await import('./plugins/business/salarium')
+      plugins.push(salariumPlugin())
+    } catch (error) {
+      console.warn('Failed to load salarium plugin:', error.message)
+    }
+  }
+
+  if (businessMode === 'latinos' || businessMode === 'all') {
+    try {
+      const { latinosPlugin } = await import('./plugins/business/latinos')
+      plugins.push(latinosPlugin())
+    } catch (error) {
+      console.warn('Failed to load latinos plugin:', error.message)
+    }
+  }
+
+  return plugins
 }
 
 /**
  * Get active shared feature plugins based on environment
+ * Dynamic import to avoid build-time dependency issues
  */
-const getSharedFeaturePlugins = () => {
+const getSharedFeaturePlugins = async () => {
   const enabledFeatures = getEnabledFeatures()
   const businessMode = getBusinessMode()
 
@@ -84,18 +114,43 @@ const getSharedFeaturePlugins = () => {
 
   // Create plugin instances only once per unique plugin
   const plugins = []
+
   if (pluginsToInclude.has('aiManagement')) {
-    plugins.push(aiManagementPlugin())
+    try {
+      const { aiManagementPlugin } = await import('./plugins/shared/ai-management')
+      plugins.push(aiManagementPlugin())
+    } catch (error) {
+      console.warn('Failed to load ai-management plugin:', (error as Error).message)
+    }
   }
+
   // if (pluginsToInclude.has('affineIntegration')) {
-  //   plugins.push(affineIntegrationPlugin())
+  //   try {
+  //     const { affineIntegrationPlugin } = await import('./plugins/shared/affine-integration')
+  //     plugins.push(affineIntegrationPlugin())
+  //   } catch (error) {
+  //     console.warn('Failed to load affine-integration plugin:', (error as Error).message)
+  //   }
   // }
+
+  // Always include Job Flow Cascade plugin when Salarium is active
+  if (businessMode === 'salarium' || businessMode === 'all') {
+    try {
+      const jobFlowCascadePlugin = await import('./plugins/job-flow-cascade')
+      plugins.push(jobFlowCascadePlugin.default())
+    } catch (error) {
+      console.warn('Failed to load job-flow-cascade plugin:', (error as Error).message)
+    }
+  }
+
   // Add more shared plugins here as they're created
   // if (pluginsToInclude.has('gamification')) {
-  //   plugins.push(gamificationPlugin())
-  // }
-  // if (pluginsToInclude.has('digitalPayments')) {
-  //   plugins.push(digitalPaymentsPlugin())
+  //   try {
+  //     const { gamificationPlugin } = await import('./plugins/shared/gamification')
+  //     plugins.push(gamificationPlugin())
+  //   } catch (error) {
+  //     console.warn('Failed to load gamification plugin:', (error as Error).message)
+  //   }
   // }
 
   return plugins
@@ -103,17 +158,67 @@ const getSharedFeaturePlugins = () => {
 
 /**
  * Get all active plugins
+ * IMPORTANT: For shared database architecture, ALL business plugins must be loaded
+ * in ALL containers to maintain schema consistency, regardless of business mode
  */
 const getActivePlugins = () => {
+  const businessMode = getBusinessMode()
+
+  // Import business plugins synchronously - they must all be available for shared schema
+  let businessPlugins = []
+
+  try {
+    const { intellitradePlugin } = require('./plugins/business/intellitrade')
+    businessPlugins.push(intellitradePlugin())
+  } catch (error) {
+    console.warn('Failed to load intellitrade plugin:', (error as Error).message)
+  }
+
+  try {
+    const { salariumPlugin } = require('./plugins/business/salarium')
+    businessPlugins.push(salariumPlugin())
+  } catch (error) {
+    console.warn('Failed to load salarium plugin:', (error as Error).message)
+  }
+
+  try {
+    const { latinosPlugin } = require('./plugins/business/latinos')
+    businessPlugins.push(latinosPlugin())
+  } catch (error) {
+    console.warn('Failed to load latinos plugin:', (error as Error).message)
+  }
+
+  // Import shared plugins
+  let sharedPlugins = []
+
+  try {
+    const { aiManagementPlugin } = require('./plugins/shared/ai-management')
+    sharedPlugins.push(aiManagementPlugin())
+  } catch (error) {
+    console.warn('Failed to load ai-management plugin:', (error as Error).message)
+  }
+
+  // Only load job-flow-cascade for Salarium and all modes (to avoid slate issues in other modes)
+  if (businessMode === 'salarium' || businessMode === 'all') {
+    try {
+      const jobFlowCascadePlugin = require('./plugins/job-flow-cascade').default
+      sharedPlugins.push(jobFlowCascadePlugin())
+    } catch (error) {
+      console.warn('Failed to load job-flow-cascade plugin:', (error as Error).message)
+    }
+  }
+
+  console.log(
+    `🔧 ${businessMode} mode: Loaded ${businessPlugins.length} business plugins, ${sharedPlugins.length} shared plugins`,
+  )
+
   return [
     // Core plugins (always active)
     ...plugins,
-
-    // Shared feature plugins (configurable)
-    ...getSharedFeaturePlugins(),
-
-    // Business plugins (based on BUSINESS_MODE)
-    ...getBusinessPlugins(),
+    // Business plugins (all loaded for schema consistency)
+    ...businessPlugins,
+    // Shared plugins (conditionally loaded)
+    ...sharedPlugins,
   ]
 }
 

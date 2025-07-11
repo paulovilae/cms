@@ -8,6 +8,7 @@
 - **Runtime**: Node.js (^18.20.2 or >=20.9.0)
 - **UI Components**: shadcn/ui, Radix UI primitives
 - **Development**: TypeScript, ESLint, Prettier, pnpm
+- **Rich Text Editing**: Slate.js with custom error boundaries
 
 ## Multi-Tenant Architecture
 
@@ -39,6 +40,7 @@ const activePlugins = {
 - **Collections**: Data models in `src/collections/`
 - **Block System**: Modular content in `src/blocks/`
 - **Hero Sections**: Page headers in `src/heros/`
+- **Rich Text Editor**: Advanced document editing in `src/plugins/job-flow-cascade/`
 
 ### Data Architecture
 - **Multi-Tenant Model**: Shared SQLite database with business filtering
@@ -46,6 +48,12 @@ const activePlugins = {
   - **Core**: users, media, pages, posts, categories
   - **Business-Specific**: Per-business collections
   - **Shared**: team-members, testimonials, ai-providers
+
+### Document Workflow Architecture
+- **Document Model**: Core data structure with sections and metadata
+- **Section Processing**: API endpoints for section creation and updates
+- **Rich Text Storage**: Serialized JSON format for rich text content
+- **State Management**: React Context API for document and editor state
 
 ## Business Integrations
 
@@ -56,6 +64,8 @@ const activePlugins = {
 ### Salarium
 - AI-powered job description generation
 - Market data integration for compensation analysis
+- Job Flow Cascade with rich text document editing
+- HR analytics and reporting dashboards
 
 ### Latinos
 - Python FastAPI service for real-time trading
@@ -70,3 +80,4 @@ const activePlugins = {
 ### Security
 - JWT-based authentication with role-based access
 - Field-level security for sensitive data
+- Error boundaries for component isolation

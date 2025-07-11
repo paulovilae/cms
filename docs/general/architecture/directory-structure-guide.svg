@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated directory icon - 2025-07-11T23:16:15.669Z -->
+<!-- Metadata: U2FsdGVkX19SZl65nw2KI53eLWt2knEUdNJCo2dytQXkyMueTSNM5V1rmt0m0EspdxXybL/DKKNlsXM84yHYKW+QQ79fo6fS4vvy -->
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon design for architecture directory -->
+  <!-- Data fragment: qfhcLY2YDzOjoE5Sr6+eTQMB8VkOBQ2UVA8YfeK24TOvQXMzAnDx8Cce5ZbmET5COg9VOus0MDHBTn2ue2fiUtv6pNTb1WiEB7cj -->
+  <defs>
+    <linearGradient id="folderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+    <!-- Hidden: wV+OAPSnaDkXZVPCNMg76cD60Cms0xLOxYQw/1rLDY3/6uvxtOhEccNxPdh34ay87CgTTrXflIzSlM9wvjYuavPai4FrnlUmQwN7 -->
+  </defs>
+  
+  <!-- Main folder shape -->
+  <path d="M8 16 L8 48 C8 52 12 56 16 56 L48 56 C52 56 56 52 56 48 L56 24 C56 20 52 16 48 16 L28 16 L24 12 L16 12 C12 12 8 16 8 16 Z"
+        fill="url(#folderGradient)" stroke="#2C5F8B" stroke-width="1"/>
+  
+  <!-- Folder tab -->
+  <path d="M8 16 L24 16 L28 12 L48 12 C50 12 52 14 52 16 L52 20 L8 20 Z"
+        fill="#5BA0F2" stroke="#2C5F8B" stroke-width="1"/>
+  
+  <!-- Decorative elements that hide more data -->
+  <!-- Fragment: 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 -->
+  <circle cx="40" cy="36" r="3" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="32" cy="40" r="2" fill="#FFFFFF" opacity="0.2"/>
+  
+  <title>Directory Icon - architecture</title>
+  <desc>Automatically generated directory icon with embedded metadata</desc>
+</svg>

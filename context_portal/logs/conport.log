@@ -141,3 +141,68 @@
 2025-07-10 22:39:19,619 - INFO - mcp.server.lowlevel.server - Processing request of type ListToolsRequest
 2025-07-10 22:39:19,621 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourcesRequest
 2025-07-10 22:39:19,622 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourceTemplatesRequest
+2025-07-10 23:21:25,069 - INFO - mcp.server.lowlevel.server - Processing request of type CallToolRequest
+2025-07-10 23:21:25,073 - INFO - context_portal_mcp.db.database - Alembic: Script directory /home/paulo/Programs/cms/context_portal/alembic confirmed to exist by Python.
+2025-07-10 23:21:25,073 - INFO - context_portal_mcp.db.database - Running Alembic migrations for database: /home/paulo/Programs/cms/context_portal/context.db
+2025-07-10 23:21:46,875 - INFO - context_portal_mcp.main - File logging configured to: /home/paulo/Programs/cms/context_portal/./logs/conport.log
+2025-07-10 23:21:46,875 - INFO - context_portal_mcp.main - Parsed CLI args: Namespace(host='127.0.0.1', port=8000, workspace_id='/home/paulo/Programs/cms', mode='stdio', log_file='./logs/conport.log', log_level='INFO')
+2025-07-10 23:21:46,875 - INFO - context_portal_mcp.main - Starting ConPort in STDIO mode using FastMCP for initial CLI arg workspace_id: /home/paulo/Programs/cms
+2025-07-10 23:21:46,875 - INFO - context_portal_mcp.main - STDIO mode: Using effective_workspace_id '/home/paulo/Programs/cms'. Database directory will be created on first actual DB use.
+2025-07-10 23:21:46,885 - INFO - context_portal_mcp.main - ConPort FastMCP server lifespan starting.
+2025-07-10 23:21:46,888 - INFO - mcp.server.lowlevel.server - Processing request of type ListToolsRequest
+2025-07-10 23:21:46,890 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourcesRequest
+2025-07-10 23:21:46,891 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourceTemplatesRequest
+2025-07-10 23:30:07,353 - INFO - context_portal_mcp.main - File logging configured to: /home/paulo/Programs/cms/context_portal/./logs/conport.log
+2025-07-10 23:30:07,353 - INFO - context_portal_mcp.main - Parsed CLI args: Namespace(host='127.0.0.1', port=8000, workspace_id='/home/paulo/Programs/cms', mode='stdio', log_file='./logs/conport.log', log_level='INFO')
+2025-07-10 23:30:07,353 - INFO - context_portal_mcp.main - Starting ConPort in STDIO mode using FastMCP for initial CLI arg workspace_id: /home/paulo/Programs/cms
+2025-07-10 23:30:07,353 - INFO - context_portal_mcp.main - STDIO mode: Using effective_workspace_id '/home/paulo/Programs/cms'. Database directory will be created on first actual DB use.
+2025-07-10 23:30:07,365 - INFO - context_portal_mcp.main - ConPort FastMCP server lifespan starting.
+2025-07-10 23:30:07,368 - INFO - mcp.server.lowlevel.server - Processing request of type ListToolsRequest
+2025-07-10 23:30:07,371 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourcesRequest
+2025-07-10 23:30:07,372 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourceTemplatesRequest
+2025-07-10 23:33:18,597 - INFO - context_portal_mcp.main - File logging configured to: /home/paulo/Programs/cms/context_portal/./logs/conport.log
+2025-07-10 23:33:18,598 - INFO - context_portal_mcp.main - Parsed CLI args: Namespace(host='127.0.0.1', port=8000, workspace_id='/home/paulo/Programs/cms', mode='stdio', log_file='./logs/conport.log', log_level='INFO')
+2025-07-10 23:33:18,598 - INFO - context_portal_mcp.main - Starting ConPort in STDIO mode using FastMCP for initial CLI arg workspace_id: /home/paulo/Programs/cms
+2025-07-10 23:33:18,598 - INFO - context_portal_mcp.main - STDIO mode: Using effective_workspace_id '/home/paulo/Programs/cms'. Database directory will be created on first actual DB use.
+2025-07-10 23:33:18,610 - INFO - context_portal_mcp.main - ConPort FastMCP server lifespan starting.
+2025-07-10 23:33:18,613 - INFO - mcp.server.lowlevel.server - Processing request of type ListToolsRequest
+2025-07-10 23:33:18,617 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourcesRequest
+2025-07-10 23:33:18,618 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourceTemplatesRequest
+2025-07-11 00:05:53,299 - INFO - mcp.server.lowlevel.server - Processing request of type CallToolRequest
+2025-07-11 00:05:53,303 - INFO - context_portal_mcp.db.database - Alembic: Script directory /home/paulo/Programs/cms/context_portal/alembic confirmed to exist by Python.
+2025-07-11 00:05:53,303 - INFO - context_portal_mcp.db.database - Running Alembic migrations for database: /home/paulo/Programs/cms/context_portal/context.db
+2025-07-11 09:17:36,840 - INFO - context_portal_mcp.main - File logging configured to: /home/paulo/Programs/cms/context_portal/./logs/conport.log
+2025-07-11 09:17:36,842 - INFO - context_portal_mcp.main - Parsed CLI args: Namespace(host='127.0.0.1', port=8000, workspace_id='/home/paulo/Programs/cms', mode='stdio', log_file='./logs/conport.log', log_level='INFO')
+2025-07-11 09:17:36,842 - INFO - context_portal_mcp.main - Starting ConPort in STDIO mode using FastMCP for initial CLI arg workspace_id: /home/paulo/Programs/cms
+2025-07-11 09:17:36,842 - INFO - context_portal_mcp.main - STDIO mode: Using effective_workspace_id '/home/paulo/Programs/cms'. Database directory will be created on first actual DB use.
+2025-07-11 09:17:36,854 - INFO - context_portal_mcp.main - ConPort FastMCP server lifespan starting.
+2025-07-11 09:17:36,857 - INFO - mcp.server.lowlevel.server - Processing request of type ListToolsRequest
+2025-07-11 09:17:36,860 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourcesRequest
+2025-07-11 09:17:36,861 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourceTemplatesRequest
+2025-07-11 16:32:52,232 - INFO - context_portal_mcp.main - File logging configured to: /home/paulo/Programs/cms/context_portal/./logs/conport.log
+2025-07-11 16:32:52,239 - INFO - context_portal_mcp.main - Parsed CLI args: Namespace(host='127.0.0.1', port=8000, workspace_id='/home/paulo/Programs/cms', mode='stdio', log_file='./logs/conport.log', log_level='INFO')
+2025-07-11 16:32:52,239 - INFO - context_portal_mcp.main - Starting ConPort in STDIO mode using FastMCP for initial CLI arg workspace_id: /home/paulo/Programs/cms
+2025-07-11 16:32:52,239 - INFO - context_portal_mcp.main - STDIO mode: Using effective_workspace_id '/home/paulo/Programs/cms'. Database directory will be created on first actual DB use.
+2025-07-11 16:32:52,249 - INFO - context_portal_mcp.main - ConPort FastMCP server lifespan starting.
+2025-07-11 16:32:52,252 - INFO - mcp.server.lowlevel.server - Processing request of type ListToolsRequest
+2025-07-11 16:32:52,255 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourcesRequest
+2025-07-11 16:32:52,256 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourceTemplatesRequest
+2025-07-11 16:54:52,853 - INFO - context_portal_mcp.main - File logging configured to: /home/paulo/Programs/cms/context_portal/./logs/conport.log
+2025-07-11 16:54:52,853 - INFO - context_portal_mcp.main - Parsed CLI args: Namespace(host='127.0.0.1', port=8000, workspace_id='/home/paulo/Programs/cms', mode='stdio', log_file='./logs/conport.log', log_level='INFO')
+2025-07-11 16:54:52,853 - INFO - context_portal_mcp.main - Starting ConPort in STDIO mode using FastMCP for initial CLI arg workspace_id: /home/paulo/Programs/cms
+2025-07-11 16:54:52,854 - INFO - context_portal_mcp.main - STDIO mode: Using effective_workspace_id '/home/paulo/Programs/cms'. Database directory will be created on first actual DB use.
+2025-07-11 16:54:52,865 - INFO - context_portal_mcp.main - ConPort FastMCP server lifespan starting.
+2025-07-11 16:54:52,870 - INFO - mcp.server.lowlevel.server - Processing request of type ListToolsRequest
+2025-07-11 16:54:52,876 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourcesRequest
+2025-07-11 16:54:52,878 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourceTemplatesRequest
+2025-07-11 16:55:29,480 - INFO - context_portal_mcp.main - File logging configured to: /home/paulo/Programs/cms/context_portal/./logs/conport.log
+2025-07-11 16:55:29,480 - INFO - context_portal_mcp.main - Parsed CLI args: Namespace(host='127.0.0.1', port=8000, workspace_id='/home/paulo/Programs/cms', mode='stdio', log_file='./logs/conport.log', log_level='INFO')
+2025-07-11 16:55:29,480 - INFO - context_portal_mcp.main - Starting ConPort in STDIO mode using FastMCP for initial CLI arg workspace_id: /home/paulo/Programs/cms
+2025-07-11 16:55:29,480 - INFO - context_portal_mcp.main - STDIO mode: Using effective_workspace_id '/home/paulo/Programs/cms'. Database directory will be created on first actual DB use.
+2025-07-11 16:55:29,490 - INFO - context_portal_mcp.main - ConPort FastMCP server lifespan starting.
+2025-07-11 16:55:29,493 - INFO - mcp.server.lowlevel.server - Processing request of type ListToolsRequest
+2025-07-11 16:55:29,496 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourcesRequest
+2025-07-11 16:55:29,497 - INFO - mcp.server.lowlevel.server - Processing request of type ListResourceTemplatesRequest
+2025-07-11 17:55:21,300 - INFO - mcp.server.lowlevel.server - Processing request of type CallToolRequest
+2025-07-11 17:55:21,302 - INFO - context_portal_mcp.db.database - Alembic: Script directory /home/paulo/Programs/cms/context_portal/alembic confirmed to exist by Python.
+2025-07-11 17:55:21,302 - INFO - context_portal_mcp.db.database - Running Alembic migrations for database: /home/paulo/Programs/cms/context_portal/context.db

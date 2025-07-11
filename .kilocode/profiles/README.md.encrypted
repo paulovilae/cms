@@ -1,0 +1,42 @@
+# Agent Profile Configuration Guide
+
+This directory contains the configuration files for all specialized AI agents in the Kilo Code system. Each agent has specific capabilities and permissions designed for their role.
+
+## Agent Types
+
+### Core Development Agents
+- **Code Agent**: Full development capabilities with unrestricted file access
+- **Debug Agent**: Specialized in troubleshooting and error resolution
+- **Architect Agent**: System design and planning with documentation focus
+
+### Specialized Agents
+- **UX Expert**: User experience evaluation and improvement
+- **Security Expert**: Security assessment and vulnerability analysis
+- **Performance Engineer**: System optimization and performance tuning
+- **Database Engineer**: Database design and optimization
+- **Graphic Designer**: Visual design and asset creation
+
+## Configuration Structure
+
+Each agent profile follows the standard YAML format with:
+- Role definition and capabilities
+- File access permissions
+- Custom instructions and guidelines
+- Integration with MCP (Model Context Protocol) servers
+
+## Usage Guidelines
+
+1. Agents automatically load their profiles when activated
+2. Permissions are enforced at the file system level
+3. Custom instructions guide agent behavior and decision-making
+4. MCP integration provides extended capabilities
+
+## Security Considerations
+
+All agent profiles include appropriate security restrictions to ensure:
+- Principle of least privilege access
+- Business context isolation
+- Secure handling of sensitive operations
+- Proper audit trails for all actions
+
+For technical details on agent implementation, refer to the architecture documentation in the docs directory.

@@ -1,0 +1,287 @@
+# Job Flow Cascade Migration Configuration
+
+# Database backup configuration
+backup:
+  enabled: true
+  location: "./databases/backups/pre-migration-{{timestamp}}.db"
+  validateBackup: true
+
+# Migration phases configuration
+phases:
+  - name: "schema_update"
+    description: "Update database schema with new collections and fields"
+    scripts:
+      - "createFlowTemplatesCollection.sql"
+      - "enhanceFlowDocumentsCollection.sql"
+      - "enhanceDocumentSectionsCollection.sql"
+    order: 1
+    requiresConfirmation: true
+
+  - name: "template_migration"
+    description: "Migrate templates from Salarium to generic flow cascade"
+    order: 2
+    steps:
+      - name: "fetch_salarium_templates"
+        query: |
+          SELECT * FROM "flow-templates" 
+          WHERE businessUnit = 'salarium'
+      
+      - name: "convert_templates"
+        mapping:
+          sourceCollection: "flow-templates"
+          targetCollection: "flow-templates"
+          fieldMappings:
+            - source: "id"
+              target: "id"
+              transform: "none"
+            
+            - source: "name"
+              target: "title"
+              transform: "none"
+            
+            - source: "description"
+              target: "description"
+              transform: "none"
+            
+            - source: "businessUnit"
+              target: "businessUnit"
+              transform: "lookupMapping"
+              mappingKey: "businessUnitMapping"
+            
+            - source: "steps"
+              target: "sectionTemplates"
+              transform: "convertStepsToSectionTemplates"
+              
+            - source: "outputTemplate"
+              target: "metadata.outputTemplate"
+              transform: "none"
+              
+            - source: "metadata.difficulty"
+              target: "metadata.difficulty"
+              transform: "none"
+              
+            - source: "metadata.estimatedTime"
+              target: "metadata.estimatedTime"
+              transform: "none"
+              
+            - source: "metadata.tags"
+              target: "metadata.tags"
+              transform: "none"
+              
+            - source: "metadata.industry"
+              target: "metadata.industry"
+              transform: "none"
+              
+            - source: "metadata.language"
+              target: "metadata.language"
+              transform: "none"
+          
+          additionalFields:
+            - target: "isActive"
+              value: true
+              
+            - target: "category"
+              value: "Job Description"
+              
+            - target: "workflow.enableCascade"
+              value: true
+              
+            - target: "workflow.requireApproval"
+              value: false
+              
+            - target: "workflow.maxConcurrentSections"
+              value: 1
+
+      - name: "save_converted_templates"
+        description: "Save converted templates to the database"
+
+  - name: "instance_migration"
+    description: "Migrate flow instances to flow documents and sections"
+    order: 3
+    steps:
+      - name: "fetch_flow_instances"
+        query: |
+          SELECT * FROM "flow-instances"
+          WHERE template IN (SELECT id FROM "flow-templates" WHERE businessUnit = 'salarium')
+      
+      - name: "convert_instances_to_documents"
+        mapping:
+          sourceCollection: "flow-instances"
+          targetCollection: "flow-documents"
+          fieldMappings:
+            - source: "id"
+              target: "id"
+              transform: "none"
+              
+            - source: "title"
+              target: "title"
+              transform: "none"
+              
+            - source: "template"
+              target: "templateId"
+              transform: "none"
+              
+            - source: "status"
+              target: "status"
+              transform: "lookupMapping"
+              mappingKey: "statusMapping"
+              
+            - source: "currentStep"
+              target: "workflow_currentStep"
+              transform: "none"
+              
+            - source: "totalSteps"
+              target: "workflow_totalSteps"
+              transform: "none"
+              
+            - source: "progress"
+              target: "workflow_progress"
+              transform: "none"
+          
+          additionalFields:
+            - target: "businessUnit"
+              value: "salarium"
+              
+            - target: "description"
+              value: "Migrated from Salarium Job Flow"
+      
+      - name: "convert_step_responses_to_sections"
+        mapping:
+          sourceCollection: "flow-instances.stepResponses"
+          targetCollection: "document-sections"
+          fieldMappings:
+            - source: "stepNumber"
+              target: "order"
+              transform: "none"
+              
+            - source: "stepTitle"
+              target: "title"
+              transform: "none"
+              
+            - source: "userInput"
+              target: "metadata.userInput"
+              transform: "none"
+              
+            - source: "aiGeneratedContent"
+              target: "content"
+              transform: "convertToRichText"
+              
+            - source: "isCompleted"
+              target: "isCompleted"
+              transform: "none"
+              
+            - source: "lastUpdated"
+              target: "updatedAt"
+              transform: "none"
+              
+            - source: "completedAt"
+              target: "metadata.completedAt"
+              transform: "none"
+          
+          additionalFields:
+            - target: "isGenerated"
+              value: true
+              
+            - target: "type"
+              transform: "mapStepTypeToSectionType"
+              source: "sourceTemplate.steps[stepNumber].stepType"
+      
+      - name: "create_workflow_step_sequence"
+        description: "Generate step sequence data for workflow tracking"
+        transform: "buildStepSequenceFromTemplate"
+      
+      - name: "save_converted_instances"
+        description: "Save converted documents and sections to database"
+
+  - name: "generation_history_update"
+    description: "Update generation history with enhanced fields"
+    order: 4
+    steps:
+      - name: "link_history_to_new_sections"
+        query: |
+          UPDATE "generation-history"
+          SET sectionId = (
+            SELECT id FROM "document-sections" 
+            WHERE documentId = "generation-history".documentId 
+            AND order = (
+              SELECT stepNumber FROM "flow-instances.stepResponses" 
+              WHERE instanceId = "generation-history".documentId
+            )
+          )
+          WHERE EXISTS (
+            SELECT 1 FROM "document-sections" 
+            WHERE documentId = "generation-history".documentId
+          )
+
+  - name: "data_validation"
+    description: "Validate the migration was successful"
+    order: 5
+    steps:
+      - name: "count_verification"
+        queries:
+          - name: "template_count"
+            query: |
+              SELECT COUNT(*) AS original FROM "flow-templates" WHERE businessUnit = 'salarium';
+              SELECT COUNT(*) AS migrated FROM "flow-templates" WHERE businessUnit = 'salarium';
+            assertion: "original = migrated"
+          
+          - name: "instance_count"
+            query: |
+              SELECT COUNT(*) AS original FROM "flow-instances" WHERE template IN (SELECT id FROM "flow-templates" WHERE businessUnit = 'salarium');
+              SELECT COUNT(*) AS migrated FROM "flow-documents" WHERE businessUnit = 'salarium';
+            assertion: "original = migrated"
+          
+          - name: "section_count"
+            query: |
+              SELECT SUM(JSON_ARRAY_LENGTH(stepResponses)) AS original FROM "flow-instances" WHERE template IN (SELECT id FROM "flow-templates" WHERE businessUnit = 'salarium');
+              SELECT COUNT(*) AS migrated FROM "document-sections" WHERE documentId IN (SELECT id FROM "flow-documents" WHERE businessUnit = 'salarium');
+            assertion: "original = migrated"
+      
+      - name: "relationship_validation"
+        description: "Verify relationships between documents, sections, and templates"
+        queries:
+          - name: "document_template_relationship"
+            query: |
+              SELECT COUNT(*) FROM "flow-documents" 
+              WHERE templateId IS NOT NULL 
+              AND templateId NOT IN (SELECT id FROM "flow-templates")
+            assertion: "count = 0"
+          
+          - name: "section_document_relationship"
+            query: |
+              SELECT COUNT(*) FROM "document-sections" 
+              WHERE documentId IS NOT NULL 
+              AND documentId NOT IN (SELECT id FROM "flow-documents")
+            assertion: "count = 0"
+
+# Custom transformation functions that will be implemented in the migration script
+transformations:
+  - name: "convertStepsToSectionTemplates"
+    description: "Convert step array to section templates array"
+    
+  - name: "convertToRichText"
+    description: "Convert plain text content to rich text format"
+    
+  - name: "mapStepTypeToSectionType"
+    description: "Map Salarium step types to generic section types"
+    
+  - name: "buildStepSequenceFromTemplate"
+    description: "Build workflow step sequence based on template"
+
+# Rollback configuration
+rollback:
+  enabled: true
+  backupRestoreCommand: "cp {{backupFile}} ./databases/multi-tenant.db"
+  steps:
+    - "DROP TABLE IF EXISTS 'flow-templates'"
+    - "ALTER TABLE 'flow-documents' DROP COLUMN templateId"
+    - "ALTER TABLE 'flow-documents' DROP COLUMN organizationId"
+    # Additional rollback steps would be included here
+
+# Reporting configuration
+reporting:
+  enabled: true
+  outputFile: "./logs/migration-report-{{timestamp}}.json"
+  detailedLogs: true
+  includeQueries: true
+  includeTimings: true

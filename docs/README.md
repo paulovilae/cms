@@ -1,65 +1,84 @@
-# Project Documentation
+# CMS Documentation Repository
 
-Welcome to the Multi-Tenant Business Platform documentation. This platform serves three independent business products through a single codebase built on Payload CMS and Next.js.
+This is the central documentation repository for our multi-tenant CMS platform and all its business units. The documentation is organized to provide clear separation between general CMS documentation and business-specific documentation.
 
-## Business Products
+## Directory Structure
 
-- **IntelliTrade**: Trade finance platform leveraging blockchain technology
-- **Salarium**: HR document flow system for organizational processes
-- **Latinos**: Automated trading platform with bot functionality
+```
+docs/
+├── general/                      # General CMS-wide documentation
+│   ├── architecture/             # System-wide architecture
+│   │   ├── vision/               # Vision documents
+│   │   └── diagrams/             # Architecture diagrams
+│   ├── development/              # Development guidelines
+│   ├── operations/               # Operational docs
+│   └── api/                      # API documentation
+│
+├── latinos/                      # Latinos Trading Platform docs
+│   ├── architecture/             # Latinos architecture
+│   │   ├── vision/               # Vision documents
+│   │   └── diagrams/             # Architecture diagrams
+│   ├── features/                 # Feature documentation
+│   ├── user-guides/              # User guides
+│   └── api/                      # API documentation
+│
+├── salarium/                     # Salarium HR Platform docs
+│   ├── architecture/             # Salarium architecture
+│   │   ├── vision/               # Vision documents
+│   │   └── diagrams/             # Architecture diagrams
+│   ├── features/                 # Feature documentation
+│   ├── user-guides/              # User guides
+│   └── api/                      # API documentation
+│
+├── intellitrade/                 # IntelliTrade Finance Platform docs
+│   ├── architecture/             # IntelliTrade architecture
+│   │   ├── vision/               # Vision documents
+│   │   └── diagrams/             # Architecture diagrams
+│   ├── features/                 # Feature documentation
+│   ├── user-guides/              # User guides
+│   └── api/                      # API documentation
+│
+└── capacita/                     # Capacita Training Platform docs
+    ├── architecture/             # Capacita architecture
+    │   ├── vision/               # Vision documents
+    │   └── diagrams/             # Architecture diagrams
+    ├── features/                 # Feature documentation
+    ├── user-guides/              # User guides
+    └── api/                      # API documentation
+```
 
-## Documentation Structure
+## Documentation Guidelines
 
-### 📋 Setup Guides
-- [Docker Deployment](./setup/docker-deployment.md) - Container deployment and orchestration
-- [Installation Guide](./setup/installation.md) - Project setup and configuration *(coming soon)*
-- [Environment Configuration](./setup/environment-configuration.md) - Environment variables guide *(coming soon)*
+### When to Create General vs. Business-Specific Documentation
 
-### 🏗️ Architecture
-- [System Overview](./architecture/overview.md) - High-level system architecture *(coming soon)*
-- [Multi-Tenant Architecture](./architecture/multi-tenant-architecture.md) - Plugin-based multi-tenant design
-- [Plugin System](./architecture/plugin-system.md) - Plugin development framework *(coming soon)*
-- [Database Design](./architecture/database-design.md) - Schema and relationships *(coming soon)*
+- **General Documentation**: Use for platform-wide features, architectural patterns, and guidelines that apply across all business units
+- **Business-Specific Documentation**: Use for features, implementations, and use cases that are unique to a specific business unit
 
-### 👥 User Guides
-- [Getting Started](./user-guide/getting-started.md) - User onboarding guide *(coming soon)*
-- [Content Management](./user-guide/content-management.md) - CMS usage guide *(coming soon)*
-- [IntelliTrade Guide](./user-guide/intellitrade-guide.md) - Trade finance platform guide *(coming soon)*
-- [Salarium Guide](./user-guide/salarium-guide.md) - HR system guide *(coming soon)*
-- [Latinos Guide](./user-guide/latinos-guide.md) - Trading bot platform guide *(coming soon)*
+### Naming Conventions
 
-### 🛠️ Developer Guides
-- [Development Setup](./developer-guide/development-setup.md) - Developer environment setup *(coming soon)*
-- [Seeding System](./developer-guide/seeding-system.md) - Database seeding and management
-- [API Reference](./developer-guide/api-reference.md) - API documentation *(coming soon)*
-- [Plugin Development](./developer-guide/plugin-development.md) - Creating custom plugins *(coming soon)*
-- [Testing Guidelines](./developer-guide/testing.md) - Testing strategies *(coming soon)*
-- [Deployment Procedures](./developer-guide/deployment.md) - Production deployment *(coming soon)*
+- **Filenames**: Use kebab-case with descriptive names
+  - Pattern: `[topic]-[subtopic]-[date].md`
+  - Example: `vision-trading-bots-2025-01-07.md`
 
-## Quick Links
+- **Headers**: Use Title Case for main headers, Sentence case for subheadings
 
-- [Main README](../README.md) - Project overview and quick start
-- [Memory Bank](./.kilocode/rules/memory-bank/) - Development context and guidelines
-- [Source Code](../src/) - Application source code
+### Cross-Referencing
 
-## Contributing to Documentation
+- Use relative links when referencing other documents
+- For business-specific documents referencing general docs: `../../general/path/to/doc.md`
+- For general docs referencing business-specific docs: `../{business}/path/to/doc.md`
 
-When adding new documentation:
+## Key Documents
 
-1. **Choose the right category**: Setup, Architecture, User Guide, or Developer Guide
-2. **Follow naming conventions**: Use kebab-case for file names
-3. **Update this index**: Add links to new documentation files
-4. **Cross-reference**: Link to related documentation where relevant
-5. **Keep it current**: Update documentation when code changes
+### General Architecture
+- [Document Structure Migration Plan](general/architecture/document-structure-migration-plan.md)
+- [Profile Updates for Document Structure](general/architecture/profile-updates-for-document-structure.md)
 
-## Documentation Standards
+### Latinos Trading Platform
+- [Latinos Bot Trading Vision](latinos/architecture/vision/vision-latinos-bot-trading-2025-01-07.md)
 
-- Use clear, concise language
-- Include practical examples and code snippets
-- Provide step-by-step instructions where applicable
-- Add screenshots for UI-related documentation
-- Keep technical accuracy high and up-to-date
+## Our Philosophy
 
----
+> **"Clarity comes step by step."**
 
-*This documentation is part of the Multi-Tenant Business Platform project. For technical support or questions, refer to the developer guides or contact the development team.*
+We believe in iterative improvement and organization, recognizing that the best structures often emerge through the process of building and refining.

@@ -14,6 +14,14 @@ customModes:
     description: Reviews and improves user experience with a focus on simplicity and
       ease of use.
     customInstructions: >-
+      ## Directory Structure Guidelines (REQUIRED)
+      - ALL tasks must be stored in `context_portal/tasks/` with naming convention: `YYYY-MM-DD_task-name_ux-expert.md`
+      - UX reports belong in `docs/general/ux/` for general UX audits or `docs/{business}/ux/` for business-specific UX audits
+      - CSS files belong in `assets/{business}/styles/` for business-specific or `assets/general/styles/` for general styles
+      - UX documentation belongs in appropriate `docs/` subdirectories
+      - Interface components belong in `src/components/` with appropriate subdirectories
+      - Reference `docs/general/architecture/complete-directory-structure.md` for complete guidelines
+
       1. Begin by understanding the context of the UX review. Ask clarifying
       questions about the target audience, the purpose of the interface, and any
       specific areas of concern the user might have.
@@ -33,8 +41,9 @@ customModes:
          - **Accessibility:** Identify potential accessibility barriers (e.g., color blind friendliness, keyboard navigation).
          - **Feedback Mechanisms:** Review how the system provides feedback to user actions.
          - **Light/Dark modes:** Evaluate all contrasts in both light and dark modes.
+         - **Multi-Tenant Considerations:** Assess consistency across business contexts and business-specific branding.
 
-      4. at the end of teh document, in a section called action plan, for each
+      4. at the end of the document, in a section called action plan, for each
       identified issue, provide specific, actionable feedback and propose
       concrete solutions or improvements.  
 
@@ -45,17 +54,35 @@ customModes:
       like further clarification or modifications.
 
       7. Once the user confirms, write the UX audit report to a markdown file
-      inside `reports/ux/`.
+      inside `docs/general/ux/` for general UX audits or `docs/{business}/ux/` for business-specific UX audits.
 
       8. Use the `switch_mode` tool to request that the user switch to another
       mode (e.g., an 'Orchestrator' or 'Code' mode if available) to apply the
       suggested changes, or to discuss further design iterations.
+
+      ## Multi-Tenant UX Considerations
+      - Always identify which business context(s) the UX review covers
+      - Consider business-specific branding and design requirements
+      - Evaluate consistency within business contexts
+      - Assess cross-business user experience when applicable
+      - Store business-specific UX reports in appropriate `docs/{business}/ux/` directories
+      - Store general UX guidelines in `docs/general/ux/`
+
+      ## UX Quality Standards
+      All UX work must prioritize:
+      - **User-Centered Design**: Focus on user needs and goals
+      - **Accessibility**: Ensure inclusive design for all users
+      - **Consistency**: Maintain design patterns within business contexts
+      - **Simplicity**: Reduce cognitive load and complexity
+      - **Feedback**: Provide clear system responses to user actions
+      - **Performance**: Consider perceived performance and loading states
+      - **Mobile-First**: Ensure responsive design across devices
+      - **Business Context Awareness**: Appropriate UX for each business unit
     groups:
       - read
       - - edit
         - fileRegex: \.(md|css)$
           description: Markdown reports and CSS files
-
       - browser
       - mcp
     source: project

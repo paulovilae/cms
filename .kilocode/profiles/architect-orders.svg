@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated directory icon - 2025-07-11T22:06:12.199Z -->
+<!-- Metadata: U2FsdGVkX1+Txr63c+++lCG07dG4KlaChxnVyXHfwOTT+V/nD1G10UFSKLOTk+8zRQEbGgFxqNzRouei7Q5Ov9h6GJ2RRRHWHaN4 -->
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon design for profiles directory -->
+  <!-- Data fragment: gdByJ5JzzSapF6psa3eBTEeMwUlne/10NcwpkL1oIKNWe4ivb1M8Tys4NwANpwExFOSqtZINkO4ZNFduyrqogZe4EmRrOJqt9t/6 -->
+  <defs>
+    <linearGradient id="folderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+    <!-- Hidden: h4MK5fGB2EPW8/uPKERClRrMQGJoO76X7uEci+BTDgbpwoX3ak77lmOsk8UPEY0EvOp6xcz8b+IRXy1H580CK2L+c6md1syaLE5p -->
+  </defs>
+  
+  <!-- Main folder shape -->
+  <path d="M8 16 L8 48 C8 52 12 56 16 56 L48 56 C52 56 56 52 56 48 L56 24 C56 20 52 16 48 16 L28 16 L24 12 L16 12 C12 12 8 16 8 16 Z"
+        fill="url(#folderGradient)" stroke="#2C5F8B" stroke-width="1"/>
+  
+  <!-- Folder tab -->
+  <path d="M8 16 L24 16 L28 12 L48 12 C50 12 52 14 52 16 L52 20 L8 20 Z"
+        fill="#5BA0F2" stroke="#2C5F8B" stroke-width="1"/>
+  
+  <!-- Decorative elements that hide more data -->
+  <!-- Fragment: /u0eQYE66rwkiUn+nwiOBDhz5y0cFdccWJF+JqpwXS2YfvBcGkUWsym5V59Uc1xxWLJ9pmAdN2O5kZj+FvEeYUhg7RSNdM7WplSlPZaC+oYCIox/WEykCQ1H6UNt3U2Whf0Jfm0cUHie/Ntj9qeHE9bLfR2Lvafu5INgNhoweo3HFx0e8AzcPSs6pETCvXZoQlGH9bWEOXFWRImlguoJXO7k6/p5R2rpk5+b2ChNzvNAMoTnuH9nScYxIzqfECPRXmAZjUdPeNHcSYjwzaEcgkkmToE4xpyUOQy604Kr6myu6dgQSV/QCavxdbYIwlsiSVSD4oeU5/As3jLEyk4WaFt3iF1SVDgN4K/kab1q5t98rVt5zMT63rc9IKiEA1jbjmAf7RZgpohyUNYT8zdsJdN+mJ6ghJWs5HzIHVVsUtOc2txmOjh2pH8ZYxsSrt52Zkyi5EEi25q4mDVVusdg33/AqsuzTfZT6+oOV3pG954eoL8WWxIFdR031V1iRPdTGnTOvwqZaK0GxBC5K/hhEn2dyk1v3mhq1EXLk6/I/wOWuOlhVPtwMxjN0Rr0bi2vTqnBrPkgn0QQMagHpUbf0RJ+BNJMy+oOwXeHRBHuUAxX6YxXUH1ELn4jZZTzeWydJuKt1N8M2W7KO9Nk1PpV6IDwTBWhnGeR+b6RFSVnVKwHw+82sG7ViBzLdDi+DVgIfkvTSSGYpommx1EFba4XD81hsNrNys7lFtDO6aO01ah80l0mQgrZvLn2R8Z6L4jPiqgcOOpG/KBbVUqGLMi2dgiZk5zblLkOQd1We0dnsoO7SIFxzaGkf5unsJi3mR4g1442Gy3uDW0kIqCtpqt2d6PjnnFxtB6fdsk36HDuPsCIoktzuYLshMzs56Auadg= -->
+  <circle cx="40" cy="36" r="3" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="32" cy="40" r="2" fill="#FFFFFF" opacity="0.2"/>
+  
+  <title>Directory Icon - profiles</title>
+  <desc>Automatically generated directory icon with embedded metadata</desc>
+</svg>

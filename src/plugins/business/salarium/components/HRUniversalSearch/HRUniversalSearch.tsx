@@ -282,8 +282,7 @@ export const HRUniversalSearch: React.FC = () => {
                       <button
                         key={index}
                         onClick={() => handlePopularSearchClick(term)}
-                        className="px-3 py-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 
-                                  rounded-full text-sm text-gray-700 dark:text-gray-300 transition-all duration-300"
+                        className="px-3 py-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-full text-sm text-gray-700 dark:text-gray-300 transition-all duration-300"
                       >
                         {term}
                       </button>

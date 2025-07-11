@@ -1,0 +1,86 @@
+{
+  "stepTypeToSectionType": {
+    "text": "text_input",
+    "textarea": "rich_text",
+    "select": "multiple_choice",
+    "checkbox": "checkbox",
+    "radio": "radio_group",
+    "date": "date_input",
+    "file": "file_upload"
+  },
+
+  "sectionTypeMap": {
+    "introduction": "introduction",
+    "summary": "summary",
+    "responsibilities": "responsibilities",
+    "requirements": "requirements",
+    "qualifications": "qualifications",
+    "benefits": "benefits",
+    "custom": "custom"
+  },
+
+  "statusMapping": {
+    "draft": "draft",
+    "in-progress": "in-progress",
+    "completed": "completed",
+    "archived": "archived"
+  },
+
+  "businessUnitMapping": {
+    "salarium": "salarium",
+    "intellitrade": "intellitrade",
+    "latinos": "latinos",
+    "capacita": "capacita"
+  },
+
+  "generationTypeMapping": {
+    "initial": "initial",
+    "refinement": "refinement",
+    "alternative": "alternative",
+    "manual": "manual",
+    "section": "section",
+    "alternatives": "alternatives",
+    "cascade": "cascade"
+  },
+
+  "validationRuleMapping": {
+    "minLength": {
+      "type": "min_length",
+      "errorMessage": "Input must be at least {value} characters"
+    },
+    "maxLength": {
+      "type": "max_length",
+      "errorMessage": "Input must be at most {value} characters"
+    },
+    "required": {
+      "type": "required",
+      "errorMessage": "This field is required"
+    },
+    "email": {
+      "type": "email",
+      "errorMessage": "Please enter a valid email address"
+    },
+    "url": {
+      "type": "url",
+      "errorMessage": "Please enter a valid URL"
+    },
+    "numeric": {
+      "type": "numeric",
+      "errorMessage": "Please enter a valid number"
+    }
+  },
+
+  "defaultAiConfigValues": {
+    "temperature": 0.7,
+    "maxTokens": 1000,
+    "topP": 1.0,
+    "presencePenalty": 0.0,
+    "frequencyPenalty": 0.0
+  },
+
+  "defaultWorkflowValues": {
+    "enableCascade": true,
+    "requireApproval": false,
+    "maxConcurrentSections": 1
+  }
+}

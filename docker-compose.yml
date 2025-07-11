@@ -17,7 +17,12 @@ services:
       - ./src:/app/src
       - ./public:/app/public
       - ./databases:/app/databases
-      - /app/node_modules
+      - ./package.json:/app/package.json
+      - ./pnpm-lock.yaml:/app/pnpm-lock.yaml
+      - ./next.config.js:/app/next.config.js
+      - ./tailwind.config.mjs:/app/tailwind.config.mjs
+      - ./postcss.config.js:/app/postcss.config.js
+      - ./components.json:/app/components.json
       - /app/.next
     restart: unless-stopped
     networks:
@@ -43,7 +48,12 @@ services:
       - ./src:/app/src
       - ./public:/app/public
       - ./databases:/app/databases
-      - /app/node_modules
+      - ./package.json:/app/package.json
+      - ./pnpm-lock.yaml:/app/pnpm-lock.yaml
+      - ./next.config.js:/app/next.config.js
+      - ./tailwind.config.mjs:/app/tailwind.config.mjs
+      - ./postcss.config.js:/app/postcss.config.js
+      - ./components.json:/app/components.json
       - /app/.next
     restart: unless-stopped
     networks:
@@ -69,7 +79,12 @@ services:
       - ./src:/app/src
       - ./public:/app/public
       - ./databases:/app/databases
-      - /app/node_modules
+      - ./package.json:/app/package.json
+      - ./pnpm-lock.yaml:/app/pnpm-lock.yaml
+      - ./next.config.js:/app/next.config.js
+      - ./tailwind.config.mjs:/app/tailwind.config.mjs
+      - ./postcss.config.js:/app/postcss.config.js
+      - ./components.json:/app/components.json
       - /app/.next
     restart: unless-stopped
     networks:
@@ -101,7 +116,6 @@ services:
       - ./tailwind.config.mjs:/app/tailwind.config.mjs
       - ./postcss.config.js:/app/postcss.config.js
       - ./components.json:/app/components.json
-      - /app/node_modules
       - /app/.next
     restart: unless-stopped
     networks:

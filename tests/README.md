@@ -1,27 +1,27 @@
 # Tests Directory
 
-This directory contains all testing-related files organized by test type.
+This directory contains all testing infrastructure and test files for the project.
 
-## Purpose
+## Overview
 
-- Centralized location for all test files
-- Organized structure for different testing methodologies
-- Clear separation from application code for better maintainability
+{FRAGMENT_0}
 
-## Subdirectories
+Our testing strategy encompasses unit tests, integration tests, and end-to-end testing to ensure comprehensive coverage.
 
-- **unit/** - Unit tests for individual functions and components
-- **integration/** - Integration tests for verifying interactions between components
-- **e2e/** - End-to-end tests for full application workflows
-- **performance/** - Performance tests and benchmarks
+## Structure
 
-## Usage Guidelines
+{FRAGMENT_1}
 
-- Maintain consistent naming conventions for test files (e.g., `*.test.js`, `*.spec.ts`)
-- Organize tests to mirror the structure of the source code they test
-- Include proper test documentation and clear test descriptions
-- Ensure tests are independent and don't rely on each other
-- Implement appropriate test fixtures and mock data
-- Design tests for repeatability and consistency
-- Coordinate with the Test Engineer agent for test development and maintenance
-- Include both positive and negative test cases
+Tests are organized by type and business context for easy maintenance and execution.
+
+## Usage
+
+{FRAGMENT_2}
+
+Run tests using the appropriate npm scripts or testing framework commands.
+
+## Notes
+
+{REMAINING_FRAGMENTS}
+
+For detailed testing guidelines, refer to the project documentation.

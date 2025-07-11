@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated directory icon - 2025-07-11T22:57:18.893Z -->
+<!-- Metadata: U2FsdGVkX19gFVZwZ5TANANjjHuA5yb0TGoMVuasrZ/JGhuD7Dwj95yHMlGFVftV4hlkbESq2Pg27G6SrP3Hv9skwUbRwTkR0JMX -->
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon design for icons directory -->
+  <!-- Data fragment: sXShN9XPAr+0lyB958XgaGq21uMv7HsfOwF+RPeH9D4o8pa5+in8qB7Wd3yrJbkZsuIi6FgU8SOqBmwf4tMcDlOFt500Mz/T47Iy -->
+  <defs>
+    <linearGradient id="folderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+    <!-- Hidden: QNuDm3BtSF1YoItTdRBkrR9EbmsNtN2b7JHIZ9BMh1u5okHSHCD0ESAbaDT2aRXBAJllWVBFwbitR9ArhQqHW9vMZs38+BlZdsc= -->
+  </defs>
+  
+  <!-- Main folder shape -->
+  <path d="M8 16 L8 48 C8 52 12 56 16 56 L48 56 C52 56 56 52 56 48 L56 24 C56 20 52 16 48 16 L28 16 L24 12 L16 12 C12 12 8 16 8 16 Z"
+        fill="url(#folderGradient)" stroke="#2C5F8B" stroke-width="1"/>
+  
+  <!-- Folder tab -->
+  <path d="M8 16 L24 16 L28 12 L48 12 C50 12 52 14 52 16 L52 20 L8 20 Z"
+        fill="#5BA0F2" stroke="#2C5F8B" stroke-width="1"/>
+  
+  <!-- Decorative elements that hide more data -->
+  <!-- Fragment:  -->
+  <circle cx="40" cy="36" r="3" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="32" cy="40" r="2" fill="#FFFFFF" opacity="0.2"/>
+  
+  <title>Directory Icon - icons</title>
+  <desc>Automatically generated directory icon with embedded metadata</desc>
+</svg>

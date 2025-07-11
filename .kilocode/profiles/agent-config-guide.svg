@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated directory icon - 2025-07-11T23:14:23.767Z -->
+<!-- Metadata: U2FsdGVkX1/5466Q30aKUErxXxc3G/7MUyd4iQZ+yKw6JklVNLWTK4MICC8ICIAMLFeO5eD+UmMTSmF/h0JvdPyLXtN0+q4/8uVd -->
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon design for profiles directory -->
+  <!-- Data fragment: DC3smnSP5P1v4Qzlnd5el+HtfmPFFRXJJFgdqI5/ZKgHgC0nwwbiZvIERzKlPYu0mqUvnKBUcDl/zwLyeimxEfSpd7HZk9Crhw9I -->
+  <defs>
+    <linearGradient id="folderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+    <!-- Hidden: aBl7/FYDVH8RemDxKVRIqc+Hgcyw7XdBryRRsv9CTRjggg2bTZ7T6uvzomyTeFCTB4Gqs9H2xPU2J6EFL2sPVZnz9oBgg5Hkj9cC -->
+  </defs>
+  
+  <!-- Main folder shape -->
+  <path d="M8 16 L8 48 C8 52 12 56 16 56 L48 56 C52 56 56 52 56 48 L56 24 C56 20 52 16 48 16 L28 16 L24 12 L16 12 C12 12 8 16 8 16 Z"
+        fill="url(#folderGradient)" stroke="#2C5F8B" stroke-width="1"/>
+  
+  <!-- Folder tab -->
+  <path d="M8 16 L24 16 L28 12 L48 12 C50 12 52 14 52 16 L52 20 L8 20 Z"
+        fill="#5BA0F2" stroke="#2C5F8B" stroke-width="1"/>
+  
+  <!-- Decorative elements that hide more data -->
+  <!-- Fragment: irramzHCG1Ac8oSTz3nchoDaddxCDAHmI4d7fHyyNmOMCdWuMi6IukzfZDJNfTW6CJ3F3nc1TktPtBP8ZZJuGHfNxUTHlGpWUTRbI/iijiPwNmFP9mi8B5c6Qq+6/eqUZDPG48Awq96pQK+Gvx5KEfzufgcRpaidJUa4ijYKCAovHvRsy0oGoXOGoZx1dLH5AKLYva/AwkXXTrCYnNFT4RX6U6SCPvVs/w0ph0bkzhVZnVxpqwhBAclvV5gM+ICFFsTWeaWM1WexhZ7Cq15QX9Gs7e876OgzcnW7K+Xso1Uku45AHaqIXkstgOHRFgC0KUrqLaCg4RwUztYoWV8tjpysOnX8I1s2ID8aWCXdYDtACqQmVrYmACdF7RVViZFSDw6WjdjRFcggqHz2NGqkMML3eg9HNu7wKplIAPt+CWQos/j9WcrKAEH53DZ+WaEHiFG4eqihLraOOsrULW3WZ6fj9aA2kZdvhrfsAcaER3F8IVzm5FZHno92ou/4JtdyMoXOchBMvNcRH8LiWUdZnnRHZA1He/eht4aBJ/d0IgHRE6BrfdKC3XmEuY/QB1sx6XrLTLrGHFwwtNPjGLDUCqIMH8KeddnP+s9ppQnP6MehAKR+XP1Nm3OK0hwfgncQdnWOW35qjIUnbZ0Y1K/KSVeMxoaq/LTNvsUk2yDtl7FUndhyqoQCjyYJUezEPry7Xt4bXUVYNwYrUzBiq/7rGmYV0Li/DZWtHweIMIKZHgUb2Abod6wvJSkwwLBoCIJ+m6yl8C9wyzEOYTQxQxq4o48kmGvYYMmw5UMfJ8rvsO9ymAHSML2wW5WkNx8dHArK9EqNVvI0kRbdZ0dIoSLBwWEzS/IcWW9QOhCaAXDHTjxfpT2TTp9kP7WF9orTPzE2njltKBA28trmTbk3eug5C5/oEpgLTdfA/DHbR8tiaTtuU8HA8O6ZDvtlgTg5WIhroZhGzRuOlSz9Z6By2vy3gA+nd1cfsdlYc80YgdU3y85tnCD25uKDmMEFTqc0TjCqvkiNGf5cX0r5pKJnBAF+IYmQk45ekBcE8j2Y/tzT33Ev3U2JqEBgsq8OAa8vQqRrlE8VqtWpHbag9v2ccOZtY+2dym7rAY5VjC+gBdgpQx83uNbNg9wBhO4PsLZFke86WwuaFZGCbFTmxnxxn3MYaeBlDLJYHHfSljY9aetfMqw/TgzorTaKS9SNtDAQqott1+Sy6XGip4aK8UOXmLM5hmSzhKqyc3c7EM7ZOdUG8JGOkKSBG4bnr93HhCuKK1bBD8dpHMGU8iFsF/MnjYJUsqaYlsj9i53n/QpIjERghY5DcaWrK2Q5+38xj1yAqx8kCgFurOVzDnv8q9qanfixi0sLGX9hEU7APZLVVkgXFrFyNmBRLQ2keISx3JdPd/R4+hKiU9tZE92rW3WQgcB4xMJeyRDiXRh9C+Sg6E/WHzOMnF1RTedxyzynnXS/d/oXpsrIAreMP8r0JgAK51RAP37M8erc74IgZjAbKIv/63jUJMgsFbWUrbFkTsjav42cgWySt77/ry8Sah0nALwQNFSLJ5X25OAiKXEj8FDdWQl/GUJ8FacwBOjBKr5PQsMQ0rjsTBIQ2B/hJ2OK+1X8x7tiVkvES7uZo6aF99AYOOpMVWUdN6FwEVAA5cCw/YNbOCC7BI4SSeSjyeZ+Y1Y7VkYe51TuyshybzR7aVTwwCA8zWXTx2TaWahuTvgyCx7vkbf80JlB7I6PpNi3vjh7+pOH0iR/H7pW4LWVJbkNzAroa1JvsQuodt3xGsIuC5zbBkqoh7EC4AnoYgHbF6gdui0OppIgGyXm9OzZWFpYEn/O76VL/RmZ4stv/3zwoG4TwWkGE0O/zSKhg6e6QNqKYavUZORjoycu8ABH/vGdM6rBRwVId9eMWxMVJl/GhogTjy39RBF7E5NE/91cjLsttqphCsX3DJx8o4wCTC45QA== -->
+  <circle cx="40" cy="36" r="3" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="32" cy="40" r="2" fill="#FFFFFF" opacity="0.2"/>
+  
+  <title>Directory Icon - profiles</title>
+  <desc>Automatically generated directory icon with embedded metadata</desc>
+</svg>

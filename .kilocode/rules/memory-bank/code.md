@@ -8,6 +8,7 @@
 - **Runtime**: Node.js (^18.20.2 or >=20.9.0)
 - **UI Components**: shadcn/ui, Radix UI primitives
 - **Development**: TypeScript, ESLint, Prettier, pnpm
+- **Rich Text Editing**: Slate.js, slate-react, slate-history
 
 ## Environment Setup
 
@@ -57,6 +58,86 @@ const activePlugins = {
 }
 ```
 
+## Rich Text Editor Implementation
+
+### Slate.js Integration
+The Job Flow Cascade Rich Text Editor is built on Slate.js, a customizable framework for building rich text editors:
+
+```typescript
+// Core slate imports
+import { createEditor, Node as SlateNode, Editor, Element, Text } from 'slate'
+import { Slate, Editable, withReact, useSlate } from 'slate-react'
+import { withHistory } from 'slate-history'
+
+// Core editor setup
+const editor = useMemo(() => {
+  const slateEditor = withReact(createEditor())
+  return withHistory(withPlugins(slateEditor))
+}, [])
+
+// Initial editor value
+const initialValue = [
+  {
+    type: 'paragraph',
+    children: [{ text: '' }],
+  },
+]
+```
+
+### Error Handling Pattern
+```typescript
+// Improved error handling for editor functions
+const getNodeText = (node) => {
+  try {
+    return SlateNode.string(node)
+  } catch (error) {
+    console.error('Error getting node text:', error)
+    return ''
+  }
+}
+
+// Error boundary component
+class EditorErrorBoundary extends React.Component {
+  state = { hasError: false, error: null }
+  
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error }
+  }
+  
+  componentDidCatch(error, info) {
+    console.error('Editor error:', error, info)
+  }
+  
+  render() {
+    if (this.state.hasError) {
+      return <EditorFallback error={this.state.error} />
+    }
+    return this.props.children
+  }
+}
+```
+
+### Document Data Structure
+```typescript
+// Document structure
+interface Document {
+  id: string
+  title: string
+  status: 'draft' | 'in_progress' | 'review' | 'complete'
+  businessUnit: string
+  sections: Section[]
+}
+
+// Section structure for rich text content
+interface Section {
+  id: string
+  documentId: string
+  title: string
+  content: SlateNode[]
+  order: number
+}
+```
+
 ## Business Integration Details
 
 ### IntelliTrade
@@ -66,6 +147,7 @@ const activePlugins = {
 ### Salarium
 - AI-powered job description generation
 - Market data integration for compensation analysis
+- Job Flow Cascade with rich text document editing
 
 ### Latinos
 - Python FastAPI service for real-time trading
@@ -166,3 +248,4 @@ export const myEndpoint = {
 - **Database Issues**: Check SQLite file permissions
 - **Connection Refused**: Verify correct port and running server
 - **API Errors**: Check business context headers
+- **Slate.js Errors**: Check for proper node structure and error boundaries

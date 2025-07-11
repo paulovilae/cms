@@ -2,7 +2,8 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { Metadata } from 'next'
 import React from 'react'
-import PageClient from '../[slug]/page.client'
+// Remove the non-existent import
+// import PageClient from '../[slug]/page.client'
 import { RenderHero } from '@/heros/RenderHero'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 
@@ -29,8 +30,6 @@ export default async function FeaturesPage() {
 
   return (
     <article className="pt-16 pb-24">
-      <PageClient />
-
       {/* Just render the hero and layout blocks as configured in the CMS */}
       {page && (
         <>

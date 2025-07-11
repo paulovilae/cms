@@ -1,0 +1,295 @@
+/**
+ * Semana.com Color Palette
+ * This file defines the color variables for the Semana.com redesign
+ */
+
+:root {
+  /* Primary Brand Colors */
+  --primary-red: #E3000B;
+  --dark-red: #B10008;
+  --light-red: #FF4D55;
+  
+  /* Section Color Coding */
+  --politics-blue: #4A6FE3;
+  --economy-green: #2D9D78;
+  --nation-purple: #9C27B0;
+  --world-orange: #FF9800;
+  --opinion-brown: #795548;
+  --sports-light-blue: #03A9F4;
+  
+  /* Neutrals */
+  --dark-gray: #212121;
+  --medium-gray: #757575;
+  --light-gray: #E0E0E0;
+  --off-white: #F5F5F5;
+  
+  /* UI Accents */
+  --success-green: #4CAF50;
+  --warning-yellow: #FFC107;
+  --error-red: #F44336;
+  --info-blue: #2196F3;
+}
+
+/* Color Palette Demo Classes */
+
+.brand-colors-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.color-swatch {
+  width: 150px;
+  height: 100px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.color-swatch::after {
+  content: attr(data-color-name) "\A" attr(data-color-hex);
+  white-space: pre;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px;
+  font-family: sans-serif;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Primary Brand Colors */
+.primary-red {
+  background-color: var(--primary-red);
+}
+
+.dark-red {
+  background-color: var(--dark-red);
+}
+
+.light-red {
+  background-color: var(--light-red);
+}
+
+/* Section Colors */
+.politics-blue {
+  background-color: var(--politics-blue);
+}
+
+.economy-green {
+  background-color: var(--economy-green);
+}
+
+.nation-purple {
+  background-color: var(--nation-purple);
+}
+
+.world-orange {
+  background-color: var(--world-orange);
+}
+
+.opinion-brown {
+  background-color: var(--opinion-brown);
+}
+
+.sports-light-blue {
+  background-color: var(--sports-light-blue);
+}
+
+/* Neutrals */
+.dark-gray {
+  background-color: var(--dark-gray);
+}
+
+.medium-gray {
+  background-color: var(--medium-gray);
+}
+
+.light-gray {
+  background-color: var(--light-gray);
+}
+
+.off-white {
+  background-color: var(--off-white);
+  border: 1px solid var(--light-gray);
+}
+
+/* UI Accents */
+.success-green {
+  background-color: var(--success-green);
+}
+
+.warning-yellow {
+  background-color: var(--warning-yellow);
+}
+
+.error-red {
+  background-color: var(--error-red);
+}
+
+.info-blue {
+  background-color: var(--info-blue);
+}
+
+/* Example Usage in UI Components */
+
+/* Header with brand colors */
+.site-header {
+  background-color: var(--primary-red);
+  color: white;
+  padding: 16px;
+}
+
+/* Section headers with color coding */
+.section-politics {
+  border-left: 4px solid var(--politics-blue);
+  padding-left: 8px;
+}
+
+.section-economy {
+  border-left: 4px solid var(--economy-green);
+  padding-left: 8px;
+}
+
+.section-nation {
+  border-left: 4px solid var(--nation-purple);
+  padding-left: 8px;
+}
+
+.section-world {
+  border-left: 4px solid var(--world-orange);
+  padding-left: 8px;
+}
+
+.section-opinion {
+  border-left: 4px solid var(--opinion-brown);
+  padding-left: 8px;
+}
+
+.section-sports {
+  border-left: 4px solid var(--sports-light-blue);
+  padding-left: 8px;
+}
+
+/* UI Components with accent colors */
+.alert-success {
+  background-color: var(--success-green);
+  color: white;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.alert-warning {
+  background-color: var(--warning-yellow);
+  color: var(--dark-gray);
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.alert-error {
+  background-color: var(--error-red);
+  color: white;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.alert-info {
+  background-color: var(--info-blue);
+  color: white;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+/* Article card with category indicator */
+.article-card {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.article-card__category {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+.article-card__category--politics {
+  background-color: var(--politics-blue);
+}
+
+.article-card__category--economy {
+  background-color: var(--economy-green);
+}
+
+.article-card__category--nation {
+  background-color: var(--nation-purple);
+}
+
+.article-card__category--world {
+  background-color: var(--world-orange);
+}
+
+.article-card__category--opinion {
+  background-color: var(--opinion-brown);
+}
+
+.article-card__category--sports {
+  background-color: var(--sports-light-blue);
+}
+
+/* Navigation with hover states */
+.nav-item {
+  color: var(--dark-gray);
+  padding: 8px 16px;
+  transition: background-color 0.2s ease;
+}
+
+.nav-item:hover {
+  background-color: var(--light-gray);
+}
+
+.nav-item.active {
+  color: var(--primary-red);
+  font-weight: bold;
+}
+
+/* Button variants */
+.btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-primary {
+  background-color: var(--primary-red);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--medium-gray);
+  color: white;
+}
+
+.btn-success {
+  background-color: var(--success-green);
+  color: white;
+}
+
+.btn-info {
+  background-color: var(--info-blue);
+  color: white;
+}

@@ -86,6 +86,118 @@ export const myPlugin = (): Plugin => (incomingConfig) => {
 }
 ```
 
+## Rich Text Editor Development
+
+### Slate.js Architecture
+
+The Job Flow Cascade Rich Text Editor is built on Slate.js. When developing or extending the editor, follow these patterns:
+
+```typescript
+// Core editor setup
+const createCustomEditor = () => {
+  const editor = createEditor()
+  return pipe(
+    editor,
+    withReact,          // Enable React integration
+    withHistory,        // Enable undo/redo
+    withCustomPlugins   // Add custom behavior
+  )
+}
+```
+
+### Error Handling Patterns
+
+Always implement proper error handling in Slate.js components:
+
+```typescript
+// Safe text extraction
+const getSafeNodeText = (node) => {
+  try {
+    return SlateNode.string(node)
+  } catch (error) {
+    console.error('Error extracting node text:', error)
+    return ''
+  }
+}
+
+// Component with error handling
+const SafeComponent = ({ value }) => {
+  try {
+    // Component logic
+    return <div>{renderValue(value)}</div>
+  } catch (error) {
+    console.error('Error in component:', error)
+    return <div>Error rendering component</div>
+  }
+}
+```
+
+### Custom Element Types
+
+When adding new element types to the editor:
+
+```typescript
+// Define custom element type
+const CustomElement = ({ attributes, children, element }) => {
+  switch (element.type) {
+    case 'heading':
+      return <h2 {...attributes}>{children}</h2>
+    case 'quote':
+      return <blockquote {...attributes}>{children}</blockquote>
+    default:
+      return <p {...attributes}>{children}</p>
+  }
+}
+
+// Register element with isElementType type guard
+const isCustomElement = (node) => {
+  return !Editor.isEditor(node) && 
+         Element.isElement(node) && 
+         ['heading', 'quote'].includes(node.type)
+}
+```
+
+### Serialization Best Practices
+
+For serializing editor content:
+
+```typescript
+// HTML serialization
+const serializeToHTML = (nodes) => {
+  return nodes.map(node => {
+    if (Text.isText(node)) {
+      let text = escapeHTML(node.text)
+      if (node.bold) text = `<strong>${text}</strong>`
+      if (node.italic) text = `<em>${text}</em>`
+      return text
+    }
+    
+    const children = node.children.map(n => serializeToHTML([n])).join('')
+    
+    switch (node.type) {
+      case 'paragraph': return `<p>${children}</p>`
+      case 'heading': return `<h${node.level}>${children}</h${node.level}>`
+      default: return children
+    }
+  }).join('')
+}
+```
+
+### Document Context Integration
+
+When working with document-level state:
+
+```typescript
+// Using document context
+import { useDocumentContext } from '../context/DocumentProvider'
+
+const DocumentComponent = () => {
+  const { document, updateDocument, createSection, error } = useDocumentContext()
+  
+  // Component implementation using document context
+}
+```
+
 ## Critical Workflows
 
 ### Database Seeding
@@ -114,3 +226,5 @@ export const myPlugin = (): Plugin => (incomingConfig) => {
 - **Database Issues**: Check SQLite file permissions
 - **Connection Refused**: Verify correct port and running server
 - **API Errors**: Check business context headers
+- **Slate.js Errors**: Look for corrupted node structure, ensure all Text nodes have valid text property
+- **Rich Text Editor Issues**: Verify editor context is properly initialized and wrapped with EditorErrorBoundary

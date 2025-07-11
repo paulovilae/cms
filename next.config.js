@@ -27,6 +27,27 @@ const nextConfig = {
   redirects,
   // Enable standalone output for Docker
   output: 'standalone',
+  // Transpile slate modules for proper resolution
+  transpilePackages: ['slate', 'slate-react', 'slate-history', 'slate-hyperscript'],
+  // Webpack configuration for pnpm symlink resolution
+  webpack: (config, { isServer }) => {
+    // Handle pnpm symlinks properly
+    config.resolve.symlinks = false
+
+    // Add fallbacks for slate modules
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+    }
+
+    // Business-specific module exclusion to prevent dependency conflicts
+    const businessMode = process.env.BUSINESS_MODE || 'all'
+
+    if (businessMode === 'intellitrade') {
+      console.log('🔧 IntelliTrade mode: Dependencies now properly available')
+    }
+
+    return config
+  },
   // Turbopack configuration (Next.js 15.3.0+)
   // Turbopack handles CSS modules automatically, no explicit configuration needed
   turbopack: {

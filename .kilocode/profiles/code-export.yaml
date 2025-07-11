@@ -11,11 +11,109 @@ customModes:
     description: Write, modify, and refactor code
     groups:
       - read
-      - - edit  # Unrestricted edit access to all files
+      - edit  # Unrestricted edit access to all files
       - browser
       - command
       - mcp
+    customInstructions: >-
+      Follow this structured approach to writing code:
+
+      ## Directory Structure Guidelines (REQUIRED)
+      - ALL tasks must be stored in `context_portal/tasks/` with naming convention: `YYYY-MM-DD_task-name_code.md`
+      - Source code belongs in `src/` directory
+      - Tests belong in `tests/` directory with business-specific subdirectories (`tests/unit/{business}/` or `tests/unit/general/`)
+      - Infrastructure scripts belong in `infrastructure/scripts/`
+      - Documentation belongs in `docs/` with appropriate subdirectories
+      - Reference `docs/general/architecture/complete-directory-structure.md` for complete guidelines
+
+      ## 1. Understanding Phase (REQUIRED)
+      - Thoroughly read and understand existing code before modifying it
+      - Identify potential dependencies and impact areas
+      - Search for similar patterns or implementations in the codebase
+      - Document your understanding of the current code before making changes
+      - Specifically search for similar bugs if fixing an issue
+      - Check the multi-tenant architecture implications
+
+      ## 2. Planning Phase (REQUIRED)
+      - Outline your approach before writing any code
+      - List the specific files you'll need to modify
+      - Consider edge cases and error scenarios
+      - Create a rollback plan for complex changes
+      - Reference architectural documentation in `docs/general/architecture/`
+      - Break down complex changes into smaller, testable units
+      - Identify which business contexts are affected
+
+      ## 3. Implementation Phase
+      - Follow established code patterns in the codebase
+      - Write code with comprehensive error handling
+      - Add meaningful comments explaining "why" not just "what"
+      - Maintain business-specific separation for multi-tenant code
+      - Implement one change at a time, verifying each step
+      - For complex changes, implement progressive validation points
+      - Store source code in appropriate `src/` subdirectories
+      
+      ## 4. Testing Phase (REQUIRED)
+      - Test your changes thoroughly before submitting
+      - Write automated tests in `tests/` directory with appropriate subdirectories
+      - Test edge cases explicitly
+      - Test error handling paths
+      - Verify functionality across all affected business contexts
+      - Document testing approach and results
+      - For business-specific code, test in `tests/unit/{business}/`
+      - For cross-business code, test in `tests/unit/general/`
+
+      ## 5. Documentation Phase (REQUIRED)
+      - Document any significant changes in appropriate `docs/` subdirectories
+      - Update relevant README files
+      - Document patterns that can be reused
+      - Create or update troubleshooting guides for complex features
+      - Document any workarounds or temporary solutions clearly
+      - Store documentation in `docs/general/` for cross-business or `docs/{business}/` for business-specific
+
+      ## 6. Pre-submission Checklist (REQUIRED)
+      - Does the code follow established patterns?
+      - Have you handled all error cases?
+      - Have you tested edge cases?
+      - Is the code properly documented?
+      - Have you updated relevant documentation?
+      - Have you considered all business contexts?
+      - Are there any performance implications?
+      - Are there any security implications?
+      - Are files stored in the correct directories per the directory structure?
+
+      ## 7. Systematic Verification Across Similar Files (REQUIRED)
+      - When implementing a fix or modification to any file, immediately identify and review ALL similar or related files that may require the same change
+      - Use search tools to locate files with similar patterns, naming conventions, or functionality
+      - Apply consistent fixes across all identified files to maintain system coherence
+      - Verify that configuration changes (YAML, JSON, etc.) are applied uniformly across all relevant files
+      - Document which files were modified together and the rationale for consistency
+      - Create a checklist of related files that should be reviewed for any future similar changes
+      - When fixing bugs, search for similar code patterns that may have the same issue
+      - When adding features, ensure consistent implementation across all business contexts or similar components
+
+      ## 8. Knowledge Preservation (REQUIRED)
+      - Maintain a running log of all issues encountered and their solutions
+      - Document patterns for avoiding similar issues in the future
+      - At the end of every task, provide a detailed error resolution log
+      - Include specific instructions for faster resolution of similar issues
+      - Store task documentation in `context_portal/tasks/` with proper naming
+
+      ## Common Pitfalls to Avoid
+      - Don't modify code without understanding its full context
+      - Don't create simplified versions of functions without explicit user request
+      - Don't copy-paste code without understanding its purpose
+      - Don't implement solutions that only work in one business context
+      - Don't make changes outside the scope of the task
+      - Don't skip error handling or validation
+      - Don't leave TODO comments without explanation
+      - Don't store files in incorrect directories
+
+      ## Multi-Tenant Considerations
+      - Always consider which business contexts are affected by your changes
+      - Maintain separation between business-specific and general code
+      - Test changes across all relevant business contexts
+      - Use business-specific directories when appropriate
+      - Ensure business context validation in API endpoints
+
+      Please record every solution and give at the end a detailed log of all solved errors and specific instructions for an agent on how to avoid or solve these issues faster if you find a new to solve problems.
     source: project
-    customInstructions: Please record every solution and give me at the end a
-      detailed log of all solved errors and specific instructions for an agent
-      on how to avoid or solve these issues faster.

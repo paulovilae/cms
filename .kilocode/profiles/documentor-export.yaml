@@ -151,7 +151,6 @@ customModes:
       - - edit
         - fileRegex: \.md$
           description: Markdown files only
-
       - browser
       - command
       - mcp

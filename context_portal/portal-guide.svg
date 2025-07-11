@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated directory icon - 2025-07-11T23:17:04.512Z -->
+<!-- Metadata: U2FsdGVkX1/cZnSTC4jwHJlm8RN3z3nEorTt0VnbuN6/IZsA4U2Q9A5Ay26nb1+yCJb93f159CEiB5GR7bsJnfQboglXMhpDTBQ1 -->
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon design for context_portal directory -->
+  <!-- Data fragment: /9UNZ2kvl9j9Zgu4rM7v8GbVDmHhWI0ETWFsDUzPv7RRrysjTeO0JHuJGduZ5050WQy4PJI5xhm+FJyZV2+VA7r+fxaC1R7ytH4X -->
+  <defs>
+    <linearGradient id="folderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+    <!-- Hidden: ND04blLlnC5n7fmLK9QLI60f/4m9DNXbTdUVQ6FFhLn9z2E1TOFde/7S+XfdGpHho9B1VrTFG5qojHrMFleDnZKqBqrCvtINd67u -->
+  </defs>
+  
+  <!-- Main folder shape -->
+  <path d="M8 16 L8 48 C8 52 12 56 16 56 L48 56 C52 56 56 52 56 48 L56 24 C56 20 52 16 48 16 L28 16 L24 12 L16 12 C12 12 8 16 8 16 Z"
+        fill="url(#folderGradient)" stroke="#2C5F8B" stroke-width="1"/>
+  
+  <!-- Folder tab -->
+  <path d="M8 16 L24 16 L28 12 L48 12 C50 12 52 14 52 16 L52 20 L8 20 Z"
+        fill="#5BA0F2" stroke="#2C5F8B" stroke-width="1"/>
+  
+  <!-- Decorative elements that hide more data -->
+  <!-- Fragment: hCQYkE2KZQBtnS8fUVQotcfGsfACA+pL2CM6gUiQWc6QrVMPsgqVWR9zlR+LAjHvMqGn6jQ6BO6oMMFUwYZEwnO2aMLZDwuzPXetqM3lSfzAciQzQZq1WIkQi5HIK6vPQVpXYjwP2uAPzZnHqzMg/4C7Y6grV/rDOSCxfwVgnmGpC4GiVlsS82SfJzXDam5YGy/DUqwhKd7G4h74r/97GX0eDt+JSmgT/1C5L/idCBq2dAeEyK5rOtVpHlkSs0DYG79FD3svifKR9OooZT/eWCIIpadA43muLwY4mOwVifewAzvWmSTgQwFrg60Aj4bu9DmZe8JbjJ/q+thM5cGxydwii5JJZM5Rma25W5LZzI635eOGiFFgn328Yl1f7q65P7SAIjikiZ5us8vzWP/RppZ+Gcp6gIwMJ1ezCJYgSVJ/kQjOKyBdyG5eGb3FG2EICrzUMupBRdYLqr859Cy0+ssba1+5fwNttNU5BoFSx1wwn7baTqPRfRNgAm7LGp7stKN//XmC/PkDYcXEeC63HH462QrXfNMufHO5+x3eJTWqqKsJhyZ/UkLbr8LeKAWGsCqb9YRuoN/jaOIxpmqOunbjT5n1MWA++K+BBN3EpamnfZB2PSNrO1uzdW4slhQv2E9grTJwE/Kq+qWUBw2F5QRnu78N+f3efp+5LFnwwtSyNERDhp/F+RMTQnA5U0tjlJeBMs+WmZVcp1Jbbd3l0aQcwojxAUC366a/37v4/NjI17lGELbHbEg73yM+onZaUsN8/d63xCwJncsNneGUCvGPT7I76xFLPsLG/Akpc8fa/t69XB3NjbaANwFDb3Sheehy9JeRz236AGw/Shc6ab+F4sUfL/3U7kBvutaBFawqwDS0w9j6c5l/eLyzpHatUsuRKbL5DpmBYtisc6TRlln4X80M+cN77CxhHIv7LO/dR7w7ver+Hm03p+JU8TYkG3q8EV6FGZESXb8PInqxBUMCLSziBfiY2fNQ6ZZ1A6h2VuG2p4hsz9xMFbEUIcBzZfBtGyY9NlrOap5xJ52XBvHCxvatLQKC9aRsFRCI0pFdbXnOj8yhY0kjXIVN49WX8htSHXWsHoS++gNh/XSFpg+VrQYIj0gkqqTaIHcbxU9h2usJvP75+3BhkfoFELVVZ3dd/Hn5xTfRcYEwSaNa9UFh0OMtzwZVXDai8Cv8WrJWvW1ePa65O55+egNmJQQVWcwkuyvI0OrN5zqtigBld4Nnio8OH9dNXHlRSLEYMqR+RaiIZWUgJyliyq2DOcQ= -->
+  <circle cx="40" cy="36" r="3" fill="#FFFFFF" opacity="0.3"/>
+  <circle cx="32" cy="40" r="2" fill="#FFFFFF" opacity="0.2"/>
+  
+  <title>Directory Icon - context_portal</title>
+  <desc>Automatically generated directory icon with embedded metadata</desc>
+</svg>
