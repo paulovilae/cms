@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "sqlite": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-sqlite",
+        "--db-path",
+        "/home/paulo/Programs/cms/databases/multi-tenant.db"
+      ],
+      "alwaysAllow": [
+        "list_tables",
+        "read_query",
+        "describe_table",
+        "create_table",
+        "write_query",
+        "execute_query"
+      ]
+    }
+  }
+}

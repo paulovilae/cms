@@ -1,0 +1,24 @@
+{
+  "name": "multi-tenant-business-platform",
+  "version": "1.0.0",
+  "description": "Plugin-based CMS with versioned implementations for each business unit",
+  "main": "index.js",
+  "scripts": {
+    "start-all-instances": "node scripts/start-all-instances.js",
+    "stop-all-instances": "node scripts/stop-all-instances.js",
+    "install-all-instances": "node scripts/install-all-instances.js",
+    "setup-instances": "node scripts/create-independent-instances.js"
+  },
+  "keywords": [
+    "cms",
+    "multi-tenant",
+    "plugins",
+    "payload",
+    "business-platform"
+  ],
+  "author": "Paulo Vila",
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}

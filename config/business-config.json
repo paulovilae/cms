@@ -1,0 +1,133 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-19T15:14:00Z",
+  "description": "Centralized business configuration for multi-tenant platform",
+  "architecture": {
+    "approach": "plugin-centric",
+    "configSource": "centralized-json",
+    "dataStorage": "centralized-databases",
+    "mediaStorage": "business-specific-media"
+  },
+  "paths": {
+    "databases": "./databases/",
+    "media": "./media/",
+    "config": "./config/",
+    "plugins": "./plugins/"
+  },
+  "businesses": {
+    "intellitrade": {
+      "port": 3004,
+      "domain": "intellitrade.paulovila.org",
+      "dbPath": "databases/intellitrade.db",
+      "mediaPath": "media/intellitrade/",
+      "businessName": "intellitrade",
+      "description": "Blockchain trading and KYC verification platform",
+      "plugins": [
+        "@paulovila/intellitrade-kyc",
+        "@paulovila/shared-analytics",
+        "@paulovila/core-auth"
+      ],
+      "features": {
+        "kyc": true,
+        "trading": true,
+        "blockchain": true
+      },
+      "environment": {
+        "NODE_ENV": "development",
+        "BUSINESS_MODE": "intellitrade"
+      }
+    },
+    "salarium": {
+      "port": 3005,
+      "domain": "salarium.paulovila.org",
+      "dbPath": "databases/salarium.db",
+      "mediaPath": "media/salarium/",
+      "businessName": "salarium",
+      "description": "HR workflows and compensation analysis platform",
+      "plugins": [
+        "@paulovila/salarium-hr",
+        "@paulovila/shared-analytics",
+        "@paulovila/core-auth"
+      ],
+      "features": {
+        "hr": true,
+        "compensation": true,
+        "workflows": true
+      },
+      "environment": {
+        "NODE_ENV": "development",
+        "BUSINESS_MODE": "salarium"
+      }
+    },
+    "latinos": {
+      "port": 3003,
+      "domain": "latinos.paulovila.org",
+      "dbPath": "databases/latinos.db",
+      "mediaPath": "media/latinos/",
+      "businessName": "latinos",
+      "description": "Trading algorithms and market data platform",
+      "plugins": [
+        "@paulovila/latinos-trading",
+        "@paulovila/shared-analytics",
+        "@paulovila/core-auth"
+      ],
+      "features": {
+        "trading": true,
+        "algorithms": true,
+        "marketData": true
+      },
+      "environment": {
+        "NODE_ENV": "development",
+        "BUSINESS_MODE": "latinos"
+      }
+    },
+    "capacita": {
+      "port": 3007,
+      "domain": "capacita.paulovila.org",
+      "dbPath": "databases/capacita.db",
+      "mediaPath": "media/capacita/",
+      "businessName": "capacita",
+      "description": "Training scenarios and skill evaluation platform",
+      "plugins": [
+        "@paulovila/capacita-training",
+        "@paulovila/shared-analytics",
+        "@paulovila/core-auth"
+      ],
+      "features": {
+        "training": true,
+        "avatars": true,
+        "skillEvaluation": true
+      },
+      "environment": {
+        "NODE_ENV": "development",
+        "BUSINESS_MODE": "capacita"
+      }
+    },
+    "cms": {
+      "port": 3006,
+      "domain": "cms.paulovila.org",
+      "dbPath": "databases/cms.db",
+      "mediaPath": "media/cms/",
+      "businessName": "cms",
+      "description": "Central administration and plugin management",
+      "plugins": [
+        "@paulovila/core-admin",
+        "@paulovila/shared-analytics",
+        "@paulovila/core-auth"
+      ],
+      "features": {
+        "admin": true,
+        "pluginManagement": true,
+        "userManagement": true
+      },
+      "environment": {
+        "NODE_ENV": "development",
+        "BUSINESS_MODE": "cms"
+      }
+    }
+  },
+  "defaults": {
+    "nodeEnv": "development",
+    "fallbackBusiness": "cms"
+  }
+}
